@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>swt6</groupId>
+		<artifactId>paint-osgi</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>paint-osgi-main</artifactId>
+	<packaging>bundle</packaging>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+
+				<configuration>
+					<instructions>
+
+						<Bundle-Activator>
+							swt6.osgi.paint.PaintActivator
+						</Bundle-Activator>
+
+						<!-- Version 1 -->
+						<!-- This module depends on the following packages in the given versions. 
+							Heere is only 'Import-Package' defined because this bundle only consumes 
+							and does not provides anything -->
+						<!-- <Import-Package> swt6.osgi.shape;version="[1.0,3.0)", swt6.osgi.shape.*;version="[1.0,3.0)", 
+							org.osgi.framework;version="[1.3,2.0)", javafx.* </Import-Package> -->
+
+						<!-- version 2 -->
+						<Import-Package>
+							swt6.osgi.shape;version="[1.0,2.0)",
+							org.osgi.framework;version="[1.3,2.0)",
+							org.osgi.util.tracker;version="[1.3,2.0)",
+							javafx.*
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>swt6</groupId>
+			<artifactId>paint-osgi-shape</artifactId>
+			<version>1.0</version>
+			<type>bundle</type>
+		</dependency>
+		<!-- <dependency>
+			<groupId>swt6</groupId>
+			<artifactId>paint-osgi-rectangle</artifactId>
+			<version>1.0</version>
+			<type>bundle</type>
+		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>swt6</groupId> -->
+		<!-- <artifactId>paint-osgi-circle</artifactId> -->
+		<!-- <version>1.0</version> -->
+		<!-- <type>bundle</type> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>swt6</groupId> -->
+		<!-- <artifactId>paint-osgi-line</artifactId> -->
+		<!-- <version>1.0</version> -->
+		<!-- <type>bundle</type> -->
+		<!-- </dependency> -->
+	</dependencies>
+</project>
