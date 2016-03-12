@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>at.fh.ooe.swt6</groupId>
+		<artifactId>drive-analytics-sensor</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<name>drive-analytics-sensor-impl</name>
+	<description>The module which holds all implemented sensors</description>
+
+	<artifactId>drive-analytics-sensor-impl</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>distance</module>
+		<module>nfc</module>
+	</modules>
+</project>

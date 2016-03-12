@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>at.fh.ooe.swt6</groupId>
+		<artifactId>drive-analytics-sensor-impl</artifactId>
+		<version>${project.parent.version}</version>
+	</parent>
+
+	<name>drive-analytics-sensor-impl-nfc</name>
+	<description>The artifact which holds the sources for the nfc sensor</description>
+
+	<artifactId>drive-analytics-sensor-impl-nfc</artifactId>
+	<packaging>bundle</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.framework</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.fh.ooe.swt6</groupId>
+			<artifactId>drive-analytics-sensor-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+
+				<configuration>
+					<instructions>
+						<Export-Package>
+							at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc;version="1.0"
+						</Export-Package>
+						<Import-Package>
+							at.fh.ooe.swt6.drive.analytics.sensor.api;version="[1.0,1.1)"
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

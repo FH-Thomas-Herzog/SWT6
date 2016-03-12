@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<name>drive-analytics</name>
+	<description>drive-analytics</description>
+	<groupId>at.fh.ooe.swt6</groupId>
+	<artifactId>drive-analytics</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<developers>
+		<developer>
+			<name>Thomas Herzog</name>
+			<email>S1310307011@students.fh-hagenberg.at</email>
+			<organization>FH-Hagenberg</organization>
+			<organizationUrl>https://www.fh-ooe.at/campus-hagenberg/studiengaenge/bachelor/software-engineering/</organizationUrl>
+			<roles>
+				<role>owner</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<modules>
+		<module>docs</module>
+		<module>sensor</module>
+	</modules>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<osgi.deploy.dir>${env.KARAF_BASE}/deploy</osgi.deploy.dir>
+
+		<!-- dependency versions -->
+		<version.apache.felix.framework>5.4.0</version.apache.felix.framework>
+	</properties>
+</project>
