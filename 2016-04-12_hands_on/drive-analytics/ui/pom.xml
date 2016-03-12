@@ -7,18 +7,13 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<name>drive-analytics-sensor</name>
-	<description>The module which holds all of the sensor related projects along which its specifications</description>
+	<name>drive-analytics-ui</name>
+	<description>drive-analytics-ui</description>
 
-	<artifactId>drive-analytics-sensor</artifactId>
+	<artifactId>drive-analytics-ui</artifactId>
 	<packaging>pom</packaging>
 
-	<properties>
-		<version.sensor.api>0.0.1-SNAPSHOT</version.sensor.api>
-	</properties>
-
 	<modules>
-		<module>api</module>
-		<module>impl</module>
+		<module>javafx</module>
 	</modules>
 </project>

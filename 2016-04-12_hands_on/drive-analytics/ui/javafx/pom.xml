@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>at.fh.ooe.swt6</groupId>
+		<artifactId>drive-analytics-ui</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<name>drive-analytics-ui-javafx</name>
+	<description>The ui implementation with javafx</description>
+
+	<artifactId>drive-analytics-ui-javafx</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.framework</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.fh.ooe.swt6</groupId>
+			<artifactId>drive-analytics-sensor-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+
+				<configuration>
+					<instructions>
+						<Import-Package>
+							at.fh.ooe.swt6.drive.analytics.sensor.api;version="[1.0,1.1)",
+							org.osgi.framework;version="[1.3,2.0)",
+							org.osgi.util.tracker;version="[1.3,2.0)",
+							javafx.*
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
