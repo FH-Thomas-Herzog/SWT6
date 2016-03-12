@@ -3,6 +3,8 @@
  */
 package at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc;
 
+import java.nio.ByteBuffer;
+
 import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 
 /**
@@ -27,14 +29,14 @@ public class NfcSensor implements Sensor {
 
 	@Override
 	public byte[] getData() {
-		// TODO Auto-generated method stub
-		return null;
+		final byte[] data = new byte[8];
+		ByteBuffer.wrap(data).putLong(1);
+		return data;
 	}
 
 	@Override
 	public SensorDataFormat getDataFormat() {
-		// TODO Auto-generated method stub
-		return null;
+		return SensorDataFormat.ABSOLUTE_VALUE_LONG;
 	}
 
 	@Override

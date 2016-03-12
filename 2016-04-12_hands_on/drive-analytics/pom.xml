@@ -36,6 +36,7 @@
 
 		<!-- dependency versions -->
 		<version.apache.felix.framework>5.4.0</version.apache.felix.framework>
+		<version.slf4j>1.7.18</version.slf4j>
 	</properties>
 
 	<dependencyManagement>
@@ -44,6 +45,16 @@
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.framework</artifactId>
 				<version>${version.apache.felix.framework}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${version.slf4j}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

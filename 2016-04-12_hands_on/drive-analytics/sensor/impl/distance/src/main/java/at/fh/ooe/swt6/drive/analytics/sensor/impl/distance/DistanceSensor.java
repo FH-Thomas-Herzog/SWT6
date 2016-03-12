@@ -3,9 +3,15 @@
  */
 package at.fh.ooe.swt6.drive.analytics.sensor.impl.distance;
 
+import java.nio.ByteBuffer;
+import java.util.Objects;
+import java.util.Random;
+
 import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 
 /**
+ * This class represents a distance sensor.
+ * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
@@ -15,8 +21,15 @@ public class DistanceSensor implements Sensor {
 
 	private final String id;
 
+	private static final Random RANDOM = new Random();
+
+	/**
+	 * @param id
+	 *            the sensors id
+	 */
 	public DistanceSensor(String id) {
 		super();
+		Objects.requireNonNull(id, "Sensore must have an id set");
 		this.id = id;
 	}
 
@@ -27,13 +40,14 @@ public class DistanceSensor implements Sensor {
 
 	@Override
 	public byte[] getData() {
-		return null;
+		byte[] bytes = new byte[8];
+		ByteBuffer.wrap(bytes).putDouble(Double.valueOf((RANDOM.nextDouble() * (RANDOM.nextInt(10) + 1))));
+		return bytes;
 	}
 
 	@Override
 	public SensorDataFormat getDataFormat() {
-		// TODO Auto-generated method stub
-		return null;
+		return SensorDataFormat.PERCENT;
 	}
 
 	@Override
