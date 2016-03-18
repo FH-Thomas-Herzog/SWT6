@@ -64,7 +64,7 @@ public class SensorRegistry extends Observable {
 	public void registerSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot register null sensor");
 		final boolean added = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) != null;
-		log.info("'%s' registered (replaced=%b)", sensor.getSensorId(), added);
+		log.info("'{}' registered (replaced={})", sensor.getSensorId(), added);
 		if (added) {
 			log.warn("You should have used SensorRegistry#replaceSensor(sensor)");
 			notifyObservers(EventState.ADDED);
@@ -74,7 +74,7 @@ public class SensorRegistry extends Observable {
 	public void replaceSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot register null sensor");
 		final boolean replaced = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) != null;
-		log.info("'%s' replaced (present=%b)", sensor.getSensorId(), replaced);
+		log.info("'{}' replaced (present={})", sensor.getSensorId(), replaced);
 		if (replaced) {
 			notifyObservers(EventState.MODIFIED);
 		}
@@ -91,7 +91,7 @@ public class SensorRegistry extends Observable {
 	public void removeSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot remove null sensor");
 		final boolean removed = sensorMap.remove(sensor.getSensorId()) != null;
-		log.info("'%s' removed (present=%b)", sensor.getSensorId(), removed);
+		log.info("'{}' removed (present={})", sensor.getSensorId(), removed);
 		if (removed) {
 			notifyObservers(EventState.REMOVED);
 		}

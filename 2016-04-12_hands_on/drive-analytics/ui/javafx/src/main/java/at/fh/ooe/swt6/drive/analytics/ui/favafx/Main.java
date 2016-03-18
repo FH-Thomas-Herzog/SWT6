@@ -22,6 +22,12 @@ public class Main extends Observable implements Observer {
 
 	private static final Logger log = LoggerFactory.getLogger(Main.class);
 
+	
+	public Main() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public void close() {
 		notifyObservers();
 	}

@@ -31,9 +31,6 @@
 						<Export-Package>
 							at.fh.ooe.swt6.drive.analytics.sensor.api;version="1.0"
 						</Export-Package>
-						<Import-Package>
-							at.fh.ooe.swt6.drive.analytics.sensor.api;version="[1.0,1.1)"
-						</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
