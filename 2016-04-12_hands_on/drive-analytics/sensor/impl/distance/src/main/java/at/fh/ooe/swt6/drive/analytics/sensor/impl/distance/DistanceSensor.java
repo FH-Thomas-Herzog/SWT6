@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.Random;
 
-import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
+import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
 
 /**
  * This class represents a distance sensor.
@@ -15,11 +15,9 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
-public class DistanceSensor implements Sensor {
+public class DistanceSensor extends AbstractSensor {
 
 	private static final long serialVersionUID = 2542405301669418148L;
-
-	private final String id;
 
 	private static final Random RANDOM = new Random();
 
@@ -28,14 +26,9 @@ public class DistanceSensor implements Sensor {
 	 *            the sensors id
 	 */
 	public DistanceSensor(String id) {
-		super();
+		super(id);
 		Objects.requireNonNull(id, "Sensore must have an id set");
-		this.id = id;
-	}
-
-	@Override
-	public String getSensorId() {
-		return id;
+		// TODO: Call notify() if value changes
 	}
 
 	@Override

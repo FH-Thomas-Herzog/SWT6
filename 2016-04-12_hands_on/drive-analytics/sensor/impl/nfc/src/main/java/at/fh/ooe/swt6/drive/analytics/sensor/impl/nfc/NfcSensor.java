@@ -5,26 +5,19 @@ package at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc;
 
 import java.nio.ByteBuffer;
 
-import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
+import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
 
 /**
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
-public class NfcSensor implements Sensor {
+public class NfcSensor extends AbstractSensor {
 
 	private static final long serialVersionUID = 2542405301669418148L;
 
-	private final String id;
-
 	public NfcSensor(String id) {
-		super();
-		this.id = id;
-	}
-
-	@Override
-	public String getSensorId() {
-		return id;
+		super(id);
+		// TODO: Call notify() if value changes
 	}
 
 	@Override

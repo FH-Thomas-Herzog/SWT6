@@ -4,6 +4,7 @@
 package at.fh.ooe.swt6.drive.analytics.sensor.api;
 
 import java.io.Serializable;
+import java.util.Observer;
 
 /**
  * This class specifies a sensor.

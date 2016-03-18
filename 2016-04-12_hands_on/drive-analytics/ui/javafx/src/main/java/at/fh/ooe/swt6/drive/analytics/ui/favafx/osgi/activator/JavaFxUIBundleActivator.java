@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
+import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.Main;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.osgi.tracker.SensorServiceTracker;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
@@ -40,6 +41,8 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
+		log.info("Starting {}", context.getBundle().getSymbolicName());
+
 		ctx = context;
 		instance = new Main();
 		// Listen to main events
@@ -51,10 +54,20 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 		tracker.open();
 
 		instance.start();
+
+		// Register sensor listener
+		context.registerService(SensorListener.class, new SensorListener() {
+			@Override
+			public void valueChanged(Sensor sensor) {
+				log.info("Sensor '{}' value has changed", sensor.hashCode());
+			}
+		}, null);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		log.info("Stopping {}", context.getBundle().getSymbolicName());
+
 		if (tracker != null) {
 			tracker.close();
 		}
@@ -71,6 +84,7 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
+		log.info("Shuting down because '{}' intends so", o.getClass().getName());
 		try {
 			registry.deleteObserver(instance);
 			instance = null;
