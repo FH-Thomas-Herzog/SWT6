@@ -1,4 +1,4 @@
-package at.fh.ooe.swt6.drive.analytics.ui.favafx.util;
+package at.fh.ooe.swt6.drive.analytics.util;
 
 import java.util.EventObject;
 

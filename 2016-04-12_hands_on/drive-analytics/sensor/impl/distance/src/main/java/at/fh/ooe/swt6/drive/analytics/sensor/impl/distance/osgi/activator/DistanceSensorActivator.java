@@ -10,7 +10,6 @@ import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
 import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 import at.fh.ooe.swt6.drive.analytics.sensor.api.registry.SensorListenerRegistry;
 import at.fh.ooe.swt6.drive.analytics.sensor.impl.distance.DistanceSensor;

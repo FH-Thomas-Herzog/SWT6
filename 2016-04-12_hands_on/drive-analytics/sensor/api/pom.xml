@@ -26,6 +26,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>at.fh.ooe.swt6</groupId>
+			<artifactId>drive-analytics-util</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

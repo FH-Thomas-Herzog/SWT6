@@ -16,9 +16,9 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry.EventModel;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.JavaFXUtils;
-import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.Timer;
-import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.TimerEvent;
-import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.TimerListener;
+import at.fh.ooe.swt6.drive.analytics.util.Timer;
+import at.fh.ooe.swt6.drive.analytics.util.TimerEvent;
+import at.fh.ooe.swt6.drive.analytics.util.TimerListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -107,11 +107,10 @@ public class Main extends Observable implements Observer, TimerListener {
 		final java.util.List<String> placedIds = root.getChildren().parallelStream()
 				.map(node -> (String) node.getUserData()).filter(item -> !Objects.isNull(item))
 				.collect(Collectors.toList());
-		sensorRegistry.getSensors().parallelStream().filter(sensor -> !placedIds.contains(sensor.getSensorId()))
-				.forEach(sensor -> {
-					log.info(sensor.getSensorId() + " added to root pane");
-					root.getChildren().add(createSensor(sensor));
-				});
+		root.getChildren()
+				.addAll(sensorRegistry.getSensors().parallelStream()
+						.filter(sensor -> !placedIds.contains(sensor.getSensorId())).map(sensor -> createSensor(sensor))
+						.collect(Collectors.toList()));
 		stage.show();
 
 		timer.start();

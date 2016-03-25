@@ -18,7 +18,6 @@ import at.fh.ooe.swt6.drive.analytics.ui.favafx.Main;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.osgi.tracker.SensorServiceTracker;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.JavaFXUtils;
-import javafx.application.Platform;
 
 /**
  * This activator class handles the sensor bundle activation events.
@@ -65,7 +64,7 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 		context.registerService(SensorListener.class, new SensorListener() {
 			@Override
 			public void valueChanged(Sensor sensor) {
-				log.info("Sensor '{}' value has changed", sensor.hashCode());
+				log.info("Sensor '{}' value has changed", sensor.getSensorId());
 			}
 		}, null);
 	}

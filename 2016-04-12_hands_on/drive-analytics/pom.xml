@@ -25,6 +25,7 @@
 		<module>docs</module>
 		<module>sensor</module>
 		<module>ui</module>
+		<module>util</module>
 	</modules>
 
 	<properties>

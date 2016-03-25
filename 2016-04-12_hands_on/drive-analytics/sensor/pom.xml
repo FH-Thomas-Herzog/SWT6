@@ -21,4 +21,14 @@
 		<module>api</module>
 		<module>impl</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>at.fh.ooe.swt6</groupId>
+				<artifactId>drive-analytics-util</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

@@ -26,8 +26,8 @@ public class DistanceSensor extends AbstractSensor<Double> {
 	 *            the sensors id
 	 */
 	public DistanceSensor(String id) {
-		super(id, 0.0, 50.0);
-		Objects.requireNonNull(id, "Sensore must have an id set");
+		super(id, 0.0, 50.0, 2000);
+		Objects.requireNonNull(id, "Sensor must have an id set");
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class DistanceSensor extends AbstractSensor<Double> {
 		return SensorDataFormat.PERCENT;
 	}
 
+	// -- hash and equals --
 	@Override
 	public int hashCode() {
 		final int prime = 31;
