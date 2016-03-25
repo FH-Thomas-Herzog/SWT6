@@ -19,12 +19,6 @@
 			<artifactId>org.apache.felix.framework</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>at.fh.ooe.swt6</groupId>
-			<artifactId>drive-analytics-sensor-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>

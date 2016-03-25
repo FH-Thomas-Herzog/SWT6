@@ -4,6 +4,7 @@
 package at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc;
 
 import java.nio.ByteBuffer;
+import java.util.Random;
 
 import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
 
@@ -11,19 +12,21 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
-public class NfcSensor extends AbstractSensor {
+public class NfcSensor extends AbstractSensor<Long> {
 
 	private static final long serialVersionUID = 2542405301669418148L;
 
+	private static final Random RANDOM = new Random();
+
 	public NfcSensor(String id) {
-		super(id);
+		super(id, 0L, 1L);
 		// TODO: Call notify() if value changes
 	}
 
 	@Override
 	public byte[] getData() {
 		final byte[] data = new byte[8];
-		ByteBuffer.wrap(data).putLong(1);
+		ByteBuffer.wrap(data).putLong(RANDOM.nextInt(2));
 		return data;
 	}
 

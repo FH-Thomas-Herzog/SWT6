@@ -17,6 +17,8 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.Main;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.osgi.tracker.SensorServiceTracker;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
+import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.JavaFXUtils;
+import javafx.application.Platform;
 
 /**
  * This activator class handles the sensor bundle activation events.
@@ -45,6 +47,10 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 
 		ctx = context;
 		instance = new Main();
+
+		// Initialize toolkit
+		JavaFXUtils.initJavaFx();
+
 		// Listen to main events
 		instance.addObserver(this);
 		// Listen to registry events
@@ -53,7 +59,7 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 		tracker = new ServiceTracker<>(context, Sensor.class, new SensorServiceTracker(context, registry));
 		tracker.open();
 
-		instance.start();
+		JavaFXUtils.runAndWait(() -> instance.start());
 
 		// Register sensor listener
 		context.registerService(SensorListener.class, new SensorListener() {
@@ -72,10 +78,14 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 			tracker.close();
 		}
 		if (instance != null) {
-			instance.close();
+			registry.deleteObserver(instance);
+			instance.deleteObserver(this);
+			JavaFXUtils.runAndWait(() -> {
+				instance.shutdown();
+				instance = null;
+			});
 		}
 
-		instance = null;
 		ctx = null;
 	}
 
@@ -87,7 +97,6 @@ public class JavaFxUIBundleActivator implements BundleActivator, Observer {
 		log.info("Shuting down because '{}' intends so", o.getClass().getName());
 		try {
 			registry.deleteObserver(instance);
-			instance = null;
 			ctx.getBundle().stop();
 		} catch (Exception e) {
 			log.error("Error on bundle stop", e);

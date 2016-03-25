@@ -39,6 +39,25 @@ public class SensorRegistry extends Observable {
 		ADDED, MODIFIED, REMOVED;
 	}
 
+	/**
+	 * This model holds all relevant information about a notification of this
+	 * observable to its observers.
+	 * 
+	 * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
+	 * @date Mar 25, 2016
+	 */
+	public static class EventModel {
+		public final EventState state;
+		public final String sensorId;
+
+		public EventModel(EventState state, String sensorId) {
+			super();
+			this.state = state;
+			this.sensorId = sensorId;
+		}
+
+	}
+
 	private SensorRegistry() {
 		super();
 	}
@@ -63,11 +82,12 @@ public class SensorRegistry extends Observable {
 	 */
 	public void registerSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot register null sensor");
-		final boolean added = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) != null;
-		log.info("'{}' registered (replaced={})", sensor.getSensorId(), added);
+		final boolean added = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) == null;
+		log.info("'{}' registered (replaced={})", sensor.getSensorId(), !added);
 		if (added) {
 			log.warn("You should have used SensorRegistry#replaceSensor(sensor)");
-			notifyObservers(EventState.ADDED);
+			setChanged();
+			notifyObservers(new EventModel(EventState.ADDED, sensor.getSensorId()));
 		}
 	}
 
@@ -76,7 +96,8 @@ public class SensorRegistry extends Observable {
 		final boolean replaced = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) != null;
 		log.info("'{}' replaced (present={})", sensor.getSensorId(), replaced);
 		if (replaced) {
-			notifyObservers(EventState.MODIFIED);
+			setChanged();
+			notifyObservers(new EventModel(EventState.MODIFIED, sensor.getSensorId()));
 		}
 	}
 
@@ -93,7 +114,8 @@ public class SensorRegistry extends Observable {
 		final boolean removed = sensorMap.remove(sensor.getSensorId()) != null;
 		log.info("'{}' removed (present={})", sensor.getSensorId(), removed);
 		if (removed) {
-			notifyObservers(EventState.REMOVED);
+			setChanged();
+			notifyObservers(new EventModel(EventState.REMOVED, sensor.getSensorId()));
 		}
 	}
 

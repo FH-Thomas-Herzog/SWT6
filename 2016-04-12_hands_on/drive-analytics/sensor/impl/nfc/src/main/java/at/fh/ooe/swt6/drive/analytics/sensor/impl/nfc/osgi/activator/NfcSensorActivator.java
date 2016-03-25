@@ -25,7 +25,7 @@ public class NfcSensorActivator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		log.info("Starting sensor-nfc bundle");
 		log.info("Registering service " + NfcSensor.class.getName());
-		context.registerService(Sensor.class, new NfcSensor("SENSOR_DISTANCE"), null);
+		context.registerService(Sensor.class, new NfcSensor("NFC_SENSOR"), null);
 	}
 
 	@Override

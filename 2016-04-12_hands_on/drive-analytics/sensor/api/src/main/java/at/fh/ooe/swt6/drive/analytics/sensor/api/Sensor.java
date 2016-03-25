@@ -36,6 +36,17 @@ public interface Sensor extends Serializable {
 
 	/**
 	 * @return the sensor used data format.
+	 * @see SensorDataFormat
 	 */
 	SensorDataFormat getDataFormat();
+
+	/**
+	 * @return the minimum value of this sensor
+	 */
+	byte[] getMin();
+
+	/**
+	 * @return the maximum value of this sensor
+	 */
+	byte[] getMax();
 }

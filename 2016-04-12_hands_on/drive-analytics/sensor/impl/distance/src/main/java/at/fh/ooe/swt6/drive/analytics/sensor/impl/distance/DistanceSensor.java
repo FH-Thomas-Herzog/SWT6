@@ -15,7 +15,7 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.AbstractSensor;
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
-public class DistanceSensor extends AbstractSensor {
+public class DistanceSensor extends AbstractSensor<Double> {
 
 	private static final long serialVersionUID = 2542405301669418148L;
 
@@ -26,15 +26,14 @@ public class DistanceSensor extends AbstractSensor {
 	 *            the sensors id
 	 */
 	public DistanceSensor(String id) {
-		super(id);
+		super(id, 0.0, 50.0);
 		Objects.requireNonNull(id, "Sensore must have an id set");
-		// TODO: Call notify() if value changes
 	}
 
 	@Override
 	public byte[] getData() {
 		byte[] bytes = new byte[8];
-		ByteBuffer.wrap(bytes).putDouble(Double.valueOf((RANDOM.nextDouble() * (RANDOM.nextInt(10) + 1))));
+		ByteBuffer.wrap(bytes).putDouble(Double.valueOf((RANDOM.nextDouble() * distance)));
 		return bytes;
 	}
 
