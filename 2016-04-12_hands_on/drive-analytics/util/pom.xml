@@ -8,15 +8,8 @@
 	</parent>
 
 	<name>drive-analytics-util</name>
-	<description>The project which holds the drive analytics common utilities</description>
+	<description>The project holds the drive analytics common utilities</description>
 
 	<artifactId>drive-analytics-util</artifactId>
 	<packaging>jar</packaging>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.framework</artifactId>
-		</dependency>
-	</dependencies>
 </project>

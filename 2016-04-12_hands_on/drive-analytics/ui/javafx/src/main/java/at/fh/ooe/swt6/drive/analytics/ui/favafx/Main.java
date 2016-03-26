@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
-import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry.EventModel;
+import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry.SensorRegistryEvent;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.JavaFXUtils;
 import at.fh.ooe.swt6.drive.analytics.util.Timer;
 import at.fh.ooe.swt6.drive.analytics.util.TimerEvent;
@@ -35,6 +35,16 @@ import javafx.stage.Stage;
 public class Main extends Observable implements Observer, TimerListener {
 
 	private static final Logger log = LoggerFactory.getLogger(Main.class);
+
+	/**
+	 * The Javafx-ui possible events.
+	 * 
+	 * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
+	 * @date Mar 26, 2016
+	 */
+	public static enum Event {
+		CLOSE
+	}
 
 	private Timer timer;
 	private Stage stage;
@@ -79,8 +89,7 @@ public class Main extends Observable implements Observer, TimerListener {
 		root = null;
 		timer = null;
 
-		setChanged();
-		notifyObservers();
+		notify(Event.CLOSE);
 	}
 
 	/**
@@ -102,6 +111,7 @@ public class Main extends Observable implements Observer, TimerListener {
 		final Scene scene = new Scene(root, 500, 500);
 		stage = new Stage();
 		stage.setScene(scene);
+		stage.setOnCloseRequest(event -> shutdown());
 
 		// Place sensors which are not place on scene yet
 		final java.util.List<String> placedIds = root.getChildren().parallelStream()
@@ -120,15 +130,17 @@ public class Main extends Observable implements Observer, TimerListener {
 	@Override
 	public void expired(TimerEvent event) {
 		try {
-			JavaFXUtils.runAndWait(() -> {
-				root.getChildren().parallelStream().filter(node -> !Objects.isNull(node.getUserData()))
-						.forEach(node -> {
-					final Pane pane = (Pane) node;
-					final String sensorId = (String) node.getUserData();
-					final ProgressBar bar = (ProgressBar) pane.getChildren().get(1);
-					final Sensor sensor = sensorRegistry.getSensor(sensorId);
-					bar.setProgress(getFormattedSensorValue(sensor));
-				});
+			JavaFXUtils.runLater(() -> {
+				if (root != null) {
+					root.getChildren().parallelStream().filter(node -> !Objects.isNull(node.getUserData()))
+							.forEach(node -> {
+						final Pane pane = (Pane) node;
+						final String sensorId = (String) node.getUserData();
+						final ProgressBar bar = (ProgressBar) pane.getChildren().get(1);
+						final Sensor sensor = sensorRegistry.getSensor(sensorId);
+						bar.setProgress(getFormattedSensorValue(sensor));
+					});
+				}
 			});
 		} catch (Exception e) {
 			log.error("Timer expired event listener method failed", e);
@@ -153,7 +165,7 @@ public class Main extends Observable implements Observer, TimerListener {
 
 		// Invoke update method on UI-Thread
 		try {
-			JavaFXUtils.runAndWait(() -> updateForSensorRegistry((EventModel) arg));
+			JavaFXUtils.runAndWait(() -> updateForSensorRegistry((SensorRegistryEvent) arg));
 		} catch (Exception e) {
 			log.error("Error on update for observable '" + o.getClass().getName() + "'", e);
 		}
@@ -163,10 +175,10 @@ public class Main extends Observable implements Observer, TimerListener {
 	 * Listens to {@link SensorRegistry} notifications.
 	 * 
 	 * @param model
-	 *            the {@link EventModel} which holds the relevant event
+	 *            the {@link SensorRegistryEvent} which holds the relevant event
 	 *            information
 	 */
-	private void updateForSensorRegistry(EventModel model) {
+	private void updateForSensorRegistry(SensorRegistryEvent model) {
 		switch (model.state) {
 		case ADDED:
 			root.getChildren().add(createSensor(sensorRegistry.getSensor(model.sensorId)));
@@ -212,5 +224,10 @@ public class Main extends Observable implements Observer, TimerListener {
 		default:
 			throw new IllegalArgumentException("SensorDataFormat '" + sensor.getDataFormat().name() + "' not handled");
 		}
+	}
+
+	private void notify(final Event event) {
+		setChanged();
+		notifyObservers(event);
 	}
 }

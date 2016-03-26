@@ -26,7 +26,7 @@ public class DistanceSensor extends AbstractSensor<Double> {
 	 *            the sensors id
 	 */
 	public DistanceSensor(String id) {
-		super(id, 0.0, 50.0, 2000);
+		super(id, 0.0, 50.0, 10);
 		Objects.requireNonNull(id, "Sensor must have an id set");
 	}
 

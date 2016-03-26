@@ -13,8 +13,8 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 import at.fh.ooe.swt6.drive.analytics.ui.favafx.registry.SensorRegistry;
 
 /**
- * This class represents the sensor service tracker which handles the Bundle
- * activation events.
+ * This class represents the sensor service tracker which handles the service
+ * tracker events for {@link Sensor} service events.
  * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
@@ -34,6 +34,7 @@ public class SensorServiceTracker implements ServiceTrackerCustomizer<Sensor, Se
 		super();
 		Objects.requireNonNull(ctx, "BundleContext must not be ull");
 		Objects.requireNonNull(registry, "The sensor registry must not be null");
+
 		this.ctx = ctx;
 		this.registry = registry;
 	}
@@ -54,5 +55,4 @@ public class SensorServiceTracker implements ServiceTrackerCustomizer<Sensor, Se
 	public void removedService(ServiceReference<Sensor> reference, Sensor service) {
 		registry.removeSensor(service);
 	}
-
 }

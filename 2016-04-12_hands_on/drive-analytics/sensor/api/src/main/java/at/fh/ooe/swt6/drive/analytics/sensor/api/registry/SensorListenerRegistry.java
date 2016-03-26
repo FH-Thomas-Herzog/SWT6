@@ -17,8 +17,9 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
 
 /**
- * This registry handles the sensor listeners which get registered for
- * instancesof {@link Sensor}.
+ * This registry handles the registered sensor listeners and notifies them in
+ * case of sensor value has changed. The registry get notified via the sensors
+ * about value changes.
  * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 18, 2016
@@ -50,6 +51,7 @@ public class SensorListenerRegistry implements Observer {
 	 */
 	public void registerSensorListener(final SensorListener sensorListener) {
 		Objects.requireNonNull(sensorListener, "cannot register null sensor listener");
+
 		final boolean added = sensorListeners.add(sensorListener);
 		log.info("sensor listener '{}' registered (replaced={})", sensorListener.hashCode(), !added);
 	}
@@ -64,6 +66,7 @@ public class SensorListenerRegistry implements Observer {
 	 */
 	public void replaceSensorListener(final SensorListener sensorListener) {
 		Objects.requireNonNull(sensorListener, "cannot replace null sensor listener");
+
 		final boolean replaced = sensorListeners.add(sensorListener);
 		log.info("sensor listener '{}' replaced (present={})", sensorListener.hashCode(), replaced);
 	}
@@ -78,6 +81,7 @@ public class SensorListenerRegistry implements Observer {
 	 */
 	public void removeSensorListener(final SensorListener sensorListener) {
 		Objects.requireNonNull(sensorListener, "cannot remove null listener");
+
 		final boolean removed = sensorListeners.remove(sensorListener);
 		log.info("sensor listener '{}' removed (present={})", sensorListener.hashCode(), !removed);
 	}
@@ -94,6 +98,7 @@ public class SensorListenerRegistry implements Observer {
 	public void update(final Observable observable, final Object argument) {
 		final Sensor sensor = (Sensor) observable;
 
+		// Notify the listeners
 		sensorListeners.forEach(listener -> {
 			try {
 				listener.valueChanged(sensor);

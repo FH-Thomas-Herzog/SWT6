@@ -13,6 +13,8 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
 import at.fh.ooe.swt6.drive.analytics.sensor.api.registry.SensorListenerRegistry;
 
 /**
+ * This class represents the tracker for sensor listeners.
+ * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 18, 2016
  */

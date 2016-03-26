@@ -30,8 +30,9 @@ public class SensorActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		log.info("Starting {}", context.getBundle().getSymbolicName());
+		log.info("Starting bundle: {}", context.getBundle().getSymbolicName());
 
+		// Tracker for sensor listeners
 		tracker = new ServiceTracker<>(context, SensorListener.class,
 				new SensorListenerServiceTracker(context, registry));
 		tracker.open();
@@ -39,10 +40,10 @@ public class SensorActivator implements BundleActivator {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		log.info("Stopping bundle: {}", context.getBundle().getSymbolicName());
+
 		if (!Objects.isNull(tracker)) {
 			tracker.close();
 		}
-
-		log.info("Stopping {} ", context.getBundle().getSymbolicName());
 	}
 }

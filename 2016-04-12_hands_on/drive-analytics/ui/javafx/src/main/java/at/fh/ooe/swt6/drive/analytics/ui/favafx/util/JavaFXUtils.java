@@ -10,6 +10,8 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
 /**
+ * Utility class for the javafx ui.
+ * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 25, 2016
  */
@@ -17,6 +19,9 @@ public class JavaFXUtils {
 
 	private static JFXPanel jFxPanel;
 
+	/**
+	 * Initializes the toolkit if not already initialized
+	 */
 	public static void initJavaFx() {
 		if (jFxPanel == null) {
 			jFxPanel = new JFXPanel(); // initialize JavaFX toolkit

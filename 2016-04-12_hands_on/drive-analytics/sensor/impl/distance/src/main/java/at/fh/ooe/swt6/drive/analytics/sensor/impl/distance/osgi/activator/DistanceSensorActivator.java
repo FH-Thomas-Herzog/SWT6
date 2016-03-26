@@ -27,17 +27,21 @@ public class DistanceSensorActivator implements BundleActivator {
 	private static final String ID = "DISTANCE_SENSOR";
 
 	private DistanceSensor sensor;
-	private SensorListenerRegistry registry;
+	private final SensorListenerRegistry registry;
+
+	public DistanceSensorActivator() {
+		super();
+		this.registry = SensorListenerRegistry.getInstance();
+	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		log.info("Starting {}", context.getBundle().getSymbolicName());
-		log.info("Registering sensor '{}' as a osgi service", DistanceSensor.class.getSimpleName());
-		log.info("Registering sensor '{}' for listeners", DistanceSensor.class.getSimpleName());
+		log.info("Starting bundle: {}", context.getBundle().getSymbolicName());
+		log.info("Registering sensor: {}", ID);
 
 		// Prepare sensor and registry
 		sensor = new DistanceSensor(ID);
-		registry = SensorListenerRegistry.getInstance();
+		// registry observes the sensor (registry notifies listeners)
 		sensor.addObserver(registry);
 
 		// Register distance sensor
@@ -46,11 +50,11 @@ public class DistanceSensorActivator implements BundleActivator {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		log.info("Starting {}", context.getBundle().getSymbolicName());
-		if ((!Objects.isNull(sensor)) && (!Objects.isNull(registry))) {
+		log.info("Stopping bundle: {}", context.getBundle().getSymbolicName());
+
+		// unregister observer
+		if (!Objects.isNull(sensor)) {
 			sensor.deleteObserver(registry);
 		}
-
-		log.info("Stopping sensor-distance bundle");
 	}
 }

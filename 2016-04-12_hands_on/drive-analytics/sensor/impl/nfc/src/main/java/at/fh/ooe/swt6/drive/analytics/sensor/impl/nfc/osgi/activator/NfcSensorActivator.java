@@ -20,17 +20,19 @@ import at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc.NfcSensor;
 public class NfcSensorActivator implements BundleActivator {
 
 	private static final Logger log = LoggerFactory.getLogger(NfcSensorActivator.class);
-	
+
+	private static final String ID = "NFC_SENSOR";
+
 	@Override
 	public void start(BundleContext context) throws Exception {
-		log.info("Starting sensor-nfc bundle");
-		log.info("Registering service " + NfcSensor.class.getName());
-		context.registerService(Sensor.class, new NfcSensor("NFC_SENSOR"), null);
+		log.info("Starting bundle: {}", context.getBundle().getSymbolicName());
+		log.info("Registering service: {} ", ID);
+
+		context.registerService(Sensor.class, new NfcSensor(ID), null);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		log.info("Stopping sensor-nfcbundle");
+		log.info("Stopping  bundle: {}", context.getBundle().getSymbolicName());
 	}
-
 }

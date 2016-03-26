@@ -17,7 +17,7 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
 
 /**
  * This class represents the Sensor registry which handles the registration and
- * removal of an {@link Sensor} type.
+ * removal of an {@link Sensor} services.
  * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
@@ -46,11 +46,15 @@ public class SensorRegistry extends Observable {
 	 * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
 	 * @date Mar 25, 2016
 	 */
-	public static class EventModel {
+	public static class SensorRegistryEvent {
 		public final EventState state;
 		public final String sensorId;
 
-		public EventModel(EventState state, String sensorId) {
+		/**
+		 * @param state
+		 * @param sensorId
+		 */
+		public SensorRegistryEvent(EventState state, String sensorId) {
 			super();
 			this.state = state;
 			this.sensorId = sensorId;
@@ -58,6 +62,9 @@ public class SensorRegistry extends Observable {
 
 	}
 
+	/**
+	 * Not meant to be instantiated from the outside
+	 */
 	private SensorRegistry() {
 		super();
 	}
@@ -82,22 +89,23 @@ public class SensorRegistry extends Observable {
 	 */
 	public void registerSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot register null sensor");
+
 		final boolean added = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) == null;
 		log.info("'{}' registered (replaced={})", sensor.getSensorId(), !added);
+
 		if (added) {
-			log.warn("You should have used SensorRegistry#replaceSensor(sensor)");
-			setChanged();
-			notifyObservers(new EventModel(EventState.ADDED, sensor.getSensorId()));
+			notify(new SensorRegistryEvent(EventState.ADDED, sensor.getSensorId()));
 		}
 	}
 
 	public void replaceSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot register null sensor");
+
 		final boolean replaced = sensorMap.putIfAbsent(sensor.getSensorId(), sensor) != null;
 		log.info("'{}' replaced (present={})", sensor.getSensorId(), replaced);
+
 		if (replaced) {
-			setChanged();
-			notifyObservers(new EventModel(EventState.MODIFIED, sensor.getSensorId()));
+			notify(new SensorRegistryEvent(EventState.MODIFIED, sensor.getSensorId()));
 		}
 	}
 
@@ -111,11 +119,12 @@ public class SensorRegistry extends Observable {
 	 */
 	public void removeSensor(final Sensor sensor) {
 		Objects.requireNonNull(sensor, "cannot remove null sensor");
+
 		final boolean removed = sensorMap.remove(sensor.getSensorId()) != null;
 		log.info("'{}' removed (present={})", sensor.getSensorId(), removed);
+
 		if (removed) {
-			setChanged();
-			notifyObservers(new EventModel(EventState.REMOVED, sensor.getSensorId()));
+			notify(new SensorRegistryEvent(EventState.REMOVED, sensor.getSensorId()));
 		}
 	}
 
@@ -128,6 +137,7 @@ public class SensorRegistry extends Observable {
 	 */
 	public Sensor getSensor(final String id) {
 		Objects.requireNonNull(id, "Cannot get sensor for null id");
+
 		return sensorMap.get(id);
 	}
 
@@ -136,5 +146,13 @@ public class SensorRegistry extends Observable {
 	 */
 	public List<Sensor> getSensors() {
 		return sensorMap.entrySet().parallelStream().map(entry -> entry.getValue()).collect(Collectors.toList());
+	}
+
+	// -- Private helpers --
+	private void notify(final SensorRegistryEvent event) {
+		Objects.requireNonNull(event, "Cannot notify observers with null event object given");
+
+		setChanged();
+		notifyObservers(event);
 	}
 }
