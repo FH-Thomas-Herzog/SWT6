@@ -1,0 +1,10 @@
+# Karaf OSGI webconsole
+
+Karaf provides a webconsole where the bundles can be managed, which is pretty handy. + 
+
+The following command is used to isntall the webconsole:
+----
+feature:install webconsole
+----
+The webconsole is then accessible via *http://localhost:8181*. +
+See the following link for further information *https://karaf.apache.org/manual/latest-2.3.x/users-guide/web-console.html*
