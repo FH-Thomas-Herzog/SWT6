@@ -4,6 +4,8 @@
 package at.fh.ooe.swt6.drive.analytics.ui.favafx;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,8 +21,10 @@ import at.fh.ooe.swt6.drive.analytics.ui.favafx.util.JavaFXUtils;
 import at.fh.ooe.swt6.drive.analytics.util.Timer;
 import at.fh.ooe.swt6.drive.analytics.util.TimerEvent;
 import at.fh.ooe.swt6.drive.analytics.util.TimerListener;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
@@ -29,6 +33,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * This is the main class for the javafx ui.
+ * 
  * @author Thomas Herzog <S1310307011@students.fh-hagenberg.at>
  * @date Mar 12, 2016
  */
@@ -46,31 +52,22 @@ public class Main extends Observable implements Observer, TimerListener {
 		CLOSE
 	}
 
-	private Timer timer;
+	private final Timer timer;
 	private Stage stage;
 	private VBox root;
 
 	private final SensorRegistry sensorRegistry;
-	private static final int DEFAULT_TICK_INTERVAL = 1000;
+	private static final int DEFAULT_TICK_INTERVAL = 200;
 
+	/**
+	 * Initializes the ui.
+	 */
 	public Main() {
 		super();
 		sensorRegistry = SensorRegistry.getInstance();
-	}
-
-	// -- UI methods --
-	private Node createSensor(final Sensor sensor) {
-		Objects.requireNonNull("sensor", "Cannot create sensor component for null sensor");
-
-		final HBox container = new HBox();
-		container.setUserData(sensor.getSensorId());
-		container.setSpacing(5.0);
-		final Label label = new Label(sensor.getSensorId());
-		final ProgressBar bar = new ProgressBar(0);
-		bar.setProgress(getFormattedSensorValue(sensor));
-		container.getChildren().addAll(label, bar);
-
-		return container;
+		timer = new Timer();
+		timer.setInterval(DEFAULT_TICK_INTERVAL);
+		timer.addTimerListener(this);
 	}
 
 	// -- Life cycle methods --
@@ -87,30 +84,35 @@ public class Main extends Observable implements Observer, TimerListener {
 
 		stage = null;
 		root = null;
-		timer = null;
 
 		notify(Event.CLOSE);
 	}
 
 	/**
-	 * Starts the javafx application by opening the main scene.
+	 * Starts the javafx application by creating the ui and opening the main
+	 * scene.
 	 */
 	public void start() {
 		if (stage != null) {
 			shutdown();
 		}
 
-		// Create and configure the update timer
-		timer = new Timer();
-		timer.setInterval(DEFAULT_TICK_INTERVAL);
-		timer.addTimerListener(this);
+		// All container
+		VBox container = new VBox();
+		container.setSpacing(5.0);
 
-		// Create main scene
 		root = new VBox();
 		root.setSpacing(5.0);
-		final Scene scene = new Scene(root, 500, 500);
+
+		// Main scene
+		final Scene scene = new Scene(container, 500, 500);
+
+		// Main stage
 		stage = new Stage();
 		stage.setScene(scene);
+		stage.setHeight(400.0);
+		stage.setWidth(400.0);
+		// shutdown on close
 		stage.setOnCloseRequest(event -> shutdown());
 
 		// Place sensors which are not place on scene yet
@@ -121,16 +123,29 @@ public class Main extends Observable implements Observer, TimerListener {
 				.addAll(sensorRegistry.getSensors().parallelStream()
 						.filter(sensor -> !placedIds.contains(sensor.getSensorId())).map(sensor -> createSensor(sensor))
 						.collect(Collectors.toList()));
+
+		// Add control buttons
+		container.getChildren().addAll(createButtons(), root);
+
 		stage.show();
 
 		timer.start();
 	}
 
 	// -- Timer methods --
+	/**
+	 * Handles the timer expired even which indicates to pool data from the
+	 * sensors.
+	 * 
+	 * @param event
+	 *            the TimerEvent object
+	 */
 	@Override
 	public void expired(TimerEvent event) {
 		try {
+			// Run later and do not wait for the execution
 			JavaFXUtils.runLater(() -> {
+				// Could be null due to later execution
 				if (root != null) {
 					root.getChildren().parallelStream().filter(node -> !Objects.isNull(node.getUserData()))
 							.forEach(node -> {
@@ -207,8 +222,18 @@ public class Main extends Observable implements Observer, TimerListener {
 	}
 
 	// -- Private Utils --
+	/**
+	 * Gets the formatted value from the sensor for the ui.
+	 * 
+	 * @param sensor
+	 *            the sensor to get data from
+	 * @return the formatted sensor data represented by an double
+	 */
 	private double getFormattedSensorValue(final Sensor sensor) {
-		Objects.requireNonNull(sensor, "Cannot format null data");
+		// Sensor could be null due to later execution
+		if (Objects.isNull(sensor)) {
+			return 0.0;
+		}
 
 		switch (sensor.getDataFormat()) {
 		case PERCENT:
@@ -226,8 +251,95 @@ public class Main extends Observable implements Observer, TimerListener {
 		}
 	}
 
+	/**
+	 * Notifies all observers about the fired event
+	 * 
+	 * @param event
+	 *            the event representing the event type
+	 */
 	private void notify(final Event event) {
 		setChanged();
 		notifyObservers(event);
 	}
+
+	// -- UI methods --
+	/**
+	 * Creates the sensor ui component.
+	 * 
+	 * @param sensor
+	 *            the sensor to display on the ui
+	 * @return the sensor ui component
+	 */
+	private Node createSensor(final Sensor sensor) {
+		Objects.requireNonNull("sensor", "Cannot create sensor component for null sensor");
+
+		final HBox container = new HBox();
+		container.setUserData(sensor.getSensorId());
+		container.setSpacing(5.0);
+		final Label label = new Label(sensor.getSensorId());
+		final ProgressBar bar = new ProgressBar(0);
+		bar.setProgress(getFormattedSensorValue(sensor));
+		container.getChildren().addAll(label, bar);
+
+		return container;
+	}
+
+	/**
+	 * Creates the button controls for the controlling of the pooling
+	 * 
+	 * @return the {@link HBox} holding the button controls
+	 */
+	private HBox createButtons() {
+		final HBox container = new HBox();
+		container.setSpacing(5.0);
+
+		// Display current interval
+		final Label label = new Label();
+		label.setText(timer.getInterval() + " ms");
+		label.setMinWidth(100.0);
+
+		final Button plusBtn = new Button("+ (10ms)");
+		final Button minusBtn = new Button("- (10ms)");
+		final Button disableBtn = new Button("stop");
+
+		// Increase pool interval
+		plusBtn.setOnMouseClicked(event -> {
+			timer.setInterval(timer.getInterval() + 10);
+			label.setText(timer.getInterval() + " ms");
+			minusBtn.setDisable(Boolean.FALSE);
+		});
+
+		// Decrease pool interval
+		minusBtn.setOnMouseClicked(event -> {
+			if (timer.getInterval() > 10) {
+				timer.setInterval(timer.getInterval() - 10);
+				minusBtn.setDisable(Boolean.FALSE);
+				label.setText(timer.getInterval() + " ms");
+			} else {
+				minusBtn.setDisable(Boolean.TRUE);
+			}
+		});
+
+		// Disable pooling
+		disableBtn.setOnMouseClicked(event -> {
+			try {
+				if (timer.isRunning()) {
+					disableBtn.setText("start");
+					timer.stop();
+					label.setText("0 ms");
+				} else {
+					disableBtn.setText("stop");
+					timer.start();
+					label.setText(timer.getInterval() + " ms");
+				}
+			} catch (Exception e) {
+				log.error("Could not start or stop the timer via button", e);
+			}
+		});
+
+		container.getChildren().addAll(label, plusBtn, minusBtn, disableBtn);
+
+		return container;
+	}
+
 }
