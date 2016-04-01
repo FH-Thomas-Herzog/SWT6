@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ public class DistanceSensorActivator implements BundleActivator {
 	private static final String ID = "DISTANCE_SENSOR";
 
 	private DistanceSensor sensor;
+	private ServiceRegistration<Sensor> registeredSensor;
 	private final SensorListenerRegistry registry;
 
 	public DistanceSensorActivator() {
@@ -45,7 +47,7 @@ public class DistanceSensorActivator implements BundleActivator {
 		sensor.addObserver(registry);
 
 		// Register distance sensor
-		context.registerService(Sensor.class, sensor, null);
+		registeredSensor = context.registerService(Sensor.class, sensor, null);
 	}
 
 	@Override
@@ -55,6 +57,11 @@ public class DistanceSensorActivator implements BundleActivator {
 		// unregister observer
 		if (!Objects.isNull(sensor)) {
 			sensor.deleteObserver(registry);
+		}
+		
+		// unregister sensor 
+		if(!Objects.isNull(registeredSensor)) {
+			registeredSensor.unregister();
 		}
 	}
 }

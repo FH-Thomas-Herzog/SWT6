@@ -3,8 +3,11 @@
  */
 package at.fh.ooe.swt6.drive.analytics.sensor.impl.nfc.osgi.activator;
 
+import java.util.Objects;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +24,7 @@ public class NfcSensorActivator implements BundleActivator {
 
 	private static final Logger log = LoggerFactory.getLogger(NfcSensorActivator.class);
 
+	private ServiceRegistration<Sensor> registeredSensor;
 	private static final String ID = "NFC_SENSOR";
 
 	@Override
@@ -28,11 +32,16 @@ public class NfcSensorActivator implements BundleActivator {
 		log.info("Starting bundle: {}", context.getBundle().getSymbolicName());
 		log.info("Registering service: {} ", ID);
 
-		context.registerService(Sensor.class, new NfcSensor(ID), null);
+		registeredSensor = context.registerService(Sensor.class, new NfcSensor(ID), null);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		log.info("Stopping  bundle: {}", context.getBundle().getSymbolicName());
+		
+		// unregister service
+		if(!Objects.isNull(registeredSensor)) {
+			registeredSensor.unregister();
+		}
 	}
 }
