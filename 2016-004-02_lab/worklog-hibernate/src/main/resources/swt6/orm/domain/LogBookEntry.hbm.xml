@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="swt6.orm.domain">
+	<class name="LogbookEntry">
+		<id name="id" type="long">
+			<generator class="native" />
+		</id>
+		<property name="activity" />
+		<property name="startTime" type="timestamp" />
+		<property name="endTime" type="timestamp" />
+
+		<many-to-one name="employee" 
+					 class="Employee"
+					 column="employee_id"
+					 cascade="save-update,merge"
+					 fetch="join"
+					 lazy="false"
+					 not-null="false"/>
+	</class>
+</hibernate-mapping>

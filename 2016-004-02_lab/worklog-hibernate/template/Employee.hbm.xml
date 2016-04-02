@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="swt6.orm.domain">
+
+  <class name="Employee">
+    <id name="id"></id>
+        
+    
+    <!-- table per concrete class  
+    <union-subclass name="PermanentEmployee">
+      <property name="salary" />
+    </union-subclass>
+    <union-subclass name="TemporaryEmployee">
+      <property name="hourlyRate" />
+      <property name="renter" />
+      <property name="startDate" type="date" />
+      <property name="endDate" type="date" />
+    </union-subclass>
+	-->
+   
+ 	<!-- table per class hierarchy -->
+	<!-- 	<subclass name="PermanentEmployee" discriminator-value="P"> -->
+	<!-- 		<property name="salary" /> -->
+	<!-- 	</subclass> -->
+	<!-- 	<subclass name="TemporaryEmployee" discriminator-value="T"> -->
+	<!-- 		<property name="hourlyRate" /> -->
+	<!-- 		<property name="renter" /> -->
+	<!-- 		<property name="startDate" type="date" /> -->
+	<!-- 		<property name="endDate" type="date" /> -->
+	<!-- 	</subclass> -->
+    
+    <!-- table per subclass 
+    <joined-subclass name="PermanentEmployee">
+    	<key column="id" />
+    	<property name="salary" />
+    </joined-subclass>
+    <joined-subclass name="TemporaryEmployee">
+    	<key column="id" />
+    	<property name="hourlyRate" />
+    	<property name="renter" />
+    	<property name="startDate" type="date" />
+    	<property name="endDate" type="date" />
+    </joined-subclass>
+    -->
+
+  </class>
+</hibernate-mapping>
