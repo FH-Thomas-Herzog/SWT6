@@ -28,7 +28,7 @@ public class ProjectHasEmployee extends ModifiableBaseEntity<ProjectHasEmployeeI
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", updatable = false, insertable = false)
     private Employee employee;
 
     //</editor-fold>

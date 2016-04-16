@@ -34,7 +34,7 @@ public class Phase extends BaseEntity<Long> {
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "phase")
-    private Set<LogBookEntry> logBookEntries = new HashSet<>();
+    private Set<LogBookEntry> logbookEntries = new HashSet<>();
     //</editor-fold>
 
     //<editor-fold desc="Constructors">

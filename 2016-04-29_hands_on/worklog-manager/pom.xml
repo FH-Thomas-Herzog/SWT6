@@ -48,6 +48,7 @@
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <org.apache.derby.version>10.11.1.1</org.apache.derby.version>
         <org.slf4j.version>1.7.10</org.slf4j.version>
+        <org.mysql.java.connector.version>5.1.38</org.mysql.java.connector.version>
 
         <!-- Test Dependency Versions -->
         <junit.version>4.12</junit.version>
@@ -99,6 +100,12 @@
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${javax.validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${org.mysql.java.connector.version}</version>
             </dependency>
 
             <dependency>

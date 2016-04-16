@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="at.fh.ooe.swt6.worklog.manager.model.jpa">
+
+    <class name="Module" discriminator-value="E">
+        <id name="id" type="java.lang.Long" access="field">
+            <generator class="native"/>
+        </id>
+
+        <property name="version" type="java.lang.Long" not-null="true" access="field"/>
+        <property name="name" type="java.lang.String" not-null="true" access="field"/>
+
+        <many-to-one name="project" column="project_id" not-null="true" access="field"/>
+
+        <set name="logbookEntries" inverse="true" fetch="join" lazy="true"
+             cascade="all">
+            <key column="employee_id" not-null="true"/>
+            <one-to-many class="LogBookEntry"/>
+        </set>
+    </class>
+</hibernate-mapping>

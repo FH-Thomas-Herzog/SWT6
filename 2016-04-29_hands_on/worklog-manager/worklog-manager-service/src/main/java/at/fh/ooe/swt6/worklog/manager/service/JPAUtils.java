@@ -30,6 +30,7 @@ public class JPAUtils {
     static {
         try {
             emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+            Persistence.generateSchema(PERSISTENCE_UNIT, null);
         } catch (Exception e) {
             log.error("Could not create EntityManagerFactory for PersistenceUnit '{}'",
                       PERSISTENCE_UNIT);
