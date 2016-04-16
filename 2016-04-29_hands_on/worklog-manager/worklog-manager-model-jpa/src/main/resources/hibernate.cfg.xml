@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory name="WorklogManager">
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/worklogmanager</property>
+        <property name="hibernate.connection.user">workflowmanager</property>
+        <property name="hibernate.connection.password">workflowmanager</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.default_schema">worklogmanager</property>
+        <property name="hibernate.log">true</property>
+        <property name="hibernate.debug">true</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">false</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Modified generated mapping files  -->
+        <mapping resource="META-INF/hbm/Employee.hbm.xml"/>
+        <mapping resource="META-INF/hbm/LogBookEntry.hbm.xml"/>
+        <mapping resource="META-INF/hbm/Module.hbm.xml"/>
+        <mapping resource="META-INF/hbm/Phase.hbm.xml"/>
+        <mapping resource="META-INF/hbm/Project.hbm.xml"/>
+        <mapping resource="META-INF/hbm/ProjectHasEmployee.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

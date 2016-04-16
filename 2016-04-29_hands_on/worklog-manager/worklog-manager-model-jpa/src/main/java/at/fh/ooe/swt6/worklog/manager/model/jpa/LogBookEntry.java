@@ -14,6 +14,7 @@ import java.util.Date;
 @Entity
 public class LogBookEntry extends ModifiableBaseEntity<Long> {
 
+    //<editor-fold desc="Properties">
     @Getter
     @Setter
     @Id
@@ -55,4 +56,5 @@ public class LogBookEntry extends ModifiableBaseEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)
     private Module module;
+    //</editor-fold>
 }

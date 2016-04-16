@@ -16,6 +16,7 @@ import java.util.Set;
 @Entity
 public class Module extends BaseEntity<Long> {
 
+    //<editor-fold desc="Properties">
     @Getter
     @Setter
     @Id
@@ -41,4 +42,5 @@ public class Module extends BaseEntity<Long> {
     @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
     private Set<LogBookEntry> logbookEntries = new HashSet<>();
+    //</editor-fold>
 }

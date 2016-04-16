@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="at.fh.ooe.swt6.worklog.manager.model.jpa.Project" table="project" >
+        <id name="id">
+            <column name="id" sql-type="bigint(20)"/>
+        </id>
+        <property name="version">
+            <column name="version" sql-type="bigint(20)"/>
+        </property>
+        <property name="creationDate">
+            <column name="creationDate" sql-type="datetime"/>
+        </property>
+        <property name="modificationDate">
+            <column name="modificationDate" sql-type="datetime"/>
+        </property>
+        <property name="name">
+            <column name="name" sql-type="varchar(255)"/>
+        </property>
+        <many-to-one name="leader" class="at.fh.ooe.swt6.worklog.manager.model.jpa.Employee">
+            <column name="leader_employee_id"/>
+        </many-to-one>
+        <set name="modules" inverse="true">
+            <key>
+                <column name="project_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.jpa.Module"/>
+        </set>
+        <set name="projectEmployees" inverse="true">
+            <key>
+                <column name="project_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.jpa.ProjectHasEmployee"/>
+        </set>
+    </class>
+</hibernate-mapping>

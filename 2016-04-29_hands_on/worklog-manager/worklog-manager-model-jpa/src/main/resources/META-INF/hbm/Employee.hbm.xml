@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="at.fh.ooe.swt6.worklog.manager.model.jpa.Employee" table="employee">
+        <id name="id">
+            <column name="id" sql-type="bigint(20)"/>
+        </id>
+        <!--<discriminator column="discriminator" not-null="true" type="java.lang.String" length="50"/>-->
+        <property name="version">
+            <column name="version" sql-type="bigint(20)"/>
+        </property>
+        <property name="creationDate">
+            <column name="creationDate" sql-type="datetime"/>
+        </property>
+        <property name="modificationDate">
+            <column name="modificationDate" sql-type="datetime"/>
+        </property>
+        <component name="address">
+            <property name="city">
+                <column name="city" sql-type="varchar(255)"/>
+            </property>
+            <property name="street">
+                <column name="street" sql-type="varchar(255)"/>
+            </property>
+            <property name="zipCode">
+                <column name="zipCode" sql-type="varchar(255)"/>
+            </property>
+        </component>
+        <property name="dateOfBirth">
+            <column name="dateOfBirth" sql-type="date"/>
+        </property>
+        <property name="firstName">
+            <column name="firstName" sql-type="varchar(255)"/>
+        </property>
+        <property name="lastName">
+            <column name="lastName" sql-type="varchar(255)"/>
+        </property>
+        <set name="logbookEntries" inverse="true">
+            <key>
+                <column name="employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.jpa.LogBookEntry"/>
+        </set>
+        <set name="employeeProjects" inverse="true">
+            <key>
+                <column name="employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.jpa.ProjectHasEmployee"/>
+        </set>
+        <set name="leadingProjects" inverse="true">
+            <key>
+                <column name="leader_employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.jpa.Project"/>
+        </set>
+
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.jpa.PermanentEmployee" table="permanent_employee">
+            <key column="id"/>
+            <property name="salary">
+                <column name="salary" sql-type="decimal(12,2)" precision="12" scale="2"/>
+            </property>
+        </joined-subclass>
+
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.jpa.TemporaryEmployee" table="temporary_employee">
+            <key column="id"/>
+            <property name="endDate">
+                <column name="endDate" sql-type="datetime"/>
+            </property>
+            <property name="hourlyRate">
+                <column name="hourlyRate" sql-type="decimal(12,2)" precision="12" scale="2"/>
+            </property>
+            <property name="renter">
+                <column name="renter" sql-type="bit(1)"/>
+            </property>
+            <property name="startDate">
+                <column name="startDate" sql-type="datetime"/>
+            </property>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

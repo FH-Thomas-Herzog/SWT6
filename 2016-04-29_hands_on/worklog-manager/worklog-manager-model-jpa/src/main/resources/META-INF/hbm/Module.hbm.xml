@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="at.fh.ooe.swt6.worklog.manager.model.jpa.Module" table="module">
+        <id name="id">
+            <column name="id" sql-type="bigint(20)"/>
+        </id>
+        <property name="version">
+            <column name="version" sql-type="bigint(20)"/>
+        </property>
+        <property name="name">
+            <column name="name" sql-type="varchar(255)"/>
+        </property>
+        <many-to-one name="project" class="at.fh.ooe.swt6.worklog.manager.model.jpa.Project">
+            <column name="project_id" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -25,12 +25,14 @@
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="target/generated-dll/MySql/dropSchema.ddl"/>
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/worklogmanager"/>
+            <property name="javax.persistence.jdbc.user" value="worklogmanager"/>
+            <property name="javax.persistence.jdbc.password" value="worklogmanager"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="org.hibernate.log" value="true"/>
             <property name="org.hibernate.show_sql" value="true"/>
             <property name="org.hibernate.format_sql" value="false"/>
-            <property name="org.hibernate.default_schema" value="test"/>
+            <property name="org.hibernate.default_schema" value="worklogmanager"/>
         </properties>
     </persistence-unit>
 
@@ -55,12 +57,15 @@
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="target/generated-dll/H2/dropSchema.ddl"/>
 
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:WorklogManagerDB"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:worklogmanager;INIT=CREATE SCHEMA IF NOT EXISTS worklogmanager"/>
+            <property name="javax.persistence.jdbc.user" value="worklogmanager"/>
+            <property name="javax.persistence.jdbc.password" value="worklogmanager"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.log" value="true"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.default_schema" value="worklogmanager"/>
         </properties>
     </persistence-unit>
 </persistence>

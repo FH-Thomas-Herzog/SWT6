@@ -58,6 +58,18 @@ public abstract class Employee extends ModifiableBaseEntity<Long> {
     @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     private Set<LogBookEntry> logbookEntries = new HashSet<>();
+
+    @Getter
+    @Setter
+    @NotNull
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private Set<ProjectHasEmployee> employeeProjects;
+
+    @Getter
+    @Setter
+    @NotNull
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leader")
+    private Set<Project> leadingProjects;
     //</editor-fold>
 
     //<editor-fold desc="Constructors">

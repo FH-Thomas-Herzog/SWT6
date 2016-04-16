@@ -16,6 +16,7 @@ import java.util.Set;
 @Entity
 public class Project extends ModifiableBaseEntity<Long> {
 
+    //<editor-fold desc="Properties">
     @Getter
     @Setter
     @NotNull
@@ -44,4 +45,5 @@ public class Project extends ModifiableBaseEntity<Long> {
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private Set<Module> modules = new HashSet<>();
+    //</editor-fold>
 }
