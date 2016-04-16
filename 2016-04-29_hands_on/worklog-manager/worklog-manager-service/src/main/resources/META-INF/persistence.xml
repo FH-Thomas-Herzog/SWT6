@@ -21,8 +21,8 @@
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="createSchema.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="dropSchema.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="target/generated-dll/MySql/createSchema.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="target/generated-dll/MySql/dropSchema.ddl"/>
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
@@ -49,6 +49,11 @@
         <class>at.fh.ooe.swt6.worklog.manager.model.jpa.LogBookEntry</class>
 
         <properties>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="target/generated-dll/H2/createSchema.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="target/generated-dll/H2/dropSchema.ddl"/>
+
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:WorklogManagerDB"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>

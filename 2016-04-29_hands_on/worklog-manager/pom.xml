@@ -48,7 +48,10 @@
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <org.apache.derby.version>10.11.1.1</org.apache.derby.version>
         <org.slf4j.version>1.7.10</org.slf4j.version>
+
+        <!-- Database Dependency Versions -->
         <org.mysql.java.connector.version>5.1.38</org.mysql.java.connector.version>
+        <com.h2database.version>1.4.191</com.h2database.version>
 
         <!-- Test Dependency Versions -->
         <junit.version>4.12</junit.version>
@@ -103,16 +106,23 @@
             </dependency>
 
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${org.mysql.java.connector.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.16.8</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- Database Dependencies -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${com.h2database.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${org.mysql.java.connector.version}</version>
             </dependency>
 
             <!-- Test Dependencies -->
