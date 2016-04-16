@@ -64,3 +64,9 @@ $RECYCLE.BIN/
 
 # Eclipse
 */**/.*
+
+#intellij
+.ide
+.iml
+target
+data

@@ -1,0 +1,161 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <name>worklog-manager</name>
+    <description>worklog-manager</description>
+    <groupId>at.fh.ooe.swt6</groupId>
+    <artifactId>worklog-manager</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <developers>
+        <developer>
+            <name>Thomas Herzog</name>
+            <email>S1310307011@students.fh-hagenberg.at</email>
+            <organization>FH-Hagenberg</organization>
+            <organizationUrl>https://www.fh-ooe.at/campus-hagenberg/studiengaenge/bachelor/software-engineering/
+            </organizationUrl>
+            <roles>
+                <role>owner</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>worklog-manager-model-jpa</module>
+        <module>worklog-manager-service</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>fh-hagenberg</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+    <properties>
+        <!-- Build Configuration -->
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Dependency Versions -->
+        <org.hibernate.version>4.3.8.Final</org.hibernate.version>
+        <org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
+        <javax.validation.version>1.1.0.Final</javax.validation.version>
+        <org.apache.derby.version>10.11.1.1</org.apache.derby.version>
+        <org.slf4j.version>1.7.10</org.slf4j.version>
+
+        <!-- Test Dependency Versions -->
+        <junit.version>4.12</junit.version>
+        <org.dbunit.version>2.5.2</org.dbunit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Dependencies -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${org.hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${org.hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${org.hibernate.validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${org.slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derbyclient</artifactId>
+                <version>${org.apache.derby.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derbynet</artifactId>
+                <version>${org.apache.derby.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax.validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.8</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>${org.dbunit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.bsc.maven</groupId>
+                    <artifactId>maven-processor-plugin</artifactId>
+                    <version>2.2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <annotationProcessors>
+                            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                            </annotationProcessor>
+                        </annotationProcessors>
+                        <!-- Disable annotation processing via compiler plugin. -->
+                        <!-- lombock seems to need compiler annotation processor -->
+                        <!-- <compilerArgument>-proc:none</compilerArgument>-->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

@@ -1,0 +1,31 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                                 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="WorklogManager">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.Employee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.TemporaryEmployee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.PermanentEmployee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.Project</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.Module</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.Phase</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.ProjectHasEmployee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.jpa.LogBookEntry</class>
+
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:WorklogManagerDB"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.log" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

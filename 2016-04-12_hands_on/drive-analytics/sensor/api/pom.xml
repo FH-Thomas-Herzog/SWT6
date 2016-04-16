@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>at.fh.ooe.swt6</groupId>
 		<artifactId>drive-analytics-sensor</artifactId>
-		<version>${version.sensor.api}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<name>drive-analytics-sensor-api</name>

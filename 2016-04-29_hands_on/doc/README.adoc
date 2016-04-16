@@ -1,0 +1,24 @@
+= Übungsaufgabe 2 (OR-Mapping)
+
+*   Komplettierung des Domänenmodells laut obigem Datenmodell.
+*   Definition des Mapping für Hibernate (mit Hibernate-Mapping-Dateien) und JPA
+*   Überlegen Sie sich sinnvolle Einstellungen für die Kaskadierungs- und die Ladestrategien.
+*   Implementierung von JUnit-Tests, mit denen der Hibernate/JPA-Zugriffscode ausführlich getestet wird (Optional dürfen auch Testframeworks, wie z. B. DBUnit, verwendet werden)
+
+*   Überlegen Sie sich Tests, welche die Workflows einer Anwendung zur Arbeitszeiterfassung möglich umfassend abdecken.
+*   Implementieren Sie mindestens 10 Unittests (jeweils mindestens 10 Tests für Hibernate als auch für JPA)
+*   Achten Sie darauf, dass die Unittests vollständig voneinander unabhängig sind. Es muss also möglich sein, Unittests selektiv auszuführen.
+*   Führen Sie Ihre Tests auf einer Datenbank aus, die mit ausreichend Daten befüllt ist (mindestens 10 Angestellte, 5 Tagebucheinträge pro Angestellten, 3 Projekte).
+*   Dokumentieren Sie ihre Tests im Code (was macht der Tests, ...)
+*   Hinweise zum Datenmodell:
+
+*   Jedes Projekt besteht aus mehreren Modulen, z.B. GUI, Geschäftslogik, Datenbankzugriff. Module sind projektspezifisch. Mit dem Modul ist für einen Arbeitszeiteintrag auch das Projekt definiert, dem der Eintrag zuzuordnen ist.
+*   Jeder Tätigkeit kann eine Phase zugeordnet werden, z.B. Analyse, Implementierung, Testen. Phasen sind projektunabhängig.
+*   
+
+== Bonusaufgabe: Integrationstests mit Maven
+
+Da wir für diese Übung bereits Maven als Dependency- und Datenbank-Management-System einsetzen, wäre es auch sinnvoll, die Testausführung in das Maven-System zu integrieren.
+
+Das Ziel der Bonusaufgabe besteht darin, dass die geforderten Tests mit Maven ausgeführt werden, ohne eine Datenbank extra starten zu müssen.
+Eine detaillierte Beschreibung befindet sich im Dokument "**Integrationstests mit Maven"**und im Beispielprojekt **"swt6.orm.worklog.hibernate.test"**.

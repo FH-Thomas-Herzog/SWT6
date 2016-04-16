@@ -13,10 +13,6 @@
 	<artifactId>drive-analytics-sensor</artifactId>
 	<packaging>pom</packaging>
 
-	<properties>
-		<version.sensor.api>0.0.1-SNAPSHOT</version.sensor.api>
-	</properties>
-
 	<modules>
 		<module>api</module>
 		<module>impl</module>
