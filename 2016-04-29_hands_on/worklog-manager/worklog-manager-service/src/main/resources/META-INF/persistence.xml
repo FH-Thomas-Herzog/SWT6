@@ -4,6 +4,7 @@
                                  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
+    <!-- Persistence Unit for development which connects to local mysql database for JPA validation in intellij. -->
     <persistence-unit name="WorklogManager">
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
@@ -33,6 +34,7 @@
         </properties>
     </persistence-unit>
 
+    <!-- Persistence Unit for the JUnit-Tests which uses H2 in-memory database -->
     <persistence-unit name="WorklogManagerTest">
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
@@ -50,11 +52,10 @@
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:WorklogManagerDB"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="org.hibernate.hbm2ddl.auto" value="create-drop"/>
-            <property name="org.hibernate.log" value="true"/>
-            <property name="org.hibernate.show_sql" value="true"/>
-            <property name="org.hibernate.format_sql" value="false"/>
-            <property name="org.hibernate.default_schema" value="test"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.log" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -20,7 +20,9 @@ import java.util.Objects;
 public class JPAUtils {
 
     private static final Logger log = LoggerFactory.getLogger(JPAUtils.class);
-    private static final String PERSISTENCE_UNIT = "WorklogManager";
+    private static final String PERSISTENCE_UNIT_DEV = "WorklogManager";
+    private static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
+    private static final String CURRENT_PERSISTENT_UNIT = PERSISTENCE_UNIT_TEST;
     private static EntityManagerFactory emf = null;
 
     /**
@@ -29,11 +31,11 @@ public class JPAUtils {
      */
     static {
         try {
-            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-            Persistence.generateSchema(PERSISTENCE_UNIT, null);
+            emf = Persistence.createEntityManagerFactory(CURRENT_PERSISTENT_UNIT);
+            Persistence.generateSchema(CURRENT_PERSISTENT_UNIT, null);
         } catch (Exception e) {
             log.error("Could not create EntityManagerFactory for PersistenceUnit '{}'",
-                      PERSISTENCE_UNIT);
+                      CURRENT_PERSISTENT_UNIT);
             log.error("Thrown exception: ",
                       e);
         }
