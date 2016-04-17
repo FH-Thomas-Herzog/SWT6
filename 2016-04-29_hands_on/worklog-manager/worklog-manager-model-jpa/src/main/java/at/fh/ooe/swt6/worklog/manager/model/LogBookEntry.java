@@ -57,4 +57,23 @@ public class LogBookEntry extends ModifiableBaseEntity<Long> {
     @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)
     private Module module;
     //</editor-fold>
+
+    //<editor-fold desc="Constructors">
+    public LogBookEntry() {
+    }
+
+    public LogBookEntry(String activity,
+                        Date startTime,
+                        Date endTime,
+                        Employee employee,
+                        Phase phase,
+                        Module module) {
+        this.activity = activity;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.employee = employee;
+        this.phase = phase;
+        this.module = module;
+    }
+    //</editor-fold>
 }

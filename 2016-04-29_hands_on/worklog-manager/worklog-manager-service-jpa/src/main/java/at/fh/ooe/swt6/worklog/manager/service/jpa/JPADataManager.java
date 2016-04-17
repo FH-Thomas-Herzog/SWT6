@@ -19,8 +19,8 @@ public class JPADataManager implements DataManager {
 
     /**
      */
-    public JPADataManager() {
-        em = JPAUtils.getEntityManager();
+    public JPADataManager(EntityManager em) {
+        this.em = em;
     }
 
     @Override
@@ -130,6 +130,14 @@ public class JPADataManager implements DataManager {
         return (tx != null) && (tx.isActive());
     }
 
+    @Override
+    public void close() {
+        em.clear();
+        em.close();
+    }
+
+    //<editor-fold desc="Private Helper">
+
     /**
      * Helper method for creating the query object for reading access queries.
      *
@@ -157,4 +165,5 @@ public class JPADataManager implements DataManager {
 
         return query;
     }
+    //</editor-fold>
 }

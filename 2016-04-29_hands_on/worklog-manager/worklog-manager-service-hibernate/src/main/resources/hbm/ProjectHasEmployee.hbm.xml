@@ -4,8 +4,8 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="at.fh.ooe.swt6.worklog.manager.model.ProjectHasEmployee" table="project_has_employee">
-        <composite-id name="id" class="at.fh.ooe.swt6.worklog.manager.model.ProjectHasEmployeeId">
+    <class name="at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee" table="project_has_employee">
+        <composite-id name="id" class="at.fh.ooe.swt6.worklog.manager.model.ProjectEmployeeId">
             <key-property name="projectId">
                 <column name="project_id"/>
             </key-property>

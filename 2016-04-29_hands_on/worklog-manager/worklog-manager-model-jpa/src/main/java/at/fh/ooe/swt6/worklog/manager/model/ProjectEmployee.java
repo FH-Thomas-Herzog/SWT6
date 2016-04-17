@@ -9,15 +9,15 @@ import javax.persistence.*;
 /**
  * Created by Thomas on 4/16/2016.
  */
-@Table(name = "PROJECT_HAS_EMPLOYEE")
+@Table(name = "PROJECT_EMPLOYEE")
 @Entity
-public class ProjectHasEmployee extends ModifiableBaseEntity<ProjectHasEmployeeId> {
+public class ProjectEmployee extends ModifiableBaseEntity<ProjectEmployeeId> {
 
     //<editor-fold desc="Properties">
     @Getter
     @Setter
     @EmbeddedId
-    private ProjectHasEmployeeId id;
+    private ProjectEmployeeId id;
 
     @Getter
     @Setter
@@ -34,15 +34,15 @@ public class ProjectHasEmployee extends ModifiableBaseEntity<ProjectHasEmployeeI
     //</editor-fold>
 
 
-    public ProjectHasEmployee() {
+    public ProjectEmployee() {
     }
 
-    public ProjectHasEmployee(ProjectHasEmployeeId id) {
+    public ProjectEmployee(ProjectEmployeeId id) {
         this.id = id;
     }
 
-    public ProjectHasEmployee(Project project,
-                              Employee employee) {
+    public ProjectEmployee(Project project,
+                           Employee employee) {
         this.project = project;
         this.employee = employee;
     }

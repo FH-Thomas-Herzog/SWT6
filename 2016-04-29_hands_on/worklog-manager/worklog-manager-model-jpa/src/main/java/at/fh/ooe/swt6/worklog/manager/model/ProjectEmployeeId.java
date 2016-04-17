@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by Thomas on 4/16/2016.
  */
 @Embeddable
-public class ProjectHasEmployeeId implements Serializable {
+public class ProjectEmployeeId implements Serializable {
 
     //<editor-fold desc="Properties">
     @Getter
@@ -29,11 +29,11 @@ public class ProjectHasEmployeeId implements Serializable {
     //</editor-fold>
 
 
-    public ProjectHasEmployeeId() {
+    public ProjectEmployeeId() {
     }
 
-    public ProjectHasEmployeeId(Long projectId,
-                                Long employeeId) {
+    public ProjectEmployeeId(Long projectId,
+                             Long employeeId) {
         this.projectId = projectId;
         this.employeeId = employeeId;
     }
@@ -44,7 +44,7 @@ public class ProjectHasEmployeeId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProjectHasEmployeeId that = (ProjectHasEmployeeId) o;
+        ProjectEmployeeId that = (ProjectEmployeeId) o;
 
         if (projectId != null ? !projectId.equals(that.projectId) : that.projectId != null) return false;
         return employeeId != null ? employeeId.equals(that.employeeId) : that.employeeId == null;

@@ -7,11 +7,10 @@
         <artifactId>worklog-manager</artifactId>
         <groupId>at.fh.ooe.swt6</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../worklog-manager-service/pom.xml</relativePath>
     </parent>
 
-    <name>worklog-manager-service-api</name>
-    <artifactId>worklog-manager-service-api</artifactId>
+    <name>worklog-manager-service</name>
+    <artifactId>worklog-manager-service</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

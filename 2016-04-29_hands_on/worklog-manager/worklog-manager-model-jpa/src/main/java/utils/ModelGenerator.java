@@ -18,6 +18,37 @@ public class ModelGenerator {
     }
 
     /**
+     * Creates predefined LogbookEntry instance for the given entities;
+     *
+     * @param employees the entity to create entries for
+     * @param phases    the pahses to create entries for
+     * @param modules   the modules to create entries for
+     * @param count     the count of entries for each entity
+     * @return the created entries
+     */
+    public static List<LogBookEntry> createLogbookEntries(final List<? extends Employee> employees,
+                                                          final List<Phase> phases,
+                                                          final List<Module> modules,
+                                                          final int count) {
+        final List<LogBookEntry> entries = new ArrayList<>(employees.size() * phases.size() * modules.size() * count);
+
+        employees.forEach(employee -> phases.forEach(phase -> modules.forEach(module -> {
+            for (int i = 1; i <= count; i++) {
+                entries.add(new LogBookEntry(("bla_" + i),
+                                             Calendar.getInstance()
+                                                     .getTime(),
+                                             Calendar.getInstance()
+                                                     .getTime(),
+                                             employee,
+                                             phase,
+                                             module));
+            }
+        })));
+
+        return entries;
+    }
+
+    /**
      * Creates the project.
      *
      * @param name      the project name
@@ -25,12 +56,12 @@ public class ModelGenerator {
      * @param employees the employees working on this project
      * @return the created project.
      */
-    public static Project createProject(String name,
-                                        Employee leader,
-                                        List<? extends Employee> employees) {
+    public static Project createProject(final String name,
+                                        final Employee leader,
+                                        final List<? extends Employee> employees) {
         final Project project = new Project(name, leader);
         project.setProjectEmployees(employees.stream()
-                                             .map(item -> new ProjectHasEmployee(project, item))
+                                             .map(item -> new ProjectEmployee(project, item))
                                              .collect(
                                                      Collectors.toSet()));
 

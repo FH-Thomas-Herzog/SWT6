@@ -130,6 +130,12 @@ public class HibernateDataManager implements DataManager {
         return (tx != null) && (tx.isActive());
     }
 
+    @Override
+    public void close() {
+        session.clear();
+        session.close();
+    }
+
     /**
      * Helper method for creating the query object for reading access queries.
      *

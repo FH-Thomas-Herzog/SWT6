@@ -18,7 +18,7 @@
         <!-- Other modules -->
         <dependency>
             <groupId>at.fh.ooe.swt6</groupId>
-            <artifactId>worklog-manager-service-api</artifactId>
+            <artifactId>worklog-manager-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

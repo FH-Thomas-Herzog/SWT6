@@ -33,7 +33,7 @@
             <key>
                 <column name="project_id"/>
             </key>
-            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.ProjectHasEmployee"/>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee"/>
         </set>
     </class>
 </hibernate-mapping>

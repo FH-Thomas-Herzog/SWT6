@@ -48,7 +48,7 @@
             <key>
                 <column name="employee_id"/>
             </key>
-            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.ProjectHasEmployee"/>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee"/>
         </set>
         <set name="leadingProjects" inverse="true">
             <key>

@@ -1,19 +1,11 @@
 package at.fh.ooe.swt6.worklog.manager.service.jpa;
 
-import at.fh.ooe.swt6.worklog.manager.model.Address;
-import at.fh.ooe.swt6.worklog.manager.model.Employee;
-import at.fh.ooe.swt6.worklog.manager.model.Project;
-import at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee;
-import at.fh.ooe.swt6.worklog.manager.service.api.DataManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -23,26 +15,36 @@ import java.util.Objects;
  */
 public class JPAUtils {
 
-    private static final Logger log = LoggerFactory.getLogger(JPAUtils.class);
-    private static final String PERSISTENCE_UNIT_DEV = "WorklogManager";
-    private static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
-    private static final String CURRENT_PERSISTENT_UNIT = PERSISTENCE_UNIT_DEV;
     private static EntityManagerFactory emf = null;
 
+    private static final Logger log = LoggerFactory.getLogger(JPAUtils.class);
+    private static final ThreadLocal<EntityManager> localEm = new ThreadLocal<>();
+
+    public static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
+
     /**
-     * Creates the entity manager factory in a static context,
-     * because there is no need to create EntityManagerFactory all over again.
+     * Creates the entity manager factory.
+     * This will set a local reference to the factory and will use it from now on.
+     *
+     * @return the created factory
      */
-    static {
-        try {
-            emf = Persistence.createEntityManagerFactory(CURRENT_PERSISTENT_UNIT);
-            Persistence.generateSchema(CURRENT_PERSISTENT_UNIT, null);
-        } catch (Exception e) {
-            log.error("Could not create EntityManagerFactory for PersistenceUnit '{}'",
-                      CURRENT_PERSISTENT_UNIT);
-            log.error("Thrown exception: ",
-                      e);
+    public static EntityManagerFactory createEntityManagerFactory() {
+        if (emf != null) {
+            emf.close();
+            emf = null;
         }
+        return emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_TEST);
+    }
+
+    /**
+     * Gets an EntityManager from the EntityManagerFactory.
+     * Will create a new on from the factory per default.
+     *
+     * @return the entity manager instance
+     * @see JPAUtils#getEntityManager(boolean)
+     */
+    public static EntityManager getEntityManager() {
+        return getEntityManager(Boolean.FALSE);
     }
 
     /**
@@ -50,36 +52,16 @@ public class JPAUtils {
      *
      * @return the entity manager instance
      */
-    public static EntityManager getEntityManager() {
-        Objects.requireNonNull(emf,
-                               "EntityManagerFactory hasn't been initialized");
-        return emf.createEntityManager();
-    }
-
-    public static void main(String args[]) {
-
-        try {
-            final EntityManager em = getEntityManager();
-            final DataManager dataManager = new JPADataManager();
-            Employee e = new TemporaryEmployee("thomad",
-                                               "herzog",
-                                               Calendar.getInstance(),
-                                               new Address("street",
-                                                           "city",
-                                                           "9020"),
-                                               BigDecimal.valueOf(1.0),
-                                               false,
-                                               Calendar.getInstance(),
-                                               Calendar.getInstance());
-            Project p = new Project();
-            p.setName("Test");
-
-            final EntityTransaction tx = em.getTransaction();
-            tx.begin();
-
-            tx.commit();
-        } catch (Exception e1) {
-            e1.printStackTrace();
+    public static EntityManager getEntityManager(boolean threadLocal) {
+        if (threadLocal) {
+            if (localEm.get() == null) {
+                Objects.requireNonNull(emf, "EntityManagerFactory is null");
+                localEm.set(emf.createEntityManager());
+            }
+            return localEm.get();
+        } else {
+            Objects.requireNonNull(emf, "EntityManagerFactory is null");
+            return emf.createEntityManager();
         }
     }
 }

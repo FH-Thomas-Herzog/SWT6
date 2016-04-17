@@ -134,4 +134,10 @@ public interface DataManager {
      * @return true if a transaction has been opened, false otherwise
      */
     boolean isTxOpen();
+
+    /**
+     * Closes this DataManager instance by releasing the backed session.
+     * From now on, all operations will wail.
+     */
+    void close();
 }

@@ -24,7 +24,7 @@
 
     <modules>
         <module>worklog-manager-model-jpa</module>
-        <module>worklog-manager-service-api</module>
+        <module>worklog-manager-service</module>
         <module>worklog-manager-service-jpa</module>
         <module>worklog-manager-service-hibernate</module>
     </modules>
