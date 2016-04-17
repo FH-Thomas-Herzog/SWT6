@@ -1,6 +1,8 @@
-package at.fh.ooe.swt6.worklog.manager.service;
+package at.fh.ooe.swt6.worklog.manager.service.jpa;
 
 import at.fh.ooe.swt6.worklog.manager.model.jpa.*;
+import at.fh.ooe.swt6.worklog.manager.service.api.DataManager;
+import org.hibernate.FlushMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +24,7 @@ public class JPAUtils {
     private static final Logger log = LoggerFactory.getLogger(JPAUtils.class);
     private static final String PERSISTENCE_UNIT_DEV = "WorklogManager";
     private static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
-    private static final String CURRENT_PERSISTENT_UNIT = PERSISTENCE_UNIT_TEST;
+    private static final String CURRENT_PERSISTENT_UNIT = PERSISTENCE_UNIT_DEV;
     private static EntityManagerFactory emf = null;
 
     /**
@@ -53,19 +55,42 @@ public class JPAUtils {
     }
 
     public static void main(String args[]) {
-        final EntityManager em = getEntityManager();
-        final Employee e = new TemporaryEmployee("thomad",
-                                                 "herzog",
-                                                 Calendar.getInstance(),
-                                                 new Address("street",
-                                                             "city",
-                                                             "9020"),
-                                                 BigDecimal.valueOf(1.0),
-                                                 false,
-                                                 Calendar.getInstance(),
-                                                 Calendar.getInstance());
-        final Project p = new Project();
-        p.setName("Test");
+
+        try {
+            final EntityManager em = getEntityManager();
+            final DataManager dataManager = new JPADataManager(em);
+            Employee e = new TemporaryEmployee("thomad",
+                                                     "herzog",
+                                                     Calendar.getInstance(),
+                                                     new Address("street",
+                                                                 "city",
+                                                                 "9020"),
+                                                     BigDecimal.valueOf(1.0),
+                                                     false,
+                                                     Calendar.getInstance(),
+                                                     Calendar.getInstance());
+            Project p = new Project();
+            p.setName("Test");
+
+//            final EntityTransaction tx = em.getTransaction();
+//            tx.begin();
+//
+//            Phase phase = new Phase();
+//            phase.setName("test");
+//            dataManager.persist(phase);
+//
+//            e = dataManager.persist(e);
+//            em.flush();
+//            p.setLeader(e);
+//            p = dataManager.persist(p);
+//
+//            ProjectHasEmployee pe = new ProjectHasEmployee();
+//            pe.setId(new ProjectHasEmployeeId(p.getId(),
+//                                              e.getId()));
+//            pe = dataManager.persist(pe);
+//            pe.setProject(p);
+//
+//            tx.commit();
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -78,5 +103,8 @@ public class JPAUtils {
         em.persist(pe);
         pe.setProject(p);
         tx.commit();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 }

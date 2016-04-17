@@ -21,8 +21,8 @@ public class Phase extends BaseEntity<Long> {
     @Setter
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(updatable = false, insertable = false)
+    @GeneratedValue()
+    @Column()
     private Long id;
 
     @Getter

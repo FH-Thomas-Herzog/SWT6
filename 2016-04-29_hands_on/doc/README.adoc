@@ -10,7 +10,8 @@
 *   Achten Sie darauf, dass die Unittests vollständig voneinander unabhängig sind. Es muss also möglich sein, Unittests selektiv auszuführen.
 *   Führen Sie Ihre Tests auf einer Datenbank aus, die mit ausreichend Daten befüllt ist (mindestens 10 Angestellte, 5 Tagebucheinträge pro Angestellten, 3 Projekte).
 *   Dokumentieren Sie ihre Tests im Code (was macht der Tests, ...)
-*   Hinweise zum Datenmodell:
+
+== Hinweise zum Datenmodell:
 
 *   Jedes Projekt besteht aus mehreren Modulen, z.B. GUI, Geschäftslogik, Datenbankzugriff. Module sind projektspezifisch. Mit dem Modul ist für einen Arbeitszeiteintrag auch das Projekt definiert, dem der Eintrag zuzuordnen ist.
 *   Jeder Tätigkeit kann eine Phase zugeordnet werden, z.B. Analyse, Implementierung, Testen. Phasen sind projektunabhängig.

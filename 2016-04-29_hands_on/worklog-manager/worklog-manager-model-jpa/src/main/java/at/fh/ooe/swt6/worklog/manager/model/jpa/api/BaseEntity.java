@@ -14,12 +14,7 @@ import java.io.Serializable;
  * Created by Thomas on 4/16/2016.
  */
 @MappedSuperclass
-public abstract class BaseEntity<I extends Serializable> {
-
-    //<editor-fold desc="Properties">
-    public abstract I getId();
-
-    public abstract void setId(I id);
+public abstract class BaseEntity<I extends Serializable> implements Entity<I> {
 
     @Getter
     @Setter
@@ -48,7 +43,7 @@ public abstract class BaseEntity<I extends Serializable> {
         if (this == o) return true;
         if (!(o instanceof ModifiableBaseEntity)) return false;
 
-        BaseEntity<?> that = (BaseEntity<?>) o;
+        Entity<?> that = (Entity<?>) o;
 
         return getId() != null ? getId().equals(that.getId()) : super.equals(o);
     }

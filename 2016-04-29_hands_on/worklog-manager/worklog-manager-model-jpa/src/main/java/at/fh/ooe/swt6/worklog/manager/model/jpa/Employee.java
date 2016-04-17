@@ -23,8 +23,8 @@ public abstract class Employee extends ModifiableBaseEntity<Long> {
     @Getter
     @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(updatable = false, insertable = false)
+    @GeneratedValue()
+    @Column()
     private Long id;
 
     @Getter

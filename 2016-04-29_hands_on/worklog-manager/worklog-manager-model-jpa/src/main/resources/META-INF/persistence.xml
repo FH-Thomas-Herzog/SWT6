@@ -61,7 +61,6 @@
             <property name="javax.persistence.jdbc.user" value="worklogmanager"/>
             <property name="javax.persistence.jdbc.password" value="worklogmanager"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.log" value="true"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="false"/>
