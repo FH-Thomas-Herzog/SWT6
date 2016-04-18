@@ -132,8 +132,10 @@ public class HibernateDataManager implements DataManager {
 
     @Override
     public void close() {
-        session.clear();
-        session.close();
+        if (session.isOpen()) {
+            session.clear();
+            session.close();
+        }
     }
 
     /**

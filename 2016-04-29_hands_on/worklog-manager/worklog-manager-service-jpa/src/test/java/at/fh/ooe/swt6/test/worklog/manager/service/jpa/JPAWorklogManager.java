@@ -30,6 +30,9 @@ public class JPAWorklogManager {
     @Rule
     public LoggingTestInvocationWatcher methodWatcher = new LoggingTestInvocationWatcher(Level.DEBUG);
 
+    WorklogManagerDataAccess dataAccess;
+    WorklogManagerService service;
+
     public JPAWorklogManager() {
         // This will refresh the database
         JPAUtils.createEntityManagerFactory();
@@ -39,14 +42,22 @@ public class JPAWorklogManager {
     public void beforeTest() {
         // Get a fresh entity manager
         dataManager = new JPADataManager(JPAUtils.getEntityManager());
-
+        // create data access
+        dataAccess = new WorklogManagerDataAccessImpl(dataManager);
+        // create service
+        service = new WorklogManagerServiceImpl(dataManager);
+        // create data
         creaData();
     }
 
     @After
     public void afterTest() {
-        // Close backed entity manager
+        // close data access/service
+        dataAccess.close();
+        service.close();
         dataManager.close();
+        dataAccess = null;
+        service = null;
         dataManager = null;
         // This will refresh the database
         JPAUtils.createEntityManagerFactory();
@@ -58,7 +69,11 @@ public class JPAWorklogManager {
         WorklogManagerService service = new WorklogManagerServiceImpl(dataManager);
 
         List<PermanentEmployee> permanentEmpl = dataAccess.getAllPermanentEmployees();
-        service.createProject("project", permanentEmpl.get(0), ModelGenerator.createModules(null), permanentEmpl);
+        List<TemporaryEmployee> temporaryEmployees = dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(10));
+        permanentEmpl.forEach(item -> service.createProject("project",
+                                                            permanentEmpl.get(0),
+                                                            ModelGenerator.createModules(null),
+                                                            temporaryEmployees));
     }
 
     public void creaData() {

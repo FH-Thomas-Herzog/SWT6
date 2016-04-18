@@ -157,8 +157,10 @@ public class JPADataManager implements DataManager {
 
     @Override
     public void close() {
-        em.clear();
-        em.close();
+        if (em.isOpen()) {
+            em.clear();
+            em.close();
+        }
     }
 
     //<editor-fold desc="Private Helper">
