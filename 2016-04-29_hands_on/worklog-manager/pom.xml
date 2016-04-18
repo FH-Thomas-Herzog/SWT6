@@ -27,17 +27,8 @@
         <module>worklog-manager-service</module>
         <module>worklog-manager-service-jpa</module>
         <module>worklog-manager-service-hibernate</module>
-        <module>worklog-manager-testsuite-api</module>
+        <module>worklog-manager-testsuite</module>
     </modules>
-
-    <profiles>
-        <profile>
-            <id>fh-hagenberg</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
 
     <properties>
         <!-- Build Configuration -->

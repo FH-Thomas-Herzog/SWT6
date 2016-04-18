@@ -32,7 +32,7 @@
             <property name="javax.persistence.jdbc.password" value="worklogmanager"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="org.hibernate.log" value="false"/>
-            <property name="org.hibernate.show_sql" value="true"/>
+            <property name="org.hibernate.show_sql" value="false"/>
             <property name="org.hibernate.format_sql" value="false"/>
             <property name="org.hibernate.default_schema" value="worklogmanager"/>
         </properties>

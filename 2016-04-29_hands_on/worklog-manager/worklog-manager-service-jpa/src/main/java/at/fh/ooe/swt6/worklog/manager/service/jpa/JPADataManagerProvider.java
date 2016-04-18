@@ -1,5 +1,7 @@
 package at.fh.ooe.swt6.worklog.manager.service.jpa;
 
+import at.fh.ooe.swt6.worklog.manager.service.api.DataManager;
+import at.fh.ooe.swt6.worklog.manager.service.api.DataManagerProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,14 +15,18 @@ import java.util.Objects;
  * <p>
  * Created by Thomas on 4/16/2016.
  */
-public class JPAUtils {
+public class JPADataManagerProvider implements DataManagerProvider {
 
+    //<editor-fold desc="Static Members">
     private static EntityManagerFactory emf = null;
 
-    private static final Logger log = LoggerFactory.getLogger(JPAUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(JPADataManagerProvider.class);
     private static final ThreadLocal<EntityManager> localEm = new ThreadLocal<>();
 
-    public static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
+    private static final String PERSISTENCE_UNIT_TEST = "WorklogManagerTest";
+    //</editor-fold>
+
+    //<editor-fold desc="Private Helpers">
 
     /**
      * Creates the entity manager factory.
@@ -28,7 +34,7 @@ public class JPAUtils {
      *
      * @return the created factory
      */
-    public static EntityManagerFactory createEntityManagerFactory() {
+    private static EntityManagerFactory createEntityManagerFactory() {
         if (emf != null) {
             emf.close();
             emf = null;
@@ -38,21 +44,10 @@ public class JPAUtils {
 
     /**
      * Gets an EntityManager from the EntityManagerFactory.
-     * Will create a new on from the factory per default.
-     *
-     * @return the entity manager instance
-     * @see JPAUtils#getEntityManager(boolean)
-     */
-    public static EntityManager getEntityManager() {
-        return getEntityManager(Boolean.FALSE);
-    }
-
-    /**
-     * Gets an EntityManager from the EntityManagerFactory.
      *
      * @return the entity manager instance
      */
-    public static EntityManager getEntityManager(boolean threadLocal) {
+    private static EntityManager getEntityManager(boolean threadLocal) {
         if (threadLocal) {
             if (localEm.get() == null) {
                 Objects.requireNonNull(emf, "EntityManagerFactory is null");
@@ -64,4 +59,17 @@ public class JPAUtils {
             return emf.createEntityManager();
         }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Interface DataManager Methods">
+    @Override
+    public DataManager create(boolean threadLocal) {
+        return new JPADataManager(getEntityManager(threadLocal));
+    }
+
+    @Override
+    public void recreateContext() {
+        createEntityManagerFactory();
+    }
+    //</editor-fold>
 }
