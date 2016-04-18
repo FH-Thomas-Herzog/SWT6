@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -38,10 +39,9 @@ public class JPADataManager implements DataManager {
     @Override
     public <I extends Serializable, T extends Entity<I>> T find(I id,
                                                                 Class<T> clazz) {
-        Objects.requireNonNull(id, "Cannot get entity for null id");
         Objects.requireNonNull(clazz, "Cannot find entity for null entity class");
 
-        return em.find(clazz, id);
+        return (id != null) ? em.find(clazz, id) : null;
     }
 
     @Override
@@ -51,6 +51,15 @@ public class JPADataManager implements DataManager {
         em.persist(entity);
 
         return entity;
+    }
+
+    @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> batchPersist(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot persist null entities");
+
+        return entities.stream()
+                       .map(item -> persist(item))
+                       .collect(Collectors.toList());
     }
 
     @Override
@@ -69,11 +78,27 @@ public class JPADataManager implements DataManager {
     }
 
     @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> batchMerge(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot merge null entities");
+
+        return entities.stream()
+                       .map(item -> merge(item))
+                       .collect(Collectors.toList());
+    }
+
+    @Override
     public <I extends Serializable, T extends Entity<I>> void remove(T entity) {
         Objects.requireNonNull(entity, "Cannot remove null entity");
         Objects.requireNonNull(entity.getId(), "Cannot remove entity with null id");
 
         em.remove(entity);
+    }
+
+    @Override
+    public <I extends Serializable, T extends Entity<I>> void remove(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot delete null entities");
+
+        entities.forEach(item -> remove(item));
     }
 
     @Override

@@ -64,4 +64,9 @@ public class WorklogManagerDataAccessImpl implements WorklogManagerDataAccess {
                     put("id", id);
                 }});
     }
+
+    @Override
+    public void close(){
+        dataManager.close();
+    }
 }

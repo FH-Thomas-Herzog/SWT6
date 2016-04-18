@@ -27,6 +27,7 @@
         <module>worklog-manager-service</module>
         <module>worklog-manager-service-jpa</module>
         <module>worklog-manager-service-hibernate</module>
+        <module>worklog-manager-testsuite-api</module>
     </modules>
 
     <profiles>
@@ -50,6 +51,7 @@
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <org.apache.derby.version>10.11.1.1</org.apache.derby.version>
         <org.slf4j.version>1.7.10</org.slf4j.version>
+        <commons.lang3.version>3.0</commons.lang3.version>
 
         <!-- Database Dependency Versions -->
         <org.mysql.java.connector.version>5.1.38</org.mysql.java.connector.version>
@@ -63,6 +65,12 @@
     <dependencyManagement>
         <dependencies>
             <!-- Dependencies -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>

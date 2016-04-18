@@ -65,5 +65,12 @@
             <artifactId>dbunit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>at.fh.ooe.swt6</groupId>
+            <artifactId>worklog-manager-testsuite-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

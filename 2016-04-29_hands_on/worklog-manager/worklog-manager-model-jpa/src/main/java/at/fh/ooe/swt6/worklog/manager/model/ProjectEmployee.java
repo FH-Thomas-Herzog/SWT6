@@ -22,12 +22,12 @@ public class ProjectEmployee extends ModifiableBaseEntity<ProjectEmployeeId> {
     @Getter
     @Setter
     @JoinColumn(name = "project_id", referencedColumnName = "id", updatable = false, insertable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Project project;
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id", referencedColumnName = "id", updatable = false, insertable = false)
     private Employee employee;
 

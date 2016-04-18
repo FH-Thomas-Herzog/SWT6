@@ -1,14 +1,13 @@
 package at.fh.ooe.swt6.test.worklog.manager.service.jpa;
 
 import at.fh.ooe.swt6.worklog.manager.model.*;
-import at.fh.ooe.swt6.worklog.manager.service.api.DataManager;
-import at.fh.ooe.swt6.worklog.manager.service.api.WorklogManagerDataAccessImpl;
-import at.fh.ooe.swt6.worklog.manager.service.api.WorklogManagerDataAccess;
+import at.fh.ooe.swt6.worklog.manager.service.api.*;
 import at.fh.ooe.swt6.worklog.manager.service.jpa.JPADataManager;
 import at.fh.ooe.swt6.worklog.manager.service.jpa.JPAUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestClassWatcher;
+import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestInvocationWatcher;
+import org.apache.log4j.Level;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import utils.ModelGenerator;
@@ -24,6 +23,12 @@ import java.util.Set;
 public class JPAWorklogManager {
 
     private DataManager dataManager;
+
+    @ClassRule
+    public static LoggingTestClassWatcher watcher = new LoggingTestClassWatcher(Level.WARN);
+
+    @Rule
+    public LoggingTestInvocationWatcher methodWatcher = new LoggingTestInvocationWatcher(Level.DEBUG);
 
     public JPAWorklogManager() {
         // This will refresh the database
@@ -50,28 +55,10 @@ public class JPAWorklogManager {
     @Test
     public void t1() {
         WorklogManagerDataAccess dataAccess = new WorklogManagerDataAccessImpl(dataManager);
+        WorklogManagerService service = new WorklogManagerServiceImpl(dataManager);
 
         List<PermanentEmployee> permanentEmpl = dataAccess.getAllPermanentEmployees();
-        List<TemporaryEmployee> temporaryEmpl = dataAccess.getAllTemporaryEmployees();
-        List<Project> projects = dataAccess.getAllProjects();
-
-        permanentEmpl.forEach(item -> {
-            System.out.println("Employee: " + item.getFirstName() + ": has entry count: " + dataAccess.getLogbookEntriesForEmployee(
-                    item.getId())
-                                                                                                      .size());
-        });
-
-        temporaryEmpl.forEach(item -> {
-            System.out.println("Employee: " + item.getFirstName() + ": has entry count: " + dataAccess.getLogbookEntriesForEmployee(
-                    item.getId())
-                                                                                                      .size());
-        });
-
-        projects.forEach(item -> {
-            System.out.println("Project: " + item.getName() + ": has entry count: " + dataAccess.getLogbookEntriesForProject(
-                    item.getId())
-                                                                                                .size());
-        });
+        service.createProject("project", permanentEmpl.get(0), ModelGenerator.createModules(null), permanentEmpl);
     }
 
     public void creaData() {

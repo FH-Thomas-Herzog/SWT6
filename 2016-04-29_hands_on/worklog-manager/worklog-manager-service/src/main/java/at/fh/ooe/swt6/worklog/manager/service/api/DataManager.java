@@ -51,6 +51,17 @@ public interface DataManager {
     <I extends Serializable, T extends Entity<I>> T persist(T entity);
 
     /**
+     * Persist the given entity.
+     *
+     * @param entities the entities to be persisted
+     * @param <I>      the entity id type
+     * @param <T>      the entity type
+     * @return the persistet entities
+     * @throws javax.persistence.PersistenceException if the entity could not be persistet
+     */
+    <I extends Serializable, T extends Entity<I>> List<T> batchPersist(List<T> entities);
+
+    /**
      * Updates or persists the given entity.
      *
      * @param entity the entity to be updated
@@ -61,6 +72,16 @@ public interface DataManager {
     <I extends Serializable, T extends Entity<I>> T merge(T entity);
 
     /**
+     * Updates or persists the given entity.
+     *
+     * @param entities the entities to be updated
+     * @param <I>      the entity id type
+     * @param <T>      the entity type
+     * @return the merged entities
+     */
+    <I extends Serializable, T extends Entity<I>> List<T> batchMerge(List<T> entities);
+
+    /**
      * Removes the given entity.
      *
      * @param entity the entity to be removed
@@ -68,6 +89,15 @@ public interface DataManager {
      * @param <T>    the entity type
      */
     <I extends Serializable, T extends Entity<I>> void remove(T entity);
+
+    /**
+     * Removes the given entities.
+     *
+     * @param entities the entities to be removed
+     * @param <I>      the entity id type
+     * @param <T>      the entity type
+     */
+    <I extends Serializable, T extends Entity<I>> void remove(List<T> entities);
 
     /**
      * Executes the given query and expects and multiple result.

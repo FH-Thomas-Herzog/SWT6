@@ -7,9 +7,11 @@ import at.fh.ooe.swt6.worklog.manager.model.Project;
 import java.util.List;
 
 /**
+ * This interface specifies the worklog manager service operations the caller is allowed to use.
+ * <p>
  * Created by Thomas on 4/17/2016.
  */
-public interface WorklogManagerService {
+public interface WorklogManagerService extends Closable {
     /**
      * Creates a project.
      *

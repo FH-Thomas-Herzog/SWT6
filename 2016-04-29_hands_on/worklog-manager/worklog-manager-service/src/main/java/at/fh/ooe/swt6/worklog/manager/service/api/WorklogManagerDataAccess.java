@@ -1,13 +1,19 @@
 package at.fh.ooe.swt6.worklog.manager.service.api;
 
-import at.fh.ooe.swt6.worklog.manager.model.*;
+import at.fh.ooe.swt6.worklog.manager.model.LogBookEntry;
+import at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee;
+import at.fh.ooe.swt6.worklog.manager.model.Project;
+import at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee;
 
 import java.util.List;
 
 /**
+ * Specifies the worklog manager data access.
+ * Here all database query access is placed the called is allowed to use.
+ * <p>
  * Created by Thomas on 4/17/2016.
  */
-public interface WorklogManagerDataAccess {
+public interface WorklogManagerDataAccess extends Closable {
 
     /**
      * Gets all projects and related entities.

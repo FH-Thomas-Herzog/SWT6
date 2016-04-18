@@ -38,7 +38,7 @@ public class Project extends ModifiableBaseEntity<Long> {
 
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL)
     private Set<ProjectEmployee> projectEmployees = new HashSet<>();
 
     @Getter
