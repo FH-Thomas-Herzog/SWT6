@@ -29,7 +29,9 @@ public class WorklogManagerDataAccessImpl implements WorklogManagerDataAccess {
 
     @Override
     public List<Project> getAllProjects() {
-        return dataManager.queryMultipleResult("FROM Project p ORDER BY UPPER(p.name)", Project.class, null);
+        return dataManager.queryMultipleResult("SELECT DISTINCT p FROM Project p",
+                                               Project.class,
+                                               null);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class WorklogManagerDataAccessImpl implements WorklogManagerDataAccess {
     }
 
     @Override
-    public void close(){
+    public void close() {
         dataManager.close();
     }
 }

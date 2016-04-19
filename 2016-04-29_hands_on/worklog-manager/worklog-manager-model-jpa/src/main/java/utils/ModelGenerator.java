@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -46,26 +45,6 @@ public class ModelGenerator {
         })));
 
         return entries;
-    }
-
-    /**
-     * Creates the project.
-     *
-     * @param name      the project name
-     * @param leader    the leader of the project
-     * @param employees the employees working on this project
-     * @return the created project.
-     */
-    public static Project createProject(final String name,
-                                        final Employee leader,
-                                        final List<? extends Employee> employees) {
-        final Project project = new Project(name, leader);
-        project.setProjectEmployees(employees.stream()
-                                             .map(item -> new ProjectEmployee(project, item))
-                                             .collect(
-                                                     Collectors.toSet()));
-
-        return project;
     }
 
     /**

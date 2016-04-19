@@ -62,14 +62,14 @@ public abstract class Employee extends ModifiableBaseEntity<Long> {
     @Getter
     @Setter
     @NotNull
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private Set<ProjectEmployee> employeeProjects;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectEmployees")
+    private Set<Project> employeeProjects = new HashSet<>();
 
     @Getter
     @Setter
     @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "leader")
-    private Set<Project> leadingProjects;
+    private Set<Project> leadingProjects = new HashSet<>();
     //</editor-fold>
 
     //<editor-fold desc="Constructors">

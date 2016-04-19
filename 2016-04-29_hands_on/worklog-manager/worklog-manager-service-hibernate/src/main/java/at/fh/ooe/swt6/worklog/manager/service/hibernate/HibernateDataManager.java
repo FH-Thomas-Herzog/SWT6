@@ -138,6 +138,12 @@ public class HibernateDataManager implements DataManager {
         }
     }
 
+    public void clear() {
+        if ((session != null) && (session.isOpen())) {
+            session.clear();
+        }
+    }
+
     /**
      * Helper method for creating the query object for reading access queries.
      *

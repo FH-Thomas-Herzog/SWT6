@@ -15,7 +15,6 @@
         <class>at.fh.ooe.swt6.worklog.manager.model.Project</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.Module</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.Phase</class>
-        <class>at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.LogBookEntry</class>
 
         <properties>
@@ -49,16 +48,15 @@
         <class>at.fh.ooe.swt6.worklog.manager.model.Project</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.Module</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.Phase</class>
-        <class>at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee</class>
         <class>at.fh.ooe.swt6.worklog.manager.model.LogBookEntry</class>
 
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target"
-                      value="target/generated-dll/H2/createSchema.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target"
-                      value="target/generated-dll/H2/dropSchema.ddl"/>
+            <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
+            <!--<property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>-->
+            <!--<property name="javax.persistence.schema-generation.scripts.create-target"-->
+                      <!--value="target/generated-dll/H2/createSchema.ddl"/>-->
+            <!--<property name="javax.persistence.schema-generation.scripts.drop-target"-->
+                      <!--value="target/generated-dll/H2/dropSchema.ddl"/>-->
 
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.url"
@@ -69,6 +67,7 @@
             <property name="hibernate.log" value="false"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.default_schema" value="worklogmanager"/>
         </properties>
     </persistence-unit>

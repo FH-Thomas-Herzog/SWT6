@@ -38,14 +38,17 @@ public class Project extends ModifiableBaseEntity<Long> {
 
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<ProjectEmployee> projectEmployees = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "PROJECT_EMPLOYEES",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+    private Set<Employee> projectEmployees = new HashSet<>();
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private Set<Module> modules = new HashSet<>();
-    //</editor-fold>
+//</editor-fold>
 
     //<editor-fold desc="Constructors">
     public Project() {

@@ -136,6 +136,7 @@ public class JPADataManager implements DataManager {
         if (tx == null) {
             throw new PersistenceException("No transaction open");
         }
+        em.flush();
         tx.commit();
         tx = null;
     }
@@ -157,9 +158,16 @@ public class JPADataManager implements DataManager {
 
     @Override
     public void close() {
-        if (em.isOpen()) {
-            em.clear();
+        if ((em != null) && (em.isOpen())) {
+            clear();
             em.close();
+        }
+    }
+
+    @Override
+    public void clear() {
+        if ((em != null) && (em.isOpen())) {
+            em.clear();
         }
     }
 

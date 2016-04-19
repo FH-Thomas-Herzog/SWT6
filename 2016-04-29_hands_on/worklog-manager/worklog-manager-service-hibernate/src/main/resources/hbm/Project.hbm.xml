@@ -29,11 +29,11 @@
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Module"/>
         </set>
-        <set name="projectEmployees" inverse="true">
+<!--        <set name="projectEmployees" inverse="true">
             <key>
                 <column name="project_id"/>
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.ProjectEmployee"/>
-        </set>
+        </set>-->
     </class>
 </hibernate-mapping>

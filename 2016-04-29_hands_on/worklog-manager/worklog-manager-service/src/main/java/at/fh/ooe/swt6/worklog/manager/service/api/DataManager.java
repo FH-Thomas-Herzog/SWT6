@@ -170,4 +170,9 @@ public interface DataManager {
      * From now on, all operations will wail.
      */
     void close();
+
+    /**
+     * Clears the current persistent context and will release all cahced data.
+     */
+    void clear();
 }

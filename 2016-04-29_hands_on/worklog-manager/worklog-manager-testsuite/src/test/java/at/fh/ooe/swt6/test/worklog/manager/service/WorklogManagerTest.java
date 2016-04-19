@@ -1,6 +1,9 @@
 package at.fh.ooe.swt6.test.worklog.manager.service;
 
-import at.fh.ooe.swt6.worklog.manager.model.*;
+import at.fh.ooe.swt6.worklog.manager.model.Employee;
+import at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee;
+import at.fh.ooe.swt6.worklog.manager.model.Project;
+import at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee;
 import at.fh.ooe.swt6.worklog.manager.service.api.*;
 import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestClassWatcher;
 import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestInvocationWatcher;
@@ -8,11 +11,13 @@ import org.apache.log4j.Level;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.ModelGenerator;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -20,39 +25,46 @@ import java.util.Set;
 @RunWith(JUnit4.class)
 public class WorklogManagerTest {
 
-    private DataManager dataManager;
-
-    @ClassRule
-    public static LoggingTestClassWatcher watcher = new LoggingTestClassWatcher(Level.WARN);
-
-    @Rule
-    public LoggingTestInvocationWatcher methodWatcher = new LoggingTestInvocationWatcher(Level.DEBUG);
-
-    private static DataManagerProvider dataManagerProvider;
+    //<editor-fold desc="Private Members">
     private WorklogManagerDataAccess dataAccess;
     private WorklogManagerService service;
 
-    public WorklogManagerTest() {
-        // This will refresh the database
+    private static DataManagerProvider dataManagerProvider;
+    private static Logger log = LoggerFactory.getLogger(WorklogManagerTest.class);
+    private static Level level = Level.DEBUG;
+    //</editor-fold>
 
+    //<editor-fold desc="Test Rules">
+    @ClassRule
+    public static LoggingTestClassWatcher watcher = new LoggingTestClassWatcher(level);
+
+    @Rule
+    public LoggingTestInvocationWatcher methodWatcher = new LoggingTestInvocationWatcher(level);
+    //</editor-fold>
+
+
+    //<editor-fold desc="Test Lifecycle">
+    @BeforeClass
+    public static void beforeClass() {
+        dataManagerProvider = DataManagerFactory.createDataManagerProvider();
     }
 
-    @BeforeClass
-    public static void beforeClass(){
-        dataManagerProvider = DataManagerFactory.createDataManagerProvider();
-        dataManagerProvider.recreateContext();
+    @AfterClass
+    public static void afterClass() {
+        dataManagerProvider.close();
+        dataManagerProvider = null;
     }
 
     @Before
     public void beforeTest() {
+        // This will refresh the database
+        dataManagerProvider.recreateContext();
         // Get a fresh entity manager
-        dataManager = dataManagerProvider.create(Boolean.FALSE);
+        final DataManager dm = dataManagerProvider.create(Boolean.FALSE);
         // create data access
-        dataAccess = new WorklogManagerDataAccessImpl(dataManager);
+        dataAccess = new WorklogManagerDataAccessImpl(dm);
         // create service
-        service = new WorklogManagerServiceImpl(dataManager);
-        // create data
-        createTestData();
+        service = new WorklogManagerServiceImpl(dm);
     }
 
     @After
@@ -60,28 +72,103 @@ public class WorklogManagerTest {
         // close data access/service
         dataAccess.close();
         service.close();
-        dataManager.close();
         dataAccess = null;
         service = null;
-        dataManager = null;
-        // This will refresh the database
-        dataManagerProvider.recreateContext();
     }
+    //</editor-fold>
 
+    /**
+     * This test simulates a read of all projects and listing all of its information.
+     */
     @Test
-    public void t1() {
-        WorklogManagerDataAccess dataAccess = new WorklogManagerDataAccessImpl(dataManager);
-        WorklogManagerService service = new WorklogManagerServiceImpl(dataManager);
+    public void loadAllProjectsAndListThem() {
+        // -- given --
+        long startMillis = 0;
+        final int projectCount = 50;
+        final int permantentCount = projectCount;
+        final int temporaryCount = 10;
 
-        List<PermanentEmployee> permanentEmpl = dataAccess.getAllPermanentEmployees();
-        List<TemporaryEmployee> temporaryEmployees = dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(10));
-        permanentEmpl.forEach(item -> service.createProject("project",
-                                                            permanentEmpl.get(0),
-                                                            ModelGenerator.createModules(null),
-                                                            temporaryEmployees));
+        final List<PermanentEmployee> permanentEmployees = invokeTx((dataManager) -> dataManager.batchPersist(
+                ModelGenerator.createPermanatEmployees(
+                        permantentCount)));
+        log.debug("Created {} permanentEmployees", permantentCount);
+        final List<TemporaryEmployee> temporaryEmployees = invokeTx((dataManager) -> dataManager.batchPersist(
+                ModelGenerator.createTemporaryEmployees(
+                        temporaryCount)));
+        log.debug("Created {} temporaryEmployees", permantentCount);
+        startMillis = System.currentTimeMillis();
+        final List<Project> projects = new ArrayList<>(projectCount);
+        for (int i = 0; i < 50; i++) {
+            projects.add(service.createProject(
+                    "Project_" + i,
+                    permanentEmployees.get(i),
+                    ModelGenerator.createModules(null),
+                    temporaryEmployees));
+        }
+        log.debug("Created {} projects. duration: {} millis",
+                  permantentCount,
+                  (System.currentTimeMillis() - startMillis));
+
+        // -- when --
+        startMillis = System.currentTimeMillis();
+        final List<Project> actualProjects = dataAccess.getAllProjects();
+        log.debug("Loaded {} project. duration: {} millis", projectCount,
+                  (System.currentTimeMillis() - startMillis));
+        actualProjects.forEach(project -> {
+            log.debug("----------------------------------------------------");
+            log.debug("Project[id={}]: {} ", project.getId(), project.getName());
+            log.debug("Leader [id={}]: {} ",
+                      project.getLeader().getId(),
+                      (project.getLeader().getLastName() + ", " + project.getLeader().getFirstName()));
+            log.debug("Modules:        {} ", project.getModules().size());
+            project.getModules().forEach(module -> {
+                log.debug("        {}", module.getName());
+            });
+            log.debug("Employees:        {} ", project.getModules().size());
+            project.getProjectEmployees().forEach(employee -> {
+                log.debug("        [type={}] = {} ",
+                          employee.getClass().getSimpleName(),
+                          getEmployeeFullName(employee));
+            });
+            log.debug("----------------------------------------------------");
+        });
+
+        // -- then --
+        Assert.assertEquals(projectCount, projects.size());
+        Assert.assertEquals(projects.size(), actualProjects.size());
     }
 
-    public void createTestData() {
+    /**
+     * Invoces the consumer within and data transaction.
+     * This method will log the data creation elapsed time.
+     *
+     * @param function the consumer providing the DAtaManger which opened the connection.
+     */
+    private <T> T invokeTx(Function<DataManager, T> function) {
+        final DataManager dataManager = dataManagerProvider.create(Boolean.FALSE);
+        long startMillis = System.currentTimeMillis();
+        T result = null;
+        try {
+            dataManager.startTx();
+            result = function.apply(dataManager);
+            dataManager.commit();
+            dataManager.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataManager.rollback();
+        } finally {
+            dataManager.close();
+        }
+        log.debug("Ended transactional. duration: {} millis", (System.currentTimeMillis() - startMillis));
+
+        return result;
+    }
+
+    private String getEmployeeFullName(Employee employee) {
+        return new StringBuilder(employee.getLastName()).append(", ").append(employee.getFirstName()).toString();
+    }
+
+  /*  public void createTestData() {
         try {
             dataManager.startTx();
 
@@ -127,6 +214,6 @@ public class WorklogManagerTest {
             e.printStackTrace();
             dataManager.rollback();
         }
-    }
+    }*/
 
 }

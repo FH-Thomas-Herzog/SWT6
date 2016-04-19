@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Base class for all entities which implement proper hash and equals for JPA entites.
  * Additionally all entities are using optimistic locking.
- *
+ * <p>
  * Created by Thomas on 4/16/2016.
  */
 @MappedSuperclass

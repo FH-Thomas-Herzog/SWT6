@@ -18,6 +18,7 @@ import java.util.Objects;
 public class JPADataManagerProvider implements DataManagerProvider {
 
     //<editor-fold desc="Static Members">
+    private static boolean closed = Boolean.FALSE;
     private static EntityManagerFactory emf = null;
 
     private static final Logger log = LoggerFactory.getLogger(JPADataManagerProvider.class);
@@ -64,12 +65,27 @@ public class JPADataManagerProvider implements DataManagerProvider {
     //<editor-fold desc="Interface DataManager Methods">
     @Override
     public DataManager create(boolean threadLocal) {
+        if (closed) {
+            throw new IllegalStateException("DataManagerProvider has been closed an cannot be used anymore");
+        }
         return new JPADataManager(getEntityManager(threadLocal));
     }
 
     @Override
     public void recreateContext() {
+        if (closed) {
+            throw new IllegalStateException("DataManagerProvider has been closed an cannot be used anymore");
+        }
         createEntityManagerFactory();
+    }
+
+    @Override
+    public void close() {
+        if ((emf != null) && (emf.isOpen())) {
+            emf.close();
+            emf = null;
+            closed = Boolean.TRUE;
+        }
     }
     //</editor-fold>
 }

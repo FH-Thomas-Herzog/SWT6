@@ -5,8 +5,8 @@ package at.fh.ooe.swt6.worklog.manager.service.api;
  */
 public interface DataManagerProvider {
     /**
-     * @return the data manager instance
      * @param threadLocal
+     * @return the data manager instance
      */
     DataManager create(boolean threadLocal);
 
@@ -14,4 +14,10 @@ public interface DataManagerProvider {
      * Recreates the backed data manager provider context.
      */
     void recreateContext();
+
+    /**
+     * Closes this data manager provider.
+     * From now on now DataManagers can be provided anymore
+     */
+    void close();
 }
