@@ -1,20 +1,20 @@
 package at.fh.ooe.swt6.test.worklog.manager.service;
 
+import at.fh.ooe.swt6.test.worklog.manager.service.api.AbstractWorklogManagerTest;
 import at.fh.ooe.swt6.worklog.manager.model.*;
 import at.fh.ooe.swt6.worklog.manager.service.api.*;
-import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestClassWatcher;
-import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestInvocationWatcher;
-import org.apache.log4j.Level;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import utils.ModelGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,43 +22,16 @@ import static org.junit.Assert.assertEquals;
  * Created by Thomas on 4/17/2016.
  */
 @RunWith(JUnit4.class)
-public class WorklogManagerTest {
+public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
 
     //<editor-fold desc="Private Members">
     // Keep reference to the used data manager to be able to manipulate persistence context.
     private DataManager toTestDataManager;
     private WorklogManagerDataAccess dataAccess;
     private WorklogManagerService service;
-    private final Random random = new Random();
-
-    private static DataManagerProvider dataManagerProvider;
-    private static Logger log = LoggerFactory.getLogger(WorklogManagerTest.class);
-    private static Level level = Level.DEBUG;
-    private static final String LOG_SEPARATOR = "-----------------------------------------------------------------";
     //</editor-fold>
-
-    //<editor-fold desc="Test Rules">
-    @ClassRule
-    public static LoggingTestClassWatcher watcher = new LoggingTestClassWatcher(level);
-
-    @Rule
-    public LoggingTestInvocationWatcher methodWatcher = new LoggingTestInvocationWatcher(level);
-    //</editor-fold>
-
 
     //<editor-fold desc="Test Lifecycle">
-    @BeforeClass
-    public static void beforeClass() {
-        dataManagerProvider = DataManagerFactory.createDataManagerProvider();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        // Finally close the backed persistence provider
-        dataManagerProvider.close();
-        dataManagerProvider = null;
-    }
-
     @Before
     public void beforeTest() {
         // This will refresh the database
@@ -286,82 +259,6 @@ public class WorklogManagerTest {
             toTestDataManager.rollback();
             e.printStackTrace();
         }
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="Private Helper">
-
-    /**
-     * @param consumer the data manager provided.
-     * @see WorklogManagerTest#invokeTx(Function)
-     */
-    private void invokeTx(Consumer<DataManager> consumer) {
-        invokeTx((dataManager) -> {
-            consumer.accept(dataManager);
-            return null;
-        });
-    }
-
-    /**
-     * Invoces the consumer within and data transaction.
-     * This method will log the data creation elapsed time.
-     *
-     * @param function the consumer providing the DAtaManger which opened the connection.
-     */
-    private <T> T invokeTx(Function<DataManager, T> function) {
-        final DataManager dataManager = dataManagerProvider.create(Boolean.FALSE);
-        long startMillis = System.currentTimeMillis();
-        T result = null;
-        try {
-            dataManager.startTx();
-            result = function.apply(dataManager);
-            dataManager.commit();
-            dataManager.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataManager.rollback();
-        } finally {
-            dataManager.close();
-        }
-        log.debug("Ended transactional. duration: {} millis", (System.currentTimeMillis() - startMillis));
-
-        return result;
-    }
-
-    /**
-     * Concats the employee parameters to produce a full name.
-     *
-     * @param employee the employee to create full name for
-     * @return the created full name
-     */
-    private String getEmployeeFullName(Employee employee) {
-        return new StringBuilder(employee.getLastName()).append(", ").append(employee.getFirstName()).toString();
-    }
-
-    /**
-     * Logs the project information to the console
-     *
-     * @param projects the projects to log info from
-     */
-    private void logProjectInfo(final List<Project> projects) {
-        projects.forEach(project -> {
-            log.debug(LOG_SEPARATOR);
-            log.debug("Project[id={}]: {} ", project.getId(), project.getName());
-            log.debug("Leader [id={}]: {} ",
-                      project.getLeader().getId(),
-                      (project.getLeader().getLastName() + ", " + project.getLeader().getFirstName()));
-            log.debug("Modules:        {} ", project.getModules().size());
-            project.getModules().forEach(module -> {
-                log.debug("        {}", module.getName());
-            });
-            log.debug("Employees:        {} ", project.getModules().size());
-            project.getProjectEmployees().forEach(employee -> {
-                log.debug("        [type={}] = {} ",
-                          employee.getClass().getSimpleName(),
-                          getEmployeeFullName(employee));
-            });
-            log.debug(LOG_SEPARATOR);
-        });
     }
     //</editor-fold>
 }
