@@ -1,9 +1,6 @@
 package at.fh.ooe.swt6.test.worklog.manager.service;
 
-import at.fh.ooe.swt6.worklog.manager.model.Employee;
-import at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee;
-import at.fh.ooe.swt6.worklog.manager.model.Project;
-import at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee;
+import at.fh.ooe.swt6.worklog.manager.model.*;
 import at.fh.ooe.swt6.worklog.manager.service.api.*;
 import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestClassWatcher;
 import at.fh.ooe.swt6.worklog.manager.testsuite.api.watcher.LoggingTestInvocationWatcher;
@@ -15,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.ModelGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -26,12 +25,16 @@ import java.util.function.Function;
 public class WorklogManagerTest {
 
     //<editor-fold desc="Private Members">
+    // Keep reference to the used data manager to be able to manipulate persistence context.
+    private DataManager toTestDataManager;
     private WorklogManagerDataAccess dataAccess;
     private WorklogManagerService service;
+    private final Random random = new Random();
 
     private static DataManagerProvider dataManagerProvider;
     private static Logger log = LoggerFactory.getLogger(WorklogManagerTest.class);
     private static Level level = Level.DEBUG;
+    private static final String LOG_SEPARATOR = "-----------------------------------------------------------------";
     //</editor-fold>
 
     //<editor-fold desc="Test Rules">
@@ -51,6 +54,7 @@ public class WorklogManagerTest {
 
     @AfterClass
     public static void afterClass() {
+        // Finally close the backed persistence provider
         dataManagerProvider.close();
         dataManagerProvider = null;
     }
@@ -60,11 +64,11 @@ public class WorklogManagerTest {
         // This will refresh the database
         dataManagerProvider.recreateContext();
         // Get a fresh entity manager
-        final DataManager dm = dataManagerProvider.create(Boolean.FALSE);
+        toTestDataManager = dataManagerProvider.create(Boolean.FALSE);
         // create data access
-        dataAccess = new WorklogManagerDataAccessImpl(dm);
+        dataAccess = new WorklogManagerDataAccessImpl(toTestDataManager);
         // create service
-        service = new WorklogManagerServiceImpl(dm);
+        service = new WorklogManagerServiceImpl(toTestDataManager);
     }
 
     @After
@@ -72,70 +76,230 @@ public class WorklogManagerTest {
         // close data access/service
         dataAccess.close();
         service.close();
+        // Should be closed already
+        toTestDataManager.close();
+
+        // release references
+        toTestDataManager = null;
         dataAccess = null;
         service = null;
     }
     //</editor-fold>
 
-    /**
-     * This test simulates a read of all projects and listing all of its information.
-     */
+    //<editor-fold desc="Test Methods">
     @Test
-    public void loadAllProjectsAndListThem() {
+    public void getAllProjects() {
         // -- given --
         long startMillis = 0;
-        final int projectCount = 50;
+        final int projectCount = 200;
+        final int temporaryCount = 50;
+        final int modulePerProjectCount = 10;
         final int permantentCount = projectCount;
-        final int temporaryCount = 10;
+        final int employeesPerProjectCount = temporaryCount;
 
-        final List<PermanentEmployee> permanentEmployees = invokeTx((dataManager) -> dataManager.batchPersist(
-                ModelGenerator.createPermanatEmployees(
-                        permantentCount)));
-        log.debug("Created {} permanentEmployees", permantentCount);
-        final List<TemporaryEmployee> temporaryEmployees = invokeTx((dataManager) -> dataManager.batchPersist(
-                ModelGenerator.createTemporaryEmployees(
-                        temporaryCount)));
-        log.debug("Created {} temporaryEmployees", permantentCount);
-        startMillis = System.currentTimeMillis();
-        final List<Project> projects = new ArrayList<>(projectCount);
-        for (int i = 0; i < 50; i++) {
-            projects.add(service.createProject(
-                    "Project_" + i,
-                    permanentEmployees.get(i),
-                    ModelGenerator.createModules(null),
-                    temporaryEmployees));
-        }
-        log.debug("Created {} projects. duration: {} millis",
-                  permantentCount,
-                  (System.currentTimeMillis() - startMillis));
+        final List<PermanentEmployee> permanentEmployees = new ArrayList<>(permantentCount);
+        final List<TemporaryEmployee> temporaryEmployees = new ArrayList<>(temporaryCount);
+
+        invokeTx((dataManager) -> {
+            permanentEmployees.addAll(dataManager.batchPersist(
+                    ModelGenerator.createPermanatEmployees(
+                            permantentCount)));
+            temporaryEmployees.addAll(dataManager.batchPersist(
+                    ModelGenerator.createTemporaryEmployees(
+                            temporaryCount)));
+
+            final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
+                                                                                                  temporaryEmployees,
+                                                                                                  modulePerProjectCount));
+            projects.forEach(item -> item.getModules()
+                                         .addAll(dataManager.batchPersist(ModelGenerator.createModules(
+                                                 modulePerProjectCount,
+                                                 item))));
+        });
+        log.debug(LOG_SEPARATOR);
+        log.debug("permanent employees: {}", permantentCount);
+        log.debug("temporary employees: {}", temporaryCount);
+        log.debug("projects:            {}", projectCount);
+        log.debug("modules/project:     {}", modulePerProjectCount);
+        log.debug("employees/project:   {}", employeesPerProjectCount);
+        log.debug(LOG_SEPARATOR);
 
         // -- when --
-        startMillis = System.currentTimeMillis();
-        final List<Project> actualProjects = dataAccess.getAllProjects();
-        log.debug("Loaded {} project. duration: {} millis", projectCount,
-                  (System.currentTimeMillis() - startMillis));
-        actualProjects.forEach(project -> {
-            log.debug("----------------------------------------------------");
-            log.debug("Project[id={}]: {} ", project.getId(), project.getName());
-            log.debug("Leader [id={}]: {} ",
-                      project.getLeader().getId(),
-                      (project.getLeader().getLastName() + ", " + project.getLeader().getFirstName()));
-            log.debug("Modules:        {} ", project.getModules().size());
-            project.getModules().forEach(module -> {
-                log.debug("        {}", module.getName());
-            });
-            log.debug("Employees:        {} ", project.getModules().size());
-            project.getProjectEmployees().forEach(employee -> {
-                log.debug("        [type={}] = {} ",
-                          employee.getClass().getSimpleName(),
-                          getEmployeeFullName(employee));
-            });
-            log.debug("----------------------------------------------------");
-        });
+        List<Project> actualProjects = Collections.emptyList();
+        try {
+            startMillis = System.currentTimeMillis();
+            toTestDataManager.startTx();
+            actualProjects = dataAccess.getAllProjects();
+            log.debug("Loaded {} project. duration: {} millis", actualProjects.size(),
+                      (System.currentTimeMillis() - startMillis));
+//        log.debug(LOG_SEPARATOR);
+//        logProjectInfo(actualProjects);
+//        log.debug(LOG_SEPARATOR);
+            toTestDataManager.commit();
+        } catch (Exception e) {
+            toTestDataManager.rollback();
+            throw new AssertionError(e);
+        } finally {
+            toTestDataManager.clear();
+        }
+
 
         // -- then --
-        Assert.assertEquals(projectCount, projects.size());
-        Assert.assertEquals(projects.size(), actualProjects.size());
+        assertEquals(projectCount, actualProjects.size());
+    }
+
+    @Test
+    public void getAllPermanentEmployees() {
+        // -- given --
+        final int permanentCount = 100;
+        final int temporaryCount = 100;
+        invokeTx((dataManager) -> {
+            dataManager.batchPersist(ModelGenerator.createPermanatEmployees(permanentCount));
+            dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(temporaryCount));
+        });
+        log.debug(LOG_SEPARATOR);
+        log.debug("permanent employees: {}", permanentCount);
+        log.debug("temporary employees: {}", temporaryCount);
+        log.debug(LOG_SEPARATOR);
+        // clear persistence context here so that loaded works against database and not cache
+        toTestDataManager.clear();
+
+        // -- when --
+        List<PermanentEmployee> actualPermanentEmployees = Collections.emptyList();
+        try {
+            toTestDataManager.startTx();
+            final long startMillis = System.currentTimeMillis();
+            actualPermanentEmployees = dataAccess.getAllPermanentEmployees();
+            log.debug("Loaded {} permanent-employees. duration: {} millis", actualPermanentEmployees.size(),
+                      (System.currentTimeMillis() - startMillis));
+        } catch (Exception e) {
+            toTestDataManager.rollback();
+            throw new AssertionError(e);
+        } finally {
+            toTestDataManager.clear();
+        }
+
+        // -- then --
+        assertEquals(permanentCount, actualPermanentEmployees.size());
+    }
+
+
+    @Test
+    public void getAllTemporaryEmployees() {
+        // -- given --
+        final int permanentCount = 100;
+        final int temporaryCount = 100;
+        invokeTx((dataManager) -> {
+            dataManager.batchPersist(ModelGenerator.createPermanatEmployees(permanentCount));
+            dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(temporaryCount));
+        });
+        log.debug(LOG_SEPARATOR);
+        log.debug("permanent employees: {}", permanentCount);
+        log.debug("temporary employees: {}", temporaryCount);
+        log.debug(LOG_SEPARATOR);
+        // clear persistence context here so that loaded works against database and not cache
+        toTestDataManager.clear();
+
+        // -- when --
+        List<TemporaryEmployee> actualTemporaryEmployees = Collections.emptyList();
+        try {
+            toTestDataManager.startTx();
+            actualTemporaryEmployees = dataAccess.getAllTemporaryEmployees();
+            toTestDataManager.commit();
+            final long startMillis = System.currentTimeMillis();
+            log.debug("Loaded {} temporary-employees. duration: {} millis", actualTemporaryEmployees.size(),
+                      (System.currentTimeMillis() - startMillis));
+        } catch (Exception e) {
+            toTestDataManager.rollback();
+            e.printStackTrace();
+        } finally {
+            toTestDataManager.clear();
+        }
+
+        // -- then --
+        assertEquals(temporaryCount, actualTemporaryEmployees.size());
+    }
+
+    @Test
+    public void getLogbookEntriesForEmployee() {
+        // -- given --
+        final int permanentCount = 100;
+        final int temporaryCount = 100;
+        final int phaseCount = 100;
+        final int modulesPerProjectCount = 10;
+        final int logbookEntryPerEmployee = 10;
+
+        final List<Employee> allEmployees = new ArrayList<>((permanentCount * logbookEntryPerEmployee) + (temporaryCount * logbookEntryPerEmployee));
+        invokeTx((dataManager) -> {
+            final List<Phase> phases = dataManager.batchPersist(ModelGenerator.createPhases(phaseCount));
+            final List<PermanentEmployee> permanentEmployees = dataManager.batchPersist(ModelGenerator.createPermanatEmployees(
+                    permanentCount));
+            final List<TemporaryEmployee> temporaryEmployees = dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(
+                    temporaryCount));
+            final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
+                                                                                                  temporaryEmployees,
+                                                                                                  modulesPerProjectCount));
+            projects.forEach(item -> item.getModules()
+                                         .addAll(dataManager.batchPersist(ModelGenerator.createModules(
+                                                 modulesPerProjectCount,
+                                                 item))));
+            final Consumer<Employee> logbookEntryAction = (item) -> dataManager.persist(new LogBookEntry(("Entry_employee_" + item
+                    .getId()),
+                                                                                                         Calendar.getInstance()
+                                                                                                                 .getTime(),
+                                                                                                         Calendar.getInstance()
+                                                                                                                 .getTime(),
+                                                                                                         item,
+                                                                                                         phases.get(
+                                                                                                                 random.nextInt(
+                                                                                                                         phaseCount)),
+                                                                                                         (new ArrayList<>(
+                                                                                                                 projects.get(
+                                                                                                                         random.nextInt(
+                                                                                                                                 permanentCount))
+                                                                                                                         .getModules())
+                                                                                                                 .get(random.nextInt(
+                                                                                                                         modulesPerProjectCount)))));
+            for (int i = 0; i < logbookEntryPerEmployee; i++) {
+                permanentEmployees.forEach(logbookEntryAction);
+            }
+            for (int i = 0; i < logbookEntryPerEmployee; i++) {
+                temporaryEmployees.forEach(logbookEntryAction);
+            }
+
+            allEmployees.addAll(permanentEmployees);
+            allEmployees.addAll(temporaryEmployees);
+        });
+
+        try {
+            for (Employee employee : allEmployees) {
+                // -- when --
+                toTestDataManager.startTx();
+                final List<LogBookEntry> actualLogbookEntries = dataAccess.getLogbookEntriesForEmployee(employee.getId());
+                toTestDataManager.commit();
+                toTestDataManager.clear();
+
+                // -- then --
+                assertEquals(logbookEntryPerEmployee, actualLogbookEntries.size());
+            }
+        } catch (Exception e) {
+            toTestDataManager.rollback();
+            e.printStackTrace();
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Private Helper">
+
+    /**
+     * @param consumer the data manager provided.
+     * @see WorklogManagerTest#invokeTx(Function)
+     */
+    private void invokeTx(Consumer<DataManager> consumer) {
+        invokeTx((dataManager) -> {
+            consumer.accept(dataManager);
+            return null;
+        });
     }
 
     /**
@@ -164,56 +328,40 @@ public class WorklogManagerTest {
         return result;
     }
 
+    /**
+     * Concats the employee parameters to produce a full name.
+     *
+     * @param employee the employee to create full name for
+     * @return the created full name
+     */
     private String getEmployeeFullName(Employee employee) {
         return new StringBuilder(employee.getLastName()).append(", ").append(employee.getFirstName()).toString();
     }
 
-  /*  public void createTestData() {
-        try {
-            dataManager.startTx();
-
-            List<Phase> phases = ModelGenerator.createPhases();
-            phases.forEach(item -> dataManager.persist(item));
-
-            List<PermanentEmployee> permanentEmployees = ModelGenerator.createPermanatEmployees(10);
-            permanentEmployees.forEach(item -> dataManager.persist(item));
-
-            List<TemporaryEmployee> temporaryEmployees = ModelGenerator.createTemporaryEmployees(10);
-            temporaryEmployees.forEach(item -> dataManager.persist(item));
-
-            permanentEmployees.forEach(item -> {
-                Project project = ModelGenerator.createProject("project_" + item.getFirstName(),
-                                                               item,
-                                                               temporaryEmployees);
-                Set<ProjectEmployee> hasEmployees = project.getProjectEmployees();
-                project.setProjectEmployees(new HashSet<>());
-
-                project = dataManager.persist(project);
-                hasEmployees.forEach(entry -> {
-                    entry.setId(new ProjectEmployeeId(entry.getProject()
-                                                           .getId(),
-                                                      entry.getEmployee()
-                                                           .getId()));
-                    entry = dataManager.persist(entry);
-                });
-
-                List<Module> modules = ModelGenerator.createModules(project);
-                modules.forEach(module -> dataManager.persist(module));
-
-                List<LogBookEntry> entries = ModelGenerator.createLogbookEntries(permanentEmployees,
-                                                                                 phases,
-                                                                                 modules,
-                                                                                 10);
-                entries.forEach(entry -> dataManager.persist(entry));
-
+    /**
+     * Logs the project information to the console
+     *
+     * @param projects the projects to log info from
+     */
+    private void logProjectInfo(final List<Project> projects) {
+        projects.forEach(project -> {
+            log.debug(LOG_SEPARATOR);
+            log.debug("Project[id={}]: {} ", project.getId(), project.getName());
+            log.debug("Leader [id={}]: {} ",
+                      project.getLeader().getId(),
+                      (project.getLeader().getLastName() + ", " + project.getLeader().getFirstName()));
+            log.debug("Modules:        {} ", project.getModules().size());
+            project.getModules().forEach(module -> {
+                log.debug("        {}", module.getName());
             });
-
-            dataManager.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataManager.rollback();
-        }
-    }*/
-
+            log.debug("Employees:        {} ", project.getModules().size());
+            project.getProjectEmployees().forEach(employee -> {
+                log.debug("        [type={}] = {} ",
+                          employee.getClass().getSimpleName(),
+                          getEmployeeFullName(employee));
+            });
+            log.debug(LOG_SEPARATOR);
+        });
+    }
+    //</editor-fold>
 }

@@ -49,6 +49,8 @@ public class LoggingTestInvocationWatcher extends AbstractLoggerWatcher {
                 String.format(LOG_FORMAT,
                               "succeeded:") + description.getMethodName() + " | " + DateFormatUtils.ISO_DATETIME_FORMAT.format(
                         Calendar.getInstance()) + " | " + millis + " milis");
+        log.log(level, StringUtils.repeat("-", SEPARATOR_REPEATIONS));
+        log.debug("");
     }
 
     @Override
@@ -59,6 +61,8 @@ public class LoggingTestInvocationWatcher extends AbstractLoggerWatcher {
         log.log(level,
                 String.format(LOG_FORMAT, "failed:") + description.getMethodName() + " | " + millis + " milis",
                 e);
+        log.log(level, StringUtils.repeat("-", SEPARATOR_REPEATIONS));
+        log.debug("");
     }
 
 }

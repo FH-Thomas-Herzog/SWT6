@@ -23,7 +23,7 @@
     </developers>
 
     <modules>
-        <module>worklog-manager-model-jpa</module>
+        <module>worklog-manager-model</module>
         <module>worklog-manager-service</module>
         <module>worklog-manager-service-jpa</module>
         <module>worklog-manager-service-hibernate</module>

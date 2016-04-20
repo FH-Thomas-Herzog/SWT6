@@ -159,6 +159,11 @@ public class JPADataManager implements DataManager {
     @Override
     public void close() {
         if ((em != null) && (em.isOpen())) {
+            // In case of an not catched exception
+            if ((tx != null) && (tx.isActive())) {
+                tx.rollback();
+                tx = null;
+            }
             clear();
             em.close();
         }

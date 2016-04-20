@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -50,16 +51,14 @@ public class ModelGenerator {
     /**
      * Creates the predefined phases.
      *
-     * @return the list of predefined phases
+     * @param count the count of phases to create
+     * @return the list of created phases
      */
-    public static List<Phase> createPhases() {
+    public static List<Phase> createPhases(int count) {
         final List<Phase> phases = new ArrayList<>();
-        phases.add(new Phase("Konzeption"));
-        phases.add(new Phase("Plannung"));
-        phases.add(new Phase("Prototype"));
-        phases.add(new Phase("Implementierung"));
-        phases.add(new Phase("Tests"));
-        phases.add(new Phase("Dokumentation"));
+        for (int i = 1; i <= count; i++) {
+            phases.add(new Phase(("Phase_" + i)));
+        }
 
         return phases;
     }
@@ -67,16 +66,14 @@ public class ModelGenerator {
     /**
      * Creates the predefined modules.
      *
-     * @return the list of predefined modules
+     * @param count the count of modules to create
+     * @return the list of created modules
      */
-    public static List<Module> createModules(Project project) {
+    public static List<Module> createModules(int count, Project project) {
         final List<Module> modules = new ArrayList<>();
-        modules.add(new Module("GUI", project));
-        modules.add(new Module("REST-Services", project));
-        modules.add(new Module("Database Access", project));
-        modules.add(new Module("Service", project));
-        modules.add(new Module("Testdata", project));
-        modules.add(new Module("Database", project));
+        for (int i = 1; i <= count; i++) {
+            modules.add(new Module(("MODULE_" + i), project));
+        }
 
         return modules;
     }
@@ -120,5 +117,23 @@ public class ModelGenerator {
         }
 
         return employees;
+    }
+
+    /**
+     * Creates a project for each leader and assigns all project employees to all projects.
+     *
+     * @param projectLeader    the leader of the project
+     * @param projectEmployees the employees working on the project
+     * @param moduleCount      the count of modules on a project
+     * @return the created projects
+     */
+    public static List<Project> createProjects(final List<? extends Employee> projectLeader,
+                                               final List<? extends Employee> projectEmployees,
+                                               final int moduleCount) {
+        return projectLeader.stream().map(item -> {
+            final Project project = new Project("project_" + item.getId(), item);
+            project.getProjectEmployees().addAll(projectEmployees);
+            return project;
+        }).collect(Collectors.toList());
     }
 }
