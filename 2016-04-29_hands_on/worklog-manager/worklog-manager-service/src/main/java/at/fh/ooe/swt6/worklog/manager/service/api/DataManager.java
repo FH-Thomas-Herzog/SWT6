@@ -15,19 +15,6 @@ import java.util.Map;
 public interface DataManager {
 
     /**
-     * Gets the entity by its id
-     *
-     * @param id    the entity id
-     * @param clazz the entity class
-     * @param <I>   the entity id type
-     * @param <T>   the entity type
-     * @return the found entity
-     * @throws javax.persistence.EntityNotFoundException if entity could not be found
-     */
-    <I extends Serializable, T extends Entity<I>> T byId(I id,
-                                                         Class<T> clazz);
-
-    /**
      * Finds a entity by tis id
      *
      * @param id    the entity id
@@ -40,11 +27,23 @@ public interface DataManager {
                                                          Class<T> clazz);
 
     /**
+     * Finds a entity by tis id
+     *
+     * @param ids   the entity ids
+     * @param clazz the entity class
+     * @param <I>   the entity id type
+     * @param <T>   the entity type
+     * @return the found entities or an empty list no one could be found
+     */
+    <I extends Serializable, T extends Entity<I>> List<T> find(List<I> ids,
+                                                         Class<T> clazz);
+
+    /**
      * Loads all instance of the given class.
      *
      * @param clazz the entity class
-     * @param <I> the entity id type
-     * @param <T> the entity type
+     * @param <I>   the entity id type
+     * @param <T>   the entity type
      * @return thelist of loaded entity instances
      */
     <I extends Serializable, T extends Entity<I>> List<T> loadAllForClass(Class<T> clazz);

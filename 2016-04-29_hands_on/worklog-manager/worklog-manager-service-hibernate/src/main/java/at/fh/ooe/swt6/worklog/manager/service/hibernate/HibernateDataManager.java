@@ -6,12 +6,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,18 +26,6 @@ public class HibernateDataManager implements DataManager {
     }
 
     @Override
-    public <I extends Serializable, T extends Entity<I>> T byId(I id,
-                                                                Class<T> clazz) {
-
-        final T result = find(id, clazz);
-        if (result == null) {
-            throw new EntityNotFoundException("Entity of type '" + clazz + "' with id '" + id + "'");
-        }
-
-        return result;
-    }
-
-    @Override
     public <I extends Serializable, T extends Entity<I>> T find(I id,
                                                                 Class<T> clazz) {
         Objects.requireNonNull(id, "Cannot find entity for null id");
@@ -50,11 +35,17 @@ public class HibernateDataManager implements DataManager {
     }
 
     @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> find(List<I> ids,
+                                                                      Class<T> clazz) {
+        Objects.requireNonNull(ids, "Cannot load entities for null ids");
+
+        return getForClassAndIds(clazz, ids);
+    }
+
+    @Override
     public <I extends Serializable, T extends Entity<I>> List<T> loadAllForClass(Class<T> clazz) {
         Objects.requireNonNull(clazz, "Entity class must not be null");
-        final String entityName = clazz.getSimpleName();
-        // TODO: Should check for explicitly defined entity name too
-        return queryMultipleResult("SELECT entity FROM " + entityName + " entity", clazz, null);
+        return getForClassAndIds(clazz, null);
     }
 
     @Override
@@ -200,5 +191,30 @@ public class HibernateDataManager implements DataManager {
         }
 
         return query;
+    }
+
+    /**
+     * Helper which is able to load all entity or with where claus on their ids.
+     *
+     * @param entityClazz the entity class
+     * @param ids         the ids of the entity type, may be null
+     * @param <I>         the entity id type
+     * @param <T>         the entity type
+     * @return the found entities, an empty list otherwise
+     */
+    private <I extends Serializable, T extends Entity<I>> List<T> getForClassAndIds(final Class<T> entityClazz,
+                                                                                    final List<I> ids) {
+        Objects.requireNonNull(entityClazz, "Cannot load for null class");
+        final boolean isWithIds = (ids != null);
+        // id list given but empty means no result
+        if ((isWithIds) && (ids.isEmpty())) {
+            return new ArrayList<>(0);
+        }
+        final String entityName = entityClazz.getSimpleName();
+        final String query = ("SELECT entity FROM " + entityName + " entity") + ((isWithIds) ? " WHERE entity.id in (:ids)" : "");
+        final Map<String, Object> parameters = (isWithIds) ? new HashMap() {{
+            put("ids", ids);
+        }} : null;
+        return queryMultipleResult(query, entityClazz, parameters);
     }
 }

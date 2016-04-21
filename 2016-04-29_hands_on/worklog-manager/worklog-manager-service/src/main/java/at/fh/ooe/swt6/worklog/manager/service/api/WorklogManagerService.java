@@ -40,10 +40,25 @@ public interface WorklogManagerService extends Closable {
     /**
      * Removes the given employees from the project.
      *
-     * @param employeeIds the employee ids to be removed from the project
-     * @param projectId   the project id to remove employees from
+     * @param employees the employees meant to be assigned to the projects
+     * @param projects  the projects meant to be assigned to the employees
      * @throws NullPointerException if a argument is null
      */
-    void removeEmployeesFromProject(List<Integer> employeeIds,
-                                    int projectId);
+    void removeEmployeesFromProject(List<? extends Employee> employees,
+                                    List<Project> projects);
+
+    /**
+     * Removes the logoobk entries from teh database.
+     *
+     * @param ids the employee ids to be removed.
+     * @return the count of removed logbook-entries.
+     */
+    int removeLogbookEntriesForEmployee(List<Long> ids);
+    /**
+     * Removes the logbook-entries from a project from the database.
+     *
+     * @param ids the employee ids to be removed.
+     * @return the count of removed logbook-entries.
+     */
+    int removeProjects(List<Long> ids);
 }

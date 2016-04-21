@@ -3,7 +3,9 @@ package at.fh.ooe.swt6.test.worklog.manager.service;
 import at.fh.ooe.swt6.test.worklog.manager.service.api.AbstractWorklogManagerTest;
 import at.fh.ooe.swt6.test.worklog.manager.service.util.TestDataPersister;
 import at.fh.ooe.swt6.worklog.manager.model.*;
-import at.fh.ooe.swt6.worklog.manager.service.api.*;
+import at.fh.ooe.swt6.worklog.manager.service.api.DataManager;
+import at.fh.ooe.swt6.worklog.manager.service.api.WorklogManagerDataAccess;
+import at.fh.ooe.swt6.worklog.manager.service.api.WorklogManagerDataAccessImpl;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +20,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * This class tests the implemented {@link WorklogManagerDataAccess} interface which demonstrates
+ * data access operations on the worklog data.
+ * This test applies for JPA and Hibernate wince the abstraction realised via {@link DataManager} interface
+ * prevents the code from being polluted with JPA or Hibernate specific references.
+ * <p>
  * Created by Thomas on 4/17/2016.
  */
 @RunWith(JUnit4.class)
@@ -27,7 +34,6 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
     // Keep reference to the used data manager to be able to manipulate persistence context.
     private DataManager toTestDataManager;
     private WorklogManagerDataAccess dataAccess;
-    private WorklogManagerService service;
 
     // Helper for creating test data
     private TestDataPersister testDataPersister;
@@ -42,17 +48,14 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         toTestDataManager = dataManagerProvider.create(Boolean.FALSE);
         // create data access
         dataAccess = new WorklogManagerDataAccessImpl(toTestDataManager);
-        // create service
-        service = new WorklogManagerServiceImpl(toTestDataManager);
         // create test data helper
         testDataPersister = new TestDataPersister(dataManagerProvider.create(Boolean.FALSE));
     }
 
     @After
     public void afterTest() {
-        // close data access/service
+        // close data access
         dataAccess.close();
-        service.close();
         // Should be closed already
         toTestDataManager.close();
         // close test data helper
@@ -61,7 +64,6 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         // release references
         toTestDataManager = null;
         dataAccess = null;
-        service = null;
         testDataPersister = null;
     }
     //</editor-fold>

@@ -150,6 +150,7 @@ public class TestDataPersister implements Closable {
     public void createAndPersistProjects(final int permantentCount,
                                          final int temporaryCount,
                                          final int modulePerProjectCount) {
+        final List<Project> projects = new ArrayList<>(permantentCount);
         final StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.debug(LOG_SEPARATOR);
@@ -164,9 +165,9 @@ public class TestDataPersister implements Closable {
                     ModelGenerator.createTemporaryEmployees(
                             temporaryCount));
 
-            final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
-                                                                                                  temporaryEmployees,
-                                                                                                  modulePerProjectCount));
+            projects.addAll(dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
+                                                                                   temporaryEmployees,
+                                                                                   modulePerProjectCount)));
             projects.forEach(item -> item.getModules()
                                          .addAll(dataManager.batchPersist(ModelGenerator.createModules(
                                                  modulePerProjectCount,
