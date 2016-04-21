@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="at.fh.ooe.swt6.worklog.manager.model.Employee" table="employee">
+        <!-- Identifier -->
+        <id name="id">
+            <column name="id" sql-type="bigint(20)"/>
+            <generator class="increment"/>
+        </id>
+        <!--
+            Not needed with hibernate
+            <discriminator column="discriminator" not-null="true" type="java.lang.String" length="50"/>
+        -->
+
+        <!-- Properties -->
+        <version name="version" type="long">
+            <column name="version" sql-type="bigint(20)" not-null="true"/>
+        </version>
+        <property name="creationDate" update="false">
+            <column name="creationDate" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="modificationDate" >
+            <column name="modificationDate" sql-type="timestamp" not-null="true"/>
+        </property>
+
+        <!-- Embeddables -->
+        <component name="address">
+            <property name="city" not-null="true" length="100">
+                <column name="city" sql-type="varchar(100)" not-null="true" length="100"/>
+            </property>
+            <property name="street" not-null="true" length="100">
+                <column name="street" sql-type="varchar(100)" not-null="true" length="100"/>
+            </property>
+            <property name="zipCode" not-null="true" length="100">
+                <column name="zipCode" sql-type="varchar(100)" not-null="true" length="100"/>
+            </property>
+        </component>
+
+        <property name="dateOfBirth" not-null="true">
+            <column name="dateOfBirth" sql-type="date" not-null="true"/>
+        </property>
+        <property name="firstName" not-null="true" length="100">
+            <column name="firstName" sql-type="varchar(100)" not-null="true" length="100"/>
+        </property>
+        <property name="lastName" not-null="true" length="100">
+            <column name="lastName" sql-type="varchar(100)" not-null="true" length="100"/>
+        </property>
+
+        <!-- Associations -->
+        <set name="logbookEntries">
+            <key>
+                <column name="employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry"/>
+        </set>
+        <set name="employeeProjects">
+            <key>
+                <column name="employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Project"/>
+        </set>
+        <set name="leadingProjects">
+            <key>
+                <column name="leader_employee_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Project"/>
+        </set>
+
+        <!-- PermanentEmployee class -->
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" table="permanent_employee">
+            <key column="id"/>
+            <property name="salary" not-null="true" precision="12" scale="2">
+                <column name="salary" sql-type="decimal(12,2)" precision="12" scale="2"/>
+            </property>
+        </joined-subclass>
+
+        <!-- TemporaryEmployee class -->
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" table="temporary_employee">
+            <key column="id"/>
+            <property name="endDate" not-null="true">
+                <column name="endDate" sql-type="timestamp"/>
+            </property>
+            <property name="hourlyRate" not-null="true" precision="12" scale="2">
+                <column name="hourlyRate" sql-type="decimal(12,2)" precision="12" scale="2"/>
+            </property>
+            <property name="renter" not-null="true" length="1">
+                <column name="renter" sql-type="bit(1)" length="1"/>
+            </property>
+            <property name="startDate" not-null="true">
+                <column name="startDate" sql-type="timestamp" not-null="true"/>
+            </property>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

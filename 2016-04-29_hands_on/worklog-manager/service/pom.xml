@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>worklog-manager</artifactId>
+        <groupId>at.fh.ooe.swt6</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <name>service</name>
+    <description>Holds the service and data access specification and implementations, which are working only against the
+        DataManager and data model. It uses JPQL which is full supported by hibernate and is therefore 'almost' not
+        depending on the concrete persistence provider
+    </description>
+    <artifactId>worklog-manager-service</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- Other modules -->
+        <dependency>
+            <groupId>at.fh.ooe.swt6</groupId>
+            <artifactId>worklog-manager-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

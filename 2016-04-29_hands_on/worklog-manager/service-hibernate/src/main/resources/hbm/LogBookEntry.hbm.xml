@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" table="log_book_entry">
+        <!-- Identifier -->
+        <id name="id">
+            <column name="id" sql-type="bigint(20)" not-null="true"/>
+            <generator class="increment"/>
+        </id>
+
+        <!-- Properties -->
+        <version name="version" type="long">
+            <column name="version" sql-type="bigint(20)" not-null="true"/>
+        </version>
+        <property name="creationDate" not-null="true" update="false">
+            <column name="creationDate" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="modificationDate" not-null="true">
+            <column name="modificationDate" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="activity" not-null="true" length="100">
+            <column name="activity" sql-type="varchar(100)" not-null="true" length="100"/>
+        </property>
+        <property name="endTime" not-null="false">
+            <column name="endTime" sql-type="time"/>
+        </property>
+        <property name="startTime" not-null="true">
+            <column name="startTime" sql-type="time" not-null="true"/>
+        </property>
+
+        <!-- Associations -->
+        <many-to-one name="phase" class="at.fh.ooe.swt6.worklog.manager.model.Phase">
+            <column name="phase_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="employee" class="at.fh.ooe.swt6.worklog.manager.model.Employee">
+            <column name="employee_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="module" class="at.fh.ooe.swt6.worklog.manager.model.Module">
+            <column name="module_id" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

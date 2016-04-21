@@ -1,0 +1,40 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                                 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <!-- Persistence Unit for the JUnit-Tests which uses H2 in-memory database -->
+    <persistence-unit name="WorklogManagerTest">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <class>at.fh.ooe.swt6.worklog.manager.model.Employee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.Project</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.Module</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.Phase</class>
+        <class>at.fh.ooe.swt6.worklog.manager.model.LogBookEntry</class>
+
+        <properties>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target"
+                      value="target/generated-dll/H2/createSchema.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target"
+                      value="target/generated-dll/H2/dropSchema.ddl"/>
+
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:h2:mem:worklogmanager;INIT=CREATE SCHEMA IF NOT EXISTS worklogmanager"/>
+            <property name="javax.persistence.jdbc.user" value="worklogmanager"/>
+            <property name="javax.persistence.jdbc.password" value="worklogmanager"/>
+            <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.log" value="false"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.default_schema" value="worklogmanager"/>
+        </properties>
+    </persistence-unit>
+</persistence>

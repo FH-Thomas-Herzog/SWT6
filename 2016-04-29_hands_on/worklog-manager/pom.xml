@@ -23,11 +23,11 @@
     </developers>
 
     <modules>
-        <module>worklog-manager-model</module>
-        <module>worklog-manager-service</module>
-        <module>worklog-manager-service-jpa</module>
-        <module>worklog-manager-service-hibernate</module>
-        <module>worklog-manager-testsuite</module>
+        <module>model</module>
+        <module>service</module>
+        <module>service-jpa</module>
+        <module>service-hibernate</module>
+        <module>testsuite</module>
     </modules>
 
     <properties>
@@ -84,20 +84,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${org.slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derbyclient</artifactId>
-                <version>${org.apache.derby.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derbynet</artifactId>
-                <version>${org.apache.derby.version}</version>
-                <scope>runtime</scope>
             </dependency>
 
             <dependency>
