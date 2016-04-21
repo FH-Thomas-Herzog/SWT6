@@ -40,6 +40,16 @@ public interface DataManager {
                                                          Class<T> clazz);
 
     /**
+     * Loads all instance of the given class.
+     *
+     * @param clazz the entity class
+     * @param <I> the entity id type
+     * @param <T> the entity type
+     * @return thelist of loaded entity instances
+     */
+    <I extends Serializable, T extends Entity<I>> List<T> loadAllForClass(Class<T> clazz);
+
+    /**
      * Persist the given entity.
      *
      * @param entity the entity to eb persisted

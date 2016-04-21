@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by Thomas on 4/17/2016.
@@ -49,11 +50,28 @@ public class HibernateDataManager implements DataManager {
     }
 
     @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> loadAllForClass(Class<T> clazz) {
+        Objects.requireNonNull(clazz, "Entity class must not be null");
+        final String entityName = clazz.getSimpleName();
+        // TODO: Should check for explicitly defined entity name too
+        return queryMultipleResult("SELECT entity FROM " + entityName + " entity", clazz, null);
+    }
+
+    @Override
     public <I extends Serializable, T extends Entity<I>> T persist(T entity) {
         Objects.requireNonNull(entity, "Cannot persist null entity");
 
         session.persist(entity);
         return entity;
+    }
+
+    @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> batchPersist(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot persist null entities");
+
+        return entities.stream()
+                       .map(item -> persist(item))
+                       .collect(Collectors.toList());
     }
 
     @Override
@@ -70,10 +88,26 @@ public class HibernateDataManager implements DataManager {
     }
 
     @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> batchMerge(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot merge null entities");
+
+        return entities.stream()
+                       .map(item -> merge(item))
+                       .collect(Collectors.toList());
+    }
+
+    @Override
     public <I extends Serializable, T extends Entity<I>> void remove(T entity) {
         Objects.requireNonNull(entity, "Cannot remove null entity");
 
         session.delete(entity);
+    }
+
+    @Override
+    public <I extends Serializable, T extends Entity<I>> void remove(List<T> entities) {
+        Objects.requireNonNull(entities, "Cannot delete null entities");
+
+        entities.forEach(item -> remove(item));
     }
 
     @Override
@@ -82,6 +116,7 @@ public class HibernateDataManager implements DataManager {
                                                                                      Map<String, Object> parameters) {
         return createQuery(query, null, parameters).list();
     }
+
 
     @Override
     public <I extends Serializable, T extends Entity<I>> T querySingleResult(String query,

@@ -1,8 +1,10 @@
 package at.fh.ooe.swt6.test.worklog.manager.service;
 
 import at.fh.ooe.swt6.test.worklog.manager.service.api.AbstractWorklogManagerTest;
+import at.fh.ooe.swt6.test.worklog.manager.service.util.TestDataPersister;
 import at.fh.ooe.swt6.worklog.manager.model.*;
 import at.fh.ooe.swt6.worklog.manager.service.api.*;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,11 +12,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import utils.ModelGenerator;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,6 +28,9 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
     private DataManager toTestDataManager;
     private WorklogManagerDataAccess dataAccess;
     private WorklogManagerService service;
+
+    // Helper for creating test data
+    private TestDataPersister testDataPersister;
     //</editor-fold>
 
     //<editor-fold desc="Test Lifecycle">
@@ -42,6 +44,8 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         dataAccess = new WorklogManagerDataAccessImpl(toTestDataManager);
         // create service
         service = new WorklogManagerServiceImpl(toTestDataManager);
+        // create test data helper
+        testDataPersister = new TestDataPersister(dataManagerProvider.create(Boolean.FALSE));
     }
 
     @After
@@ -51,11 +55,14 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         service.close();
         // Should be closed already
         toTestDataManager.close();
+        // close test data helper
+        testDataPersister.close();
 
         // release references
         toTestDataManager = null;
         dataAccess = null;
         service = null;
+        testDataPersister = null;
     }
     //</editor-fold>
 
@@ -70,48 +77,28 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         final int permantentCount = projectCount;
         final int employeesPerProjectCount = temporaryCount;
 
-        final List<PermanentEmployee> permanentEmployees = new ArrayList<>(permantentCount);
-        final List<TemporaryEmployee> temporaryEmployees = new ArrayList<>(temporaryCount);
-
-        invokeTx((dataManager) -> {
-            permanentEmployees.addAll(dataManager.batchPersist(
-                    ModelGenerator.createPermanatEmployees(
-                            permantentCount)));
-            temporaryEmployees.addAll(dataManager.batchPersist(
-                    ModelGenerator.createTemporaryEmployees(
-                            temporaryCount)));
-
-            final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
-                                                                                                  temporaryEmployees,
-                                                                                                  modulePerProjectCount));
-            projects.forEach(item -> item.getModules()
-                                         .addAll(dataManager.batchPersist(ModelGenerator.createModules(
-                                                 modulePerProjectCount,
-                                                 item))));
-        });
-        log.debug(LOG_SEPARATOR);
-        log.debug("permanent employees: {}", permantentCount);
-        log.debug("temporary employees: {}", temporaryCount);
-        log.debug("projects:            {}", projectCount);
-        log.debug("modules/project:     {}", modulePerProjectCount);
-        log.debug("employees/project:   {}", employeesPerProjectCount);
-        log.debug(LOG_SEPARATOR);
+        // create test data
+        testDataPersister.createAndPersistProjects(permantentCount, temporaryCount, modulePerProjectCount);
 
         // -- when --
         List<Project> actualProjects = Collections.emptyList();
         try {
-            startMillis = System.currentTimeMillis();
+            final StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             toTestDataManager.startTx();
             actualProjects = dataAccess.getAllProjects();
-            log.debug("Loaded {} project. duration: {} millis", actualProjects.size(),
-                      (System.currentTimeMillis() - startMillis));
+            toTestDataManager.commit();
+
+            stopWatch.stop();
+            log.debug("Loaded {} project. duration: {} ms",
+                      actualProjects.size(),
+                      nanotMillis.apply(stopWatch.getNanoTime()));
 //        log.debug(LOG_SEPARATOR);
 //        logProjectInfo(actualProjects);
 //        log.debug(LOG_SEPARATOR);
-            toTestDataManager.commit();
         } catch (Exception e) {
             toTestDataManager.rollback();
-            throw new AssertionError(e);
+            throw new AssertionError("Test method failed", e);
         } finally {
             toTestDataManager.clear();
         }
@@ -134,20 +121,23 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         log.debug("permanent employees: {}", permanentCount);
         log.debug("temporary employees: {}", temporaryCount);
         log.debug(LOG_SEPARATOR);
-        // clear persistence context here so that loaded works against database and not cache
-        toTestDataManager.clear();
 
         // -- when --
         List<PermanentEmployee> actualPermanentEmployees = Collections.emptyList();
         try {
+            final StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             toTestDataManager.startTx();
-            final long startMillis = System.currentTimeMillis();
             actualPermanentEmployees = dataAccess.getAllPermanentEmployees();
-            log.debug("Loaded {} permanent-employees. duration: {} millis", actualPermanentEmployees.size(),
-                      (System.currentTimeMillis() - startMillis));
+            toTestDataManager.commit();
+
+            stopWatch.stop();
+            log.debug("Loaded {} permanent-employees. duration: {} millis",
+                      actualPermanentEmployees.size(),
+                      nanotMillis.apply(stopWatch.getNanoTime()));
         } catch (Exception e) {
             toTestDataManager.rollback();
-            throw new AssertionError(e);
+            throw new AssertionError("Test method failed", e);
         } finally {
             toTestDataManager.clear();
         }
@@ -170,21 +160,23 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         log.debug("permanent employees: {}", permanentCount);
         log.debug("temporary employees: {}", temporaryCount);
         log.debug(LOG_SEPARATOR);
-        // clear persistence context here so that loaded works against database and not cache
-        toTestDataManager.clear();
 
         // -- when --
         List<TemporaryEmployee> actualTemporaryEmployees = Collections.emptyList();
         try {
+            final StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             toTestDataManager.startTx();
             actualTemporaryEmployees = dataAccess.getAllTemporaryEmployees();
             toTestDataManager.commit();
-            final long startMillis = System.currentTimeMillis();
-            log.debug("Loaded {} temporary-employees. duration: {} millis", actualTemporaryEmployees.size(),
-                      (System.currentTimeMillis() - startMillis));
+
+            stopWatch.stop();
+            log.debug("Loaded {} temporary-employees. duration: {} millis",
+                      actualTemporaryEmployees.size(),
+                      nanotMillis.apply(stopWatch.getNanoTime()));
         } catch (Exception e) {
             toTestDataManager.rollback();
-            e.printStackTrace();
+            throw new AssertionError("Test method failed", e);
         } finally {
             toTestDataManager.clear();
         }
@@ -202,58 +194,78 @@ public class WorklogManagerDataAccessTest extends AbstractWorklogManagerTest {
         final int modulesPerProjectCount = 10;
         final int logbookEntryPerEmployee = 10;
 
-        final List<Employee> allEmployees = new ArrayList<>((permanentCount * logbookEntryPerEmployee) + (temporaryCount * logbookEntryPerEmployee));
-        invokeTx((dataManager) -> {
-            final List<Phase> phases = dataManager.batchPersist(ModelGenerator.createPhases(phaseCount));
-            final List<PermanentEmployee> permanentEmployees = dataManager.batchPersist(ModelGenerator.createPermanatEmployees(
-                    permanentCount));
-            final List<TemporaryEmployee> temporaryEmployees = dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(
-                    temporaryCount));
-            final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
-                                                                                                  temporaryEmployees,
-                                                                                                  modulesPerProjectCount));
-            projects.forEach(item -> item.getModules()
-                                         .addAll(dataManager.batchPersist(ModelGenerator.createModules(
-                                                 modulesPerProjectCount,
-                                                 item))));
-            final Consumer<Employee> logbookEntryAction = (item) -> dataManager.persist(new LogBookEntry(("Entry_employee_" + item
-                    .getId()),
-                                                                                                         Calendar.getInstance()
-                                                                                                                 .getTime(),
-                                                                                                         Calendar.getInstance()
-                                                                                                                 .getTime(),
-                                                                                                         item,
-                                                                                                         phases.get(
-                                                                                                                 random.nextInt(
-                                                                                                                         phaseCount)),
-                                                                                                         (new ArrayList<>(
-                                                                                                                 projects.get(
-                                                                                                                         random.nextInt(
-                                                                                                                                 permanentCount))
-                                                                                                                         .getModules())
-                                                                                                                 .get(random.nextInt(
-                                                                                                                         modulesPerProjectCount)))));
-            for (int i = 0; i < logbookEntryPerEmployee; i++) {
-                permanentEmployees.forEach(logbookEntryAction);
-            }
-            for (int i = 0; i < logbookEntryPerEmployee; i++) {
-                temporaryEmployees.forEach(logbookEntryAction);
-            }
-
-            allEmployees.addAll(permanentEmployees);
-            allEmployees.addAll(temporaryEmployees);
-        });
+        // create test data
+        testDataPersister.createAndPersistLogbookEntries(permanentCount,
+                                                         temporaryCount,
+                                                         phaseCount,
+                                                         modulesPerProjectCount,
+                                                         logbookEntryPerEmployee,
+                                                         TestDataPersister.EntityType.EMPLOYEE);
+        // load all employees
+        final List<Employee> allEmployees = toTestDataManager.loadAllForClass(Employee.class);
 
         try {
+            // check for each employee
             for (Employee employee : allEmployees) {
                 // -- when --
+                final StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
                 toTestDataManager.startTx();
                 final List<LogBookEntry> actualLogbookEntries = dataAccess.getLogbookEntriesForEmployee(employee.getId());
                 toTestDataManager.commit();
+                stopWatch.stop();
                 toTestDataManager.clear();
 
+                log.debug("Loaded {} logbook-entries for emplyee {}. duration: {} ms",
+                          actualLogbookEntries.size(),
+                          getEmployeeFullName(employee),
+                          nanotMillis.apply(stopWatch.getNanoTime()));
                 // -- then --
                 assertEquals(logbookEntryPerEmployee, actualLogbookEntries.size());
+            }
+        } catch (Exception e) {
+            toTestDataManager.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getLogbookEntriesForProject() {
+        // -- given --
+        final int permanentCount = 100;
+        final int temporaryCount = 100;
+        final int phaseCount = 100;
+        final int modulesPerProjectCount = 10;
+        final int logbookEntryPerProject = 10;
+
+        // create test data
+        testDataPersister.createAndPersistLogbookEntries(permanentCount,
+                                                         temporaryCount,
+                                                         phaseCount,
+                                                         modulesPerProjectCount,
+                                                         logbookEntryPerProject,
+                                                         TestDataPersister.EntityType.PROJECT);
+        // load all employees
+        final List<Project> allProjects = toTestDataManager.loadAllForClass(Project.class);
+
+        try {
+            // check for each project
+            for (Project project : allProjects) {
+                // -- when --
+                final StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
+                toTestDataManager.startTx();
+                final List<LogBookEntry> actualLogbookEntries = dataAccess.getLogbookEntriesForProject(project.getId());
+                toTestDataManager.commit();
+                stopWatch.stop();
+                toTestDataManager.clear();
+
+                log.debug("Loaded {} logbook-entries for project {}. duration: {} ms",
+                          actualLogbookEntries.size(),
+                          project.getName(),
+                          nanotMillis.apply(stopWatch.getNanoTime()));
+                // -- then --
+                assertEquals(logbookEntryPerProject, actualLogbookEntries.size());
             }
         } catch (Exception e) {
             toTestDataManager.rollback();

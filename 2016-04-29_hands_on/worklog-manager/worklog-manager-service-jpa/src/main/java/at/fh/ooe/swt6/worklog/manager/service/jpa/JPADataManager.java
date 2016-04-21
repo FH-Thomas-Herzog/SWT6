@@ -45,6 +45,14 @@ public class JPADataManager implements DataManager {
     }
 
     @Override
+    public <I extends Serializable, T extends Entity<I>> List<T> loadAllForClass(Class<T> clazz) {
+        Objects.requireNonNull(clazz, "Entity class must not be null");
+        final String entityName = clazz.getSimpleName();
+        // TODO: Should check for explicitly defined entity name too
+        return queryMultipleResult("SELECT entity FROM " + entityName + " entity", clazz, null);
+    }
+
+    @Override
     public <I extends Serializable, T extends Entity<I>> T persist(T entity) {
         Objects.requireNonNull(entity, "Cannot persist null entity");
 

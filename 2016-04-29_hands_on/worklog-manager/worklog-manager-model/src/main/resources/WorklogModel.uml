@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>at.fh.ooe.swt6.worklog.manager.model.Address</OriginalElement>
+  <nodes>
+    <node x="1027.5586080586081" y="235.0">javax.persistence.Entity</node>
+    <node x="616.4741300366301" y="11.0">javax.persistence.MappedSuperclass</node>
+    <node x="1327.960393772894" y="101.0">at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity</node>
+    <node x="1243.9178113553114" y="482.0">at.fh.ooe.swt6.worklog.manager.model.Phase</node>
+    <node x="267.25" y="112.0">java.io.Serializable</node>
+    <node x="1470.404761904762" y="471.0">at.fh.ooe.swt6.worklog.manager.model.Module</node>
+    <node x="594.1844780219781" y="515.0">javax.persistence.DiscriminatorValue</node>
+    <node x="1383.460393772894" y="0.0">at.fh.ooe.swt6.worklog.manager.model.api.Entity</node>
+    <node x="1127.7083333333335" y="702.0">at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee</node>
+    <node x="1317.460393772894" y="235.0">javax.persistence.Table</node>
+    <node x="296.18447802197807" y="427.0">at.fh.ooe.swt6.worklog.manager.model.Employee</node>
+    <node x="0.0" y="235.0">javax.persistence.DiscriminatorColumn</node>
+    <node x="342.0" y="235.0">javax.persistence.Inheritance</node>
+    <node x="973.9178113553114" y="438.0">at.fh.ooe.swt6.worklog.manager.model.LogBookEntry</node>
+    <node x="166.0" y="202.0">at.fh.ooe.swt6.worklog.manager.model.Address</node>
+    <node x="149.25" y="112.0">javax.persistence.Embeddable</node>
+    <node x="756.9178113553115" y="460.0">at.fh.ooe.swt6.worklog.manager.model.Project</node>
+    <node x="553.7241300366301" y="213.0">at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity</node>
+    <node x="657.5833333333335" y="735.0">at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Employee" target="javax.persistence.Entity">
+      <point x="55.60000000000002" y="-102.5" />
+      <point x="490.7844780219781" y="347.0" />
+      <point x="1031.9871794871794" y="347.0" />
+      <point x="-26.57142857142867" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" target="javax.persistence.Entity">
+      <point x="0.0" y="-91.5" />
+      <point x="1098.4178113553114" y="367.0" />
+      <point x="1058.5586080586081" y="367.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" target="at.fh.ooe.swt6.worklog.manager.model.Employee">
+      <point x="-87.375" y="-58.5" />
+      <point x="1156.8333333333335" y="662.0" />
+      <point x="504.68447802197807" y="662.0" />
+      <point x="69.5" y="102.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Phase" target="javax.persistence.Entity">
+      <point x="-52.33333333333326" y="-47.5" />
+      <point x="1270.0844780219782" y="347.0" />
+      <point x="1076.272893772894" y="347.0" />
+      <point x="17.71428571428578" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Project" target="javax.persistence.Table">
+      <point x="65.66666666666663" y="-69.5" />
+      <point x="921.0844780219782" y="387.0" />
+      <point x="1330.3175366300368" y="387.0" />
+      <point x="-17.14285714285711" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity" target="java.io.Serializable">
+      <point x="-63.66666666666663" y="-36.5" />
+      <point x="585.5574633699634" y="177.0" />
+      <point x="334.75" y="177.0" />
+      <point x="22.5" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Project" target="javax.persistence.Entity">
+      <point x="0.0" y="-69.5" />
+      <point x="855.4178113553115" y="367.0" />
+      <point x="1049.7014652014652" y="367.0" />
+      <point x="-8.85714285714289" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" target="javax.persistence.DiscriminatorValue">
+      <point x="-18.5" y="-25.5" />
+      <point x="713.0833333333335" y="672.0" />
+      <point x="627.1844780219781" y="672.0" />
+      <point x="-33.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity" target="at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity">
+      <point x="63.66666666666663" y="-36.5" />
+      <point x="712.8907967032967" y="177.0" />
+      <point x="1347.960393772894" y="177.0" />
+      <point x="-40.0" y="25.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" target="javax.persistence.Entity">
+      <point x="29.125" y="-58.5" />
+      <point x="1273.3333333333335" y="662.0" />
+      <point x="1233.4178113553114" y="662.0" />
+      <point x="1233.4178113553114" y="357.0" />
+      <point x="1067.415750915751" y="357.0" />
+      <point x="8.85714285714289" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" target="javax.persistence.Table">
+      <point x="83.0" y="-91.5" />
+      <point x="1181.4178113553114" y="397.0" />
+      <point x="1338.8889652014652" y="397.0" />
+      <point x="-8.571428571428669" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" target="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity">
+      <point x="-83.0" y="-91.5" />
+      <point x="1015.4178113553114" y="327.0" />
+      <point x="712.8907967032967" y="327.0" />
+      <point x="63.66666666666663" y="36.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" target="javax.persistence.Table">
+      <point x="55.5" y="-25.5" />
+      <point x="787.0833333333335" y="672.0" />
+      <point x="1411.4178113553114" y="672.0" />
+      <point x="1411.4178113553114" y="397.0" />
+      <point x="1356.0318223443226" y="397.0" />
+      <point x="8.571428571428669" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Phase" target="javax.persistence.Table">
+      <point x="0.0" y="-47.5" />
+      <point x="1322.4178113553114" y="407.0" />
+      <point x="1347.460393772894" y="407.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity" target="javax.persistence.MappedSuperclass">
+      <point x="0.0" y="-36.5" />
+      <point x="-32.75" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Employee" target="javax.persistence.Inheritance">
+      <point x="-55.60000000000002" y="-102.5" />
+      <point x="379.58447802197804" y="407.0" />
+      <point x="387.5" y="407.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Phase" target="at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity">
+      <point x="52.33333333333326" y="-47.5" />
+      <point x="1374.7511446886447" y="407.0" />
+      <point x="1387.960393772894" y="407.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Address" target="java.io.Serializable">
+      <point x="39.0" y="-47.5" />
+      <point x="283.0" y="177.0" />
+      <point x="289.75" y="177.0" />
+      <point x="-22.5" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" target="javax.persistence.DiscriminatorValue">
+      <point x="-29.125" y="-58.5" />
+      <point x="1215.0833333333335" y="652.0" />
+      <point x="693.1844780219781" y="652.0" />
+      <point x="33.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" target="javax.persistence.Table">
+      <point x="87.375" y="-58.5" />
+      <point x="1331.5833333333335" y="682.0" />
+      <point x="1459.904761904762" y="682.0" />
+      <point x="1459.904761904762" y="387.0" />
+      <point x="1364.603250915751" y="387.0" />
+      <point x="17.14285714285711" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Module" target="javax.persistence.Table">
+      <point x="0.0" y="-58.5" />
+      <point x="1558.904761904762" y="327.0" />
+      <point x="1373.1746794871797" y="327.0" />
+      <point x="25.71428571428578" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Employee" target="javax.persistence.DiscriminatorColumn">
+      <point x="-111.19999999999999" y="-102.5" />
+      <point x="323.984478021978" y="407.0" />
+      <point x="73.0" y="407.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Module" target="at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity">
+      <point x="59.0" y="-58.5" />
+      <point x="1617.904761904762" y="317.0" />
+      <point x="1561.382097069597" y="317.0" />
+      <point x="1561.382097069597" y="177.0" />
+      <point x="1427.960393772894" y="177.0" />
+      <point x="40.0" y="25.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" target="at.fh.ooe.swt6.worklog.manager.model.Employee">
+      <point x="-55.5" y="-25.5" />
+      <point x="676.0833333333335" y="682.0" />
+      <point x="365.68447802197807" y="682.0" />
+      <point x="-69.5" y="102.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Employee" target="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity">
+      <point x="0.0" y="-102.5" />
+      <point x="435.18447802197807" y="337.0" />
+      <point x="585.5574633699634" y="337.0" />
+      <point x="-63.66666666666663" y="36.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity" target="javax.persistence.MappedSuperclass">
+      <point x="-30.0" y="-25.5" />
+      <point x="1357.960393772894" y="76.0" />
+      <point x="714.7241300366301" y="76.0" />
+      <point x="32.75" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Module" target="javax.persistence.Entity">
+      <point x="-59.0" y="-58.5" />
+      <point x="1499.904761904762" y="337.0" />
+      <point x="1085.1300366300366" y="337.0" />
+      <point x="26.57142857142844" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Project" target="at.fh.ooe.swt6.worklog.manager.model.api.ModifiableBaseEntity">
+      <point x="-65.66666666666674" y="-69.5" />
+      <point x="789.7511446886448" y="337.0" />
+      <point x="649.2241300366301" y="337.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.api.BaseEntity" target="at.fh.ooe.swt6.worklog.manager.model.api.Entity">
+      <point x="30.0" y="-25.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Employee" target="javax.persistence.Table">
+      <point x="111.20000000000005" y="-102.5" />
+      <point x="546.3844780219781" y="377.0" />
+      <point x="1321.7461080586081" y="377.0" />
+      <point x="-25.71428571428578" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.Address" target="javax.persistence.Embeddable">
+      <point x="-39.0" y="-47.5" />
+      <point x="205.0" y="177.0" />
+      <point x="198.25" y="177.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" target="javax.persistence.Entity">
+      <point x="18.5" y="-25.5" />
+      <point x="750.0833333333335" y="682.0" />
+      <point x="736.6844780219781" y="682.0" />
+      <point x="736.6844780219781" y="357.0" />
+      <point x="1040.8443223443223" y="357.0" />
+      <point x="-17.71428571428578" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7673860911270983" x="824.0" y="409.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

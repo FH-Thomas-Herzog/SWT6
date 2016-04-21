@@ -28,6 +28,7 @@ public abstract class AbstractWorklogManagerTest {
 
     //<editor-fold desc="Private Members">
     protected final Random random = new Random();
+    protected final Function<Long, Long> nanotMillis = ((nano) -> nano / 1000000L);
 
     protected static DataManagerProvider dataManagerProvider;
     protected static Logger log = LoggerFactory.getLogger(WorklogManagerDataAccessTest.class);
