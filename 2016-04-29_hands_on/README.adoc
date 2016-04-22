@@ -1,0 +1,23 @@
+= WorklogManager hands on
+
+This directory holds the implemented hands on worklog-manager which contains the following modules.
+
+* *worklog-manager*
+** *model* (the doamin model + JPA-mappings)
+** *service* (the service specifications and implementations)
+** *service-jpa* (holds JPA implementations and configuration)
+** *service-hibernate* (holds hibernate implementations, configuration and mappings)
+** *testsuite* (holds the test for the service module)
+
+The moudle testsuite specifies the JPA and Hibernate test dependencies via maven profiles, which can be used to switch to the JPA (hibernate backed) or Hibernate backed DataManger implementation. 
+
+* *jpa* (default, test invocation with JPA)
+* *hibernate* (test invocation with Hibernate)
+
+== Build project
+Invoke the following maven command to build the project.
+
+[underline]#For test with JPA:# +
+`mvn clean install -P jpa` +
+[underline]#For test with Hibernate:# +
+`mvn clean install -P hibernate`
