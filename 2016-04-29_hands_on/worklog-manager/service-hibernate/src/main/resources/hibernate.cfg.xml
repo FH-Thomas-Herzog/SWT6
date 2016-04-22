@@ -14,7 +14,7 @@
         <property name="hibernate.default_schema">worklogmanager</property>
         <property name="hibernate.log">true</property>
         <property name="hibernate.debug">true</property>
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">false</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.current_session_context_class">thread</property>

@@ -66,7 +66,7 @@ public class Project extends ModifiableBaseEntity<Long> {
     //<editor-fold desc="Constructors">
     public Project() {
     }
-
+    
     /**
      * @param name
      * @param leader

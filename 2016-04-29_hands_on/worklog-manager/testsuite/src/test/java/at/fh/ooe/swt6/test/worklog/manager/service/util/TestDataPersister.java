@@ -82,8 +82,8 @@ public class TestDataPersister implements Closable {
             final List<TemporaryEmployee> temporaryEmployees = dataManager.batchPersist(ModelGenerator.createTemporaryEmployees(
                     temporaryCount));
             final List<Project> projects = dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
-                                                                                                  temporaryEmployees,
-                                                                                                  modulesPerProjectCount));
+                                                                                                  temporaryEmployees
+            ));
             projects.forEach(item -> item.getModules()
                                          .addAll(dataManager.batchPersist(ModelGenerator.createModules(
                                                  modulesPerProjectCount,
@@ -166,8 +166,12 @@ public class TestDataPersister implements Closable {
                             temporaryCount));
 
             projects.addAll(dataManager.batchPersist(ModelGenerator.createProjects(permanentEmployees,
-                                                                                   temporaryEmployees,
-                                                                                   modulePerProjectCount)));
+                                                                                   temporaryEmployees
+            )));
+            permanentEmployees.forEach(item -> item.getLeadingProjects().addAll(projects));
+            temporaryEmployees.forEach(item -> item.getEmployeeProjects().addAll(projects));
+            dataManager.batchMerge(permanentEmployees);
+            dataManager.batchMerge(temporaryEmployees);
             projects.forEach(item -> item.getModules()
                                          .addAll(dataManager.batchPersist(ModelGenerator.createModules(
                                                  modulePerProjectCount,

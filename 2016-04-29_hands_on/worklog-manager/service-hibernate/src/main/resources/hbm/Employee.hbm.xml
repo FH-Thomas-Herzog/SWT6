@@ -55,13 +55,13 @@
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry"/>
         </set>
-        <set name="employeeProjects">
+        <set name="employeeProjects" lazy="true" inverse="true">
             <key>
                 <column name="employee_id"/>
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Project"/>
         </set>
-        <set name="leadingProjects">
+        <set name="leadingProjects" lazy="true" inverse="true">
             <key>
                 <column name="leader_employee_id"/>
             </key>

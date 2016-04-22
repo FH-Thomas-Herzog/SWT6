@@ -190,7 +190,13 @@ public class HibernateDataManager implements DataManager {
         final Query query = session.createQuery(queryString);
 
         if ((parameters != null) && (!parameters.isEmpty())) {
-            parameters.forEach((key, value) -> query.setParameter(key, value));
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                if ((entry.getValue() instanceof Collection) || (entry.getValue().getClass().isArray())) {
+                    query.setParameterList(entry.getKey(), (List<?>) entry.getValue());
+                } else {
+                    query.setParameter(entry.getKey(), entry.getValue());
+                }
+            }
         }
 
         return query;

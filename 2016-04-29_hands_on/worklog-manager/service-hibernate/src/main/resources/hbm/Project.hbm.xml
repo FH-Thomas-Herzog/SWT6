@@ -35,7 +35,7 @@
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Module"/>
         </set>
-        <set name="projectEmployees" inverse="true" lazy="false" fetch="join">
+        <set name="projectEmployees"  lazy="false" fetch="join">
             <key>
                 <column name="project_id" not-null="true"/>
             </key>

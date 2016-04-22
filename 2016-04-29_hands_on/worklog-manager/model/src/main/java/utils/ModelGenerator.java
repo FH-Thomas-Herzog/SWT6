@@ -124,12 +124,10 @@ public class ModelGenerator {
      *
      * @param projectLeader    the leader of the project
      * @param projectEmployees the employees working on the project
-     * @param moduleCount      the count of modules on a project
      * @return the created projects
      */
     public static List<Project> createProjects(final List<? extends Employee> projectLeader,
-                                               final List<? extends Employee> projectEmployees,
-                                               final int moduleCount) {
+                                               final List<? extends Employee> projectEmployees) {
         return projectLeader.stream().map(item -> {
             final Project project = new Project("project_" + item.getId(), item);
             project.getProjectEmployees().addAll(projectEmployees);
