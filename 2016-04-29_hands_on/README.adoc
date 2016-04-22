@@ -14,6 +14,23 @@ The moudle testsuite specifies the JPA and Hibernate test dependencies via maven
 * *jpa* (default, test invocation with JPA)
 * *hibernate* (test invocation with Hibernate)
 
+== Lombok IDE setup
+This section describes the setup of lombook for your IDE. The domain models in this project use lombok IDE setup
+This section describes the setup of lombook for your IDE. The domain models in this project use lombok annotations, therefore we ned to integrate the IDE with lombook, so that the IDE recognizes the generated sources from lombook. +
+
+See the following link for further information on the https://projectlombok.org/download.html[lombok project]
+
+== Setup Intellij 
+Download and install the lombok plugin available from the intellij market place https://plugins.jetbrains.com/plugin/6317[intellij lombok plugin].
+
+== Setup Eclipse
+For exlipse visit the https://projectlombok.org/download.html[lombok project] website and download the lombok.jar which contains a installer which does the following:
+
+* Copies lombok.jar in your eclipse folder and
+* Modifies the eclipse.ini (-javaagent:lombok.jar)
+
+Just follow the instructions on the installe screen and restart eclipse afterwards.
+
 == Build project
 Invoke the following maven command to build the project.
 
