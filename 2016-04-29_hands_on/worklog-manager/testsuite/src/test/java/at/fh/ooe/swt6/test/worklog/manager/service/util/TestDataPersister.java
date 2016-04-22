@@ -133,9 +133,10 @@ public class TestDataPersister implements Closable {
             dataManager.rollback();
             log.error("createAndPersistLogbookEntries failed", e);
         } finally {
+            stopWatch.stop();
             dataManager.clear();
         }
-        stopWatch.stop();
+
         log.debug("createAndPersistLogbookEntries ended. duration: {} ms", nanotMillis.apply(stopWatch.getNanoTime()));
         log.debug(LOG_SEPARATOR);
     }
@@ -170,13 +171,14 @@ public class TestDataPersister implements Closable {
             )));
             permanentEmployees.forEach(item -> item.getLeadingProjects().addAll(projects));
             temporaryEmployees.forEach(item -> item.getEmployeeProjects().addAll(projects));
-            dataManager.batchMerge(permanentEmployees);
-            dataManager.batchMerge(temporaryEmployees);
+
             projects.forEach(item -> item.getModules()
                                          .addAll(dataManager.batchPersist(ModelGenerator.createModules(
                                                  modulePerProjectCount,
                                                  item))));
+
             dataManager.commit();
+
             log.debug("permanent employees: {}", permantentCount);
             log.debug("temporary employees: {}", temporaryCount);
             log.debug("projects:            {}", permantentCount);
@@ -186,9 +188,10 @@ public class TestDataPersister implements Closable {
             dataManager.rollback();
             log.error("createAndPersistLogbookEntries failed", e);
         } finally {
+            stopWatch.stop();
             dataManager.clear();
         }
-        stopWatch.stop();
+
         log.debug("createAndPersistProjects ended. duration: {} ms", nanotMillis.apply(stopWatch.getNanoTime()));
         log.debug(LOG_SEPARATOR);
     }
@@ -201,7 +204,9 @@ public class TestDataPersister implements Closable {
      */
     @Override
     public void close() {
-        dataManager.close();
+        if (dataManager != null) {
+            dataManager.close();
+        }
     }
     //</editor-fold>
 }

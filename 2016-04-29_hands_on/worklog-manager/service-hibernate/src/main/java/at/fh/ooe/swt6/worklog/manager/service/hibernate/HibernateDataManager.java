@@ -12,19 +12,26 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * This class is the JPA implementation of the {@link DataManager} interface.
+ * Here we work with the {@link Session} instance.
+ * <p>
  * Created by Thomas on 4/17/2016.
  */
 public class HibernateDataManager implements DataManager {
 
+    //<editor-fold desc="Private Members">
     private Transaction tx;
-
     private final Session session;
+    //</editor-fold>
 
+    //<editor-fold desc="Constructors">
     public HibernateDataManager(Session session) {
         Objects.requireNonNull(session, "Session must not be null");
         this.session = session;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="DataManager Interface Methods">
     @Override
     public <I extends Serializable, T extends Entity<I>> T loadForClassAndIds(I id,
                                                                               Class<T> clazz) {
@@ -174,11 +181,14 @@ public class HibernateDataManager implements DataManager {
     }
 
     @Override
-    public void flush(){
-        if((session != null) && (session.isOpen())) {
+    public void flush() {
+        if ((session != null) && (session.isOpen())) {
             session.flush();
         }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Private Helper">
 
     /**
      * Helper method for creating the query object for reading access queries.
@@ -233,4 +243,5 @@ public class HibernateDataManager implements DataManager {
         }} : null;
         return queryMultipleResult(query, entityClazz, parameters);
     }
+    //</editor-fold>
 }
