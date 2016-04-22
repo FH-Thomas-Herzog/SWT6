@@ -54,9 +54,8 @@ public class WorklogManagerServiceImpl implements WorklogManagerService {
                    .addAll(dataManager.batchPersist(modules));
             // set employees if present
             if ((employees != null) && (!employees.isEmpty())) {
-                final List<? extends Employee> mergedEmployees = dataManager.batchMerge(employees);
-                project.getProjectEmployees().addAll(mergedEmployees);
-                mergedEmployees.forEach(item -> item.getEmployeeProjects().add(project));
+                project.getProjectEmployees().addAll(employees);
+                employees.forEach(item -> item.getEmployeeProjects().add(project));
             }
 
             dataManager.commit();

@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="at.fh.ooe.swt6.worklog.manager.model.Employee" table="employee">
+    <class name="at.fh.ooe.swt6.worklog.manager.model.Employee" table="EMPLOYEE">
         <!-- Identifier -->
         <id name="id">
             <column name="id" sql-type="bigint(20)"/>
@@ -21,7 +21,7 @@
         <property name="creationDate" update="false">
             <column name="creationDate" sql-type="timestamp" not-null="true"/>
         </property>
-        <property name="modificationDate" >
+        <property name="modificationDate">
             <column name="modificationDate" sql-type="timestamp" not-null="true"/>
         </property>
 
@@ -49,19 +49,19 @@
         </property>
 
         <!-- Associations -->
-        <set name="logbookEntries">
+        <set name="logbookEntries" lazy="true" fetch="join">
             <key>
                 <column name="employee_id"/>
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry"/>
         </set>
-        <set name="employeeProjects" lazy="true" inverse="true">
+        <set name="employeeProjects" lazy="true" inverse="true" fetch="join">
             <key>
                 <column name="employee_id"/>
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Project"/>
         </set>
-        <set name="leadingProjects" lazy="true" inverse="true">
+        <set name="leadingProjects" lazy="true" inverse="true" fetch="join">
             <key>
                 <column name="leader_employee_id"/>
             </key>
@@ -69,7 +69,7 @@
         </set>
 
         <!-- PermanentEmployee class -->
-        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" table="permanent_employee">
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.PermanentEmployee" table="PERMANENT_EMPLOYEE">
             <key column="id"/>
             <property name="salary" not-null="true" precision="12" scale="2">
                 <column name="salary" sql-type="decimal(12,2)" precision="12" scale="2"/>
@@ -77,7 +77,7 @@
         </joined-subclass>
 
         <!-- TemporaryEmployee class -->
-        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" table="temporary_employee">
+        <joined-subclass name="at.fh.ooe.swt6.worklog.manager.model.TemporaryEmployee" table="TEMPORARY_EMPLOYEE">
             <key column="id"/>
             <property name="endDate" not-null="true">
                 <column name="endDate" sql-type="timestamp"/>

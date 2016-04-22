@@ -173,6 +173,13 @@ public class HibernateDataManager implements DataManager {
         }
     }
 
+    @Override
+    public void flush(){
+        if((session != null) && (session.isOpen())) {
+            session.flush();
+        }
+    }
+
     /**
      * Helper method for creating the query object for reading access queries.
      *

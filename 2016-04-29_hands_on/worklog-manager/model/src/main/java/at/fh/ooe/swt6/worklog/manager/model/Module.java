@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Created by Thomas on 4/16/2016.
  */
-@Table(name = "module")
+@Table(name = "PROJECT_MODULE")
 @Entity
 public class Module extends BaseEntity<Long> {
 

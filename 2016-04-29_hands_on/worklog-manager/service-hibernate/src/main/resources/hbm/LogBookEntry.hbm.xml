@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" table="log_book_entry">
+    <class name="at.fh.ooe.swt6.worklog.manager.model.LogBookEntry" table="LOG_BOOK_ENTRY">
         <!-- Identifier -->
         <id name="id">
             <column name="id" sql-type="bigint(20)" not-null="true"/>

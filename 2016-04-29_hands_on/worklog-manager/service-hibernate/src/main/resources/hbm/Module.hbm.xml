@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="at.fh.ooe.swt6.worklog.manager.model.Module" table="module">
+    <class name="at.fh.ooe.swt6.worklog.manager.model.Module" table="PROJECT_MODULE">
         <!-- Identifier -->
         <id name="id">
             <column name="id" sql-type="bigint(20)" not-null="true"/>

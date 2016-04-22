@@ -189,6 +189,13 @@ public class JPADataManager implements DataManager {
             em.clear();
         }
     }
+
+    @Override
+    public void flush(){
+        if((em != null) && (em.isOpen())) {
+            em.flush();
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Private Helper">

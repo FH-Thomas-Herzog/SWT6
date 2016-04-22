@@ -184,4 +184,9 @@ public interface DataManager {
      * Clears the current persistent context and will release all cahced data.
      */
     void clear();
+
+    /**
+     * Flushes the current persistence context.
+     */
+    void flush();
 }

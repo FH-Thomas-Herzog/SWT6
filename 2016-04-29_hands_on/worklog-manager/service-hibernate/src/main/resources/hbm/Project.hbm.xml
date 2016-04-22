@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="at.fh.ooe.swt6.worklog.manager.model.Project" table="project">
+    <class name="at.fh.ooe.swt6.worklog.manager.model.Project" table="PROJECT">
         <!-- Identifier -->
         <id name="id">
             <column name="id" sql-type="bigint(20)"/>
@@ -35,7 +35,7 @@
             </key>
             <one-to-many not-found="ignore" class="at.fh.ooe.swt6.worklog.manager.model.Module"/>
         </set>
-        <set name="projectEmployees"  lazy="false" fetch="join">
+        <set name="projectEmployees" table="PROJECT_EMPLOYEES" lazy="false" fetch="join">
             <key>
                 <column name="project_id" not-null="true"/>
             </key>
