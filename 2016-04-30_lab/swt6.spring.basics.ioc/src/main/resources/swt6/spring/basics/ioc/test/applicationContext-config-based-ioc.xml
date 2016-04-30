@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <beans>
+        <bean id="consoleLogger" class="swt6.spring.basics.ioc.util.ConsoleLogger"></bean>
+        <bean id="fileLogger" class="swt6.spring.basics.ioc.util.FileLogger">
+            <constructor-arg value="spring-xml-log.txt"/>
+        </bean>
+
+        <!-- Injected via setter method -->
+        <bean id="worklog-setter-injected" class="swt6.spring.basics.ioc.logic.WorkLogImplIocConfigBased">
+            <property name="logger" ref="consoleLogger"/>
+            <property name="errorLogger" ref="fileLogger"/>
+        </bean>
+
+        <!-- Injected via constructor -->
+        <bean id="worklog-constructor-injected" class="swt6.spring.basics.ioc.logic.WorkLogImplIocConfigBased">
+            <constructor-arg index="0" name="logger" ref="consoleLogger"/>
+            <constructor-arg index="1" name="errorLogger" ref="fileLogger"/>
+        </bean>
+
+        <!-- Injected via constructor -->
+        <!-- Injectible fields need to be registered as beans, otehrwise no autowire will work -->
+        <bean id="logger" class="swt6.spring.basics.ioc.util.ConsoleLogger"/>
+        <bean id="errorLogger" class="swt6.spring.basics.ioc.util.FileLogger">
+            <constructor-arg value="spring-xml-log.txt"/>
+        </bean>
+        <bean id="worklog-autowired" autowire="byName" class="swt6.spring.basics.ioc.logic.WorkLogImplIocConfigBased">
+        </bean>
+    </beans>
+
+</beans>
