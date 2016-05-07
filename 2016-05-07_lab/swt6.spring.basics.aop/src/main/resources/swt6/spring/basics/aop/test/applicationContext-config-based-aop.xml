@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- ================== definition of target objects ================== -->
+
+    <bean id="workLog" class="swt6.spring.basics.aop.logic.WorkLogImpl"/>
+
+    <!-- ================== definition of advices ================== -->
+
+    <bean id="traceAdvice" class="swt6.spring.basics.aop.advice.TraceAdviceConfigBased"/>
+
+    <!-- ================== definition of aspects ================== -->
+    <aop:config>
+        <aop:aspect id="traceAspect" ref="traceAdvice">
+            <!-- Defines interceptor point -->
+            <!-- Expression:
+                 1. All public classes
+                 2. with any return type
+                 3. in the given package and all of its subpackages
+                 4. methods with names which start with 'find'
+                 5. with any method args given
+             -->
+            <aop:pointcut id="findMethods"
+                          expression="execution(public * swt6.spring.basics.aop.logic..*find*(..))"/>
+            <aop:pointcut id="findByIdMethods"
+                          expression="execution(public * swt6.spring.basics.aop.logic..*find*ById*(..))"/>
+
+            <aop:before pointcut-ref="findMethods" method="traceBefore"/>
+
+            <aop:after-returning pointcut-ref="findMethods"
+                                 method="traceAfter"/>
+
+            <aop:around pointcut-ref="findByIdMethods" method="traceAround"/>
+
+            <aop:after-throwing pointcut-ref="findMethods"
+                                method="traceException" throwing="exception"/>
+
+            <aop:declare-parents types-matching="swt6.spring.basics..*"
+                                 implement-interface="swt6.spring.basics.aop.advice.TraceOptions"
+                                 default-impl="swt6.spring.basics.aop.advice.TraceOptionsDefaultImpl"/>
+
+        </aop:aspect>
+    </aop:config>
+
+</beans>

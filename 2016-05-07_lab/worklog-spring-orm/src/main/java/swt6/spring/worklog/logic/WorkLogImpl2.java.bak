@@ -1,0 +1,57 @@
+package swt6.spring.worklog.logic;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import swt6.spring.worklog.dao.springdata.EmployeeRepository;
+import swt6.spring.worklog.dao.springdata.LogbookEntryRepository;
+import swt6.spring.worklog.domain.Employee;
+import swt6.spring.worklog.domain.LogbookEntry;
+
+public class WorkLogImpl2 implements WorkLogFacade {
+
+  @Autowired
+  private EmployeeRepository employeeRepo;
+
+  @Autowired
+  private LogbookEntryRepository logbookEntryRepo;
+
+  public WorkLogImpl2() {
+  }
+
+  // ================ Business logic method for Employee ================
+
+  @Override
+  public Employee findEmployeeById(Long id) {
+    return employeeRepo.findOne(id);
+  }
+
+  @Override
+  public List<Employee> findAllEmployees() {
+    return employeeRepo.findAll();
+  }
+
+  @Override
+  public Employee syncEmployee(Employee employee) {
+    return employeeRepo.saveAndFlush(employee);
+  }
+
+  // ============== Business logic method for LogbookEntry ================
+  @Override
+  public LogbookEntry syncLogbookEntry(LogbookEntry entry) {
+    return logbookEntryRepo.saveAndFlush(entry);
+  }
+
+  @Override
+  public LogbookEntry findLogbookEntryById(Long id) {
+    return logbookEntryRepo.findOne(id);
+  }
+
+  @Override
+  public void deleteLogbookEntryById(Long id) {
+    LogbookEntry entry = logbookEntryRepo.findOne(id);
+    entry.detachEmployee();
+    logbookEntryRepo.delete(entry);
+  }
+}

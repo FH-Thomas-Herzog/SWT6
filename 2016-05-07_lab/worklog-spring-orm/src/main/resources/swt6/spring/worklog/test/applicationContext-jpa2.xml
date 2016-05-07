@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/data/jpa
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd" >
+    <!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+    <context:property-placeholder location="swt6/spring/worklog/test/jpa.properties"/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
+    <bean id="emFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="swt6.spring.worklog.domain"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- bean post-processor for JPA annotations -->
+    <bean
+            class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+    <bean id="emplDaoJpa" class="swt6.spring.worklog.dao.jpa.EmployeeDaoJpa"/>
+    <bean id="entryDaoJpa" class="swt6.spring.worklog.dao.jpa.LogbookEntryDaoJpa"/>
+
+    <!-- ========= AUTOREGISTRATION OF REPOSITORIES AND BUSINESS LOGIC  ============= -->
+    <context:component-scan base-package="swt6.spring.worklog.logic"/>
+
+    <!-- =================== SPRING DATA JPA REPOSITORIES ======================= -->
+    <jpa:repositories base-package="swt6.spring.worklog.dao.springdata"
+                      entity-manager-factory-ref="emFactory"
+                      transaction-manager-ref="transactionManagerJpa">
+
+    </jpa:repositories>
+
+    <!-- ========================= TRANSACTION DEFINIONS ========================= -->
+    <bean id="transactionManagerJpa" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emFactory"/>
+    </bean>
+
+    <!-- =============== annotation-based defintion of transactions ================== -->
+    <tx:annotation-driven  transaction-manager="transactionManagerJpa"/>
+</beans>
+
+
+
