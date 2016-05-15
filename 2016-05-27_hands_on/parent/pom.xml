@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>at.fh.ooe.swt6.em</groupId>
+    <artifactId>em-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>parent</name>
+    <description>the parent project for the EM application</description>
+
+    <developers>
+        <developer>
+            <name>Thomas Herzog</name>
+            <email>S1310307011@students.fh-hagenberg.at</email>
+            <organization>FH-Hagenberg</organization>
+            <organizationUrl>https://www.fh-ooe.at/campus-hagenberg/studiengaenge/bachelor/software-engineering/
+            </organizationUrl>
+            <roles>
+                <role>owner</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>model</module>
+        <module>web</module>
+        <module>configuration</module>
+    </modules>
+
+    <properties>
+        <!-- Build Configuration -->
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.min.version>3.0</maven.min.version>
+        <jdk.min.version>${maven.compiler.source}</jdk.min.version>
+        <targetJdk>${maven.compiler.target}</targetJdk>
+
+        <!-- Build Plugin Dependency Versions -->
+        <version.plugin.spring.boot>1.3.5.RELEASE</version.plugin.spring.boot>
+        <version.plugin.compiler>3.3</version.plugin.compiler>
+        <version.plugin.build.helper>1.10</version.plugin.build.helper>
+        <version.plugin.dependency>2.10</version.plugin.dependency>
+        <version.plugin.enforcer>1.4.1</version.plugin.enforcer>
+        <version.plugin.processor>2.2.4</version.plugin.processor>
+        <version.plugin.surefire>2.19.1</version.plugin.surefire>
+        <version.plugin.surefire.junit47>2.19.1</version.plugin.surefire.junit47>
+
+        <!-- Dependency Versions -->
+        <version.org.hibernate>4.3.8.Final</version.org.hibernate>
+        <version.org.hibernate.validator>4.3.1.Final</version.org.hibernate.validator>
+        <version.javax.validation>1.1.0.Final</version.javax.validation>
+        <version.org.slf4j>1.7.10</version.org.slf4j>
+        <version.commons.lang3>3.0</version.commons.lang3>
+        <version.lombok>1.16.8</version.lombok>
+
+        <!-- Database Dependency Versions -->
+        <version.com.h2database>1.4.191</version.com.h2database>
+
+        <!-- Test Dependency Versions -->
+        <version.junit>4.12</version.junit>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Dependencies -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.commons.lang3}</version>
+            </dependency>
+
+            <!-- JPA Dependencies -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${version.org.hibernate}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${version.org.hibernate}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${version.org.hibernate.validator}</version>
+            </dependency>
+
+            <!-- Logging Dependencies -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${version.org.slf4j}</version>
+            </dependency>
+
+            <!-- Database Dependencies -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${version.com.h2database}</version>
+            </dependency>
+
+            <!-- Other Dependencies -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${version.lombok}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${version.javax.validation}</version>
+            </dependency>
+
+            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.bsc.maven</groupId>
+                    <artifactId>maven-processor-plugin</artifactId>
+                    <version>${version.plugin.processor}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${version.plugin.build.helper}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${version.plugin.dependency}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${version.plugin.enforcer}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.plugin.compiler}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version.plugin.surefire}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <!-- Build applicable to all projects -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-java-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <message>To build this project JDK ${jdk.min.version} (or
+                                        greater) is required. Please install it.
+                                    </message>
+                                    <version>${jdk.min.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-maven-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <message>To build this project Maven ${maven.min.version} (or
+                                        greater) is required. Please install it.
+                                    </message>
+                                    <version>${maven.min.version}</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.plugin.compiler}</version>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessors>
+                        <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                        </annotationProcessor>
+                    </annotationProcessors>
+                    <!-- Disable annotation processing via compiler plugin. -->
+                    <!-- lombock seems to need compiler annotation processor -->
+                    <!-- <compilerArgument>-proc:none</compilerArgument>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
