@@ -12,12 +12,9 @@
     <artifactId>em-web-spring-mvc</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring-mvc</name>
+    <name>web-spring-mvc</name>
     <description>the spring mvc project</description>
 
-    <url>
-        http://stackoverflow.com/questions/25479986/spring-boot-with-jsf-could-not-find-backup-for-factory-javax-faces-context-face
-    </url>
     <dependencies>
         <!-- Other dependencies -->
         <dependency>

@@ -12,7 +12,7 @@
     <artifactId>em-model-jpa</artifactId>
     <packaging>jar</packaging>
 
-    <name>jpa</name>
+    <name>model-jpa</name>
     <description>the jpa models for the em application</description>
 
     <dependencies>

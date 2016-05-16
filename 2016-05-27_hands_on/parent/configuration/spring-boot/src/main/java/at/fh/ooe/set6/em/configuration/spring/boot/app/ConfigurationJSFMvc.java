@@ -23,6 +23,7 @@ import javax.servlet.ServletContext;
  * http://docs.spring.io/autorepo/docs/spring/3.2.x/spring-framework-reference/html/web-integration.html
  * http://www.mkyong.com/jsf2/jsf-2-0-spring-integration-example/
  * http://www.concretepage.com/spring-4/spring-4-jsf-2-integration-example-using-autowired-annotation
+ * http://stackoverflow.com/questions/25479986/spring-boot-with-jsf-could-not-find-backup-for-factory-javax-faces-context-face
  * <p>
  * Created by Thomas on 5/16/2016.
  */
@@ -37,7 +38,7 @@ import javax.servlet.ServletContext;
 public class ConfigurationJSFMvc implements ServletContextAware {
 
     @Bean
-    public ServletRegistrationBean facesServletRegistration() {
+    public ServletRegistrationBean configureServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(
                 new FacesServlet(), "*.xhtml");
         registration.setLoadOnStartup(1);
@@ -46,17 +47,18 @@ public class ConfigurationJSFMvc implements ServletContextAware {
 
     @Bean
     public ServletListenerRegistrationBean<ConfigureListener> jsfConfigureListener() {
-        return new ServletListenerRegistrationBean<ConfigureListener>(
+        return new ServletListenerRegistrationBean<>(
                 new ConfigureListener());
     }
 
     @Override
-    public void setServletContext(ServletContext servletContext) {
-        servletContext.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString());
-        servletContext.setInitParameter("javax.faces.DEFAULT_SUFFIX", ".xhtml");
-        servletContext.setInitParameter("javax.faces.PARTIAL_STATE_SAVING_METHOD", "true");
-        servletContext.setInitParameter("javax.faces.PROJECT_STAGE", "Development");
-        servletContext.setInitParameter("facelets.DEVELOPMENT", "true");
-        servletContext.setInitParameter("javax.faces.FACELETS_REFRESH_PERIOD", "1");
+    public void setServletContext(ServletContext ctx) {
+        ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString());
+        ctx.setInitParameter("javax.faces.DEFAULT_SUFFIX", ".xhtml");
+        ctx.setInitParameter("javax.faces.PARTIAL_STATE_SAVING", "true");
+        ctx.setInitParameter("javax.faces.STATE_SAVING_METHOD", "server");
+        ctx.setInitParameter("javax.faces.PROJECT_STAGE", "Development");
+        ctx.setInitParameter("javax.faces.FACELETS_REFRESH_PERIOD", "1");
+        ctx.setInitParameter("facelets.DEVELOPMENT", "true");
     }
 }

@@ -12,7 +12,7 @@
     <artifactId>em-logic-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>api</name>
+    <name>logic-api</name>
     <description>the logic specification</description>
 
     <dependencies>
