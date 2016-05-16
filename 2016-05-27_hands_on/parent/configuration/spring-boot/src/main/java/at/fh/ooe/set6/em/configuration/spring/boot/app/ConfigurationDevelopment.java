@@ -3,7 +3,6 @@ package at.fh.ooe.set6.em.configuration.spring.boot.app;
 import at.fh.ooe.swt6.em.data.dao.api.UserDao;
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
 import at.fh.ooe.swt6.em.model.jpa.model.User;
-import at.fh.ooe.swt6.em.web.spring.mvc.controller.GameController;
 import at.fh.ooe.swt6.logic.impl.GameLogicImpl;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,8 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackageClasses = {
         UserDao.class,
         GameLogic.class,
-        GameLogicImpl.class,
-        GameController.class
+        GameLogicImpl.class
 })
 public class ConfigurationDevelopment {
 }

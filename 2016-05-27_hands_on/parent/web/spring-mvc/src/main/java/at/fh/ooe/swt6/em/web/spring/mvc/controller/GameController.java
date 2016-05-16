@@ -18,6 +18,7 @@ public class GameController implements Serializable {
 
     @RequestMapping("/listGames")
     public String listGames() {
-        return "hello";
+        // return the path to the xhtml which is supposed to be rendered
+        return "index.xhtml";
     }
 }
