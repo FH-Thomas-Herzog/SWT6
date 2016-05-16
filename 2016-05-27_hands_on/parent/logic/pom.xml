@@ -9,13 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>em-web</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>em-logic</artifactId>
+	<packaging>pom</packaging>
 
-    <name>web</name>
-    <description>the parent project for the web resources and configuration</description>
+    <name>logic</name>
+    <description>the parent project for the business logic projects</description>
+	
     <modules>
-        <module>spring-mvc</module>
+        <module>api</module>
+        <module>impl</module>
     </modules>
-
 </project>

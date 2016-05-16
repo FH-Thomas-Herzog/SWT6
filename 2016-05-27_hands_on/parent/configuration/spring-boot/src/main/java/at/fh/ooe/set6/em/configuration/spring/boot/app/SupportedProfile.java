@@ -5,8 +5,8 @@ package at.fh.ooe.set6.em.configuration.spring.boot.app;
  */
 public class SupportedProfile {
 
-    public static final String DEV = "DEV";
-    public static final String PROD = "PROD";
+    public static final String DEV = "dev";
+    public static final String PROD = "prod";
 
     private SupportedProfile() {
     }

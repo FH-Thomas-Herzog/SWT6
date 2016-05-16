@@ -26,14 +26,12 @@ public class Game extends BaseEntity<Long> {
 
     @Getter
     @Setter
-    @NotNull
-    @Column(nullable = false, updatable = false)
+    @Column(length = 2)
     public Integer goalsTeam1;
 
     @Getter
     @Setter
-    @NotNull
-    @Column(nullable = false, updatable = false)
+    @Column(length = 2)
     public Integer goalsTeam2;
 
     @Getter
@@ -52,7 +50,6 @@ public class Game extends BaseEntity<Long> {
 
     @Getter
     @Setter
-    @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
     public Set<Tip> tips = new HashSet<>(0);
     //</editor-fold>

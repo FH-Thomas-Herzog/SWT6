@@ -30,6 +30,8 @@
         <module>model</module>
         <module>web</module>
         <module>configuration</module>
+        <module>data</module>
+        <module>logic</module>
     </modules>
 
     <properties>
@@ -58,6 +60,7 @@
         <version.org.slf4j>1.7.10</version.org.slf4j>
         <version.commons.lang3>3.0</version.commons.lang3>
         <version.lombok>1.16.8</version.lombok>
+        <version.spring.boot>1.3.2.RELEASE</version.spring.boot>
 
         <!-- Database Dependency Versions -->
         <version.com.h2database>1.4.191</version.com.h2database>
@@ -75,7 +78,7 @@
                 <version>${version.commons.lang3}</version>
             </dependency>
 
-            <!-- JPA Dependencies -->
+            <!-- Hibernate Dependencies -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -92,6 +95,15 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${version.org.hibernate.validator}</version>
+            </dependency>
+
+            <!-- Spring Dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${version.spring.boot}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
 
             <!-- Logging Dependencies -->

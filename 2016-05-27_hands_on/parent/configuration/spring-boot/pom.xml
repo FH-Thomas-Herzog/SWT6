@@ -17,21 +17,7 @@
 
     <properties>
         <version.plugin.spring.boot>1.3.5.RELEASE</version.plugin.spring.boot>
-
-        <version.spring.boot>1.3.2.RELEASE</version.spring.boot>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>1.3.2.RELEASE</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- Other dependencies -->
@@ -55,18 +41,13 @@
         <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
         <!-- Project Dependencies -->
         <dependency>
             <groupId>at.fh.ooe.swt6.em</groupId>
-            <artifactId>em-model-jpa</artifactId>
+            <artifactId>em-web-spring-mvc</artifactId>
             <version>${project.version}</version>
         </dependency>
 
