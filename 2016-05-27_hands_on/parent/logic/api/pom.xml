@@ -23,6 +23,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+
         <!-- Other Project Dependencies -->
         <dependency>
             <groupId>at.fh.ooe.swt6.em</groupId>

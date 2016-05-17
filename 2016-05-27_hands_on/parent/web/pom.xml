@@ -21,6 +21,7 @@
 
     <properties>
         <version.java.sun.jsf>2.1.20-11</version.java.sun.jsf>
+        <version.glassfish.el.ri>2.2</version.glassfish.el.ri>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,12 @@
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
                 <version>5.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>el-impl</artifactId>
+                <version>${version.glassfish.el.ri}</version>
             </dependency>
 
         </dependencies>

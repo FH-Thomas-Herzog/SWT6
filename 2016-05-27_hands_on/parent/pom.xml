@@ -57,6 +57,7 @@
         <version.org.hibernate>4.3.8.Final</version.org.hibernate>
         <version.org.hibernate.validator>4.3.2.Final</version.org.hibernate.validator>
         <version.javax.validation>1.0.0.GA</version.javax.validation>
+        <version.javax.javaee.api>7.0</version.javax.javaee.api>
         <version.org.slf4j>1.7.10</version.org.slf4j>
         <version.commons.lang3>3.0</version.commons.lang3>
         <version.lombok>1.16.8</version.lombok>
@@ -132,6 +133,12 @@
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${version.javax.validation}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${version.javax.javaee.api}</version>
             </dependency>
 
             <!-- Test Dependencies -->
