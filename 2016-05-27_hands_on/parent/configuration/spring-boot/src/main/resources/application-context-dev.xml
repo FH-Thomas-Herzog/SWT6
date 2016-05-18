@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.log">false</prop>
+                <prop key="hibernate.debug">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.connection.driver_class">org.h2.Driver</prop>
+                <prop key="hibernate.connection.url">jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS EM;</prop>
+                <prop key="hibernate.connection.username">emUser</prop>
+                <prop key="hibernate.connection.password">emUser</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+                <prop key="hibernate.default_schema">EM</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="READ_COMMITTED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:aspect id="txLogicAdvice" ref="txAdvice">
+            <aop:pointcut id="txLogicPointCut" expression="within(at.fh.ooe.swt6.logic.impl..*)"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

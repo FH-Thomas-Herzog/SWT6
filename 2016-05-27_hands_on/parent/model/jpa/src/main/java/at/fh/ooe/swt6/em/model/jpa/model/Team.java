@@ -41,5 +41,14 @@ public class Team extends BaseEntity<Long> {
     @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team2")
     public Set<Game> gamesAsTeam2 = new HashSet<>(0);
+
+    public Team() {
+    }
+
+    public Team(final String name) {
+        super();
+        this.name = name;
+    }
+
     //</editor-fold>
 }

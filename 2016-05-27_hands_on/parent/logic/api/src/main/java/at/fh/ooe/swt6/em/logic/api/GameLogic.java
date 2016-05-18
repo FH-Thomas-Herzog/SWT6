@@ -1,6 +1,7 @@
 package at.fh.ooe.swt6.em.logic.api;
 
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
+import at.fh.ooe.swt6.em.model.jpa.model.Team;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,4 +13,6 @@ import java.util.List;
 public interface GameLogic extends Serializable {
 
     List<Game> findAllGames();
+
+    Team saveTeam(Team team);
 }

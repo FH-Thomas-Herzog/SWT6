@@ -2,6 +2,7 @@ package at.fh.ooe.swt6.em.web.spring.mvc.controller;
 
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
+import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,6 +23,7 @@ public class GameController implements Serializable {
     @RequestMapping("/listGames")
     public String listGames() {
         final List<Game> games = gameLogic.findAllGames();
+        gameLogic.saveTeam(new Team("MyTeam"));
         // return the path to the xhtml which is supposed to be rendered
         return "index.xhtml";
     }
