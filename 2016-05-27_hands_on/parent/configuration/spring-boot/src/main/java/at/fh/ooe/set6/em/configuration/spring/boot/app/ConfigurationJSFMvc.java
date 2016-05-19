@@ -1,7 +1,7 @@
 package at.fh.ooe.set6.em.configuration.spring.boot.app;
 
-import at.fh.ooe.swt6.em.web.spring.mvc.controller.GameController;
-import at.fh.ooe.swt6.em.web.spring.mvc.model.MyModel;
+import at.fh.ooe.swt6.em.web.mvc.controller.GameController;
+import at.fh.ooe.swt6.em.web.mvc.model.MyModel;
 import com.sun.faces.config.ConfigureListener;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

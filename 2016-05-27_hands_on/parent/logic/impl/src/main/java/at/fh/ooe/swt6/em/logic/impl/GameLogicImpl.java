@@ -1,4 +1,4 @@
-package at.fh.ooe.swt6.logic.impl;
+package at.fh.ooe.swt6.em.logic.impl;
 
 import at.fh.ooe.swt6.em.data.dao.api.GameDao;
 import at.fh.ooe.swt6.em.data.dao.api.TeamDao;

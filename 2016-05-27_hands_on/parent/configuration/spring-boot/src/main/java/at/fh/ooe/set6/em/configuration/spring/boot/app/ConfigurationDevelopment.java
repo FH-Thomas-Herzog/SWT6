@@ -1,10 +1,11 @@
 package at.fh.ooe.set6.em.configuration.spring.boot.app;
 
-import at.fh.ooe.set6.em.configuration.spring.boot.aop.AspectControllerDurationLogger;
+import at.fh.ooe.set6.em.configuration.spring.boot.aop.AspectDurationLogger;
 import at.fh.ooe.swt6.em.data.dao.api.UserDao;
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
+import at.fh.ooe.swt6.em.logic.impl.GameLogicImpl;
 import at.fh.ooe.swt6.em.model.jpa.model.User;
-import at.fh.ooe.swt6.logic.impl.GameLogicImpl;
+import at.fh.ooe.swt6.em.web.mvc.aop.advice.AdviceController;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -15,9 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 // This is our dev configuration
 @Configuration()
-// Aboslutely needed, automatically read of xml fails !!!
-@ImportResource("classpath:application-context-dev.xml")
 @Profile(SupportedProfile.DEV)
+// Do not name it like application-dev.xml because is considered to be properties defined via xml and not context xml
+@ImportResource("classpath:application-context-dev.xml")
 // Enables transaction management for this configuration
 @EnableTransactionManagement
 // Scans for entities
@@ -31,7 +32,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         UserDao.class,
         GameLogic.class,
         GameLogicImpl.class,
-        AspectControllerDurationLogger.class
+        AspectDurationLogger.class,
+        AdviceController.class
 })
 public class ConfigurationDevelopment {
 }

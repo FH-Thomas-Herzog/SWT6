@@ -1,4 +1,4 @@
-package at.fh.ooe.swt6.em.web.spring.mvc.controller;
+package at.fh.ooe.swt6.em.web.mvc.controller;
 
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
@@ -25,6 +25,7 @@ public class GameController implements Serializable {
         final List<Game> games = gameLogic.findAllGames();
         gameLogic.saveTeam(new Team("MyTeam"));
         // return the path to the xhtml which is supposed to be rendered
-        return "index.xhtml";
+        throw new IllegalArgumentException("My exception thrown");
+//        return "index.xhtml";
     }
 }
