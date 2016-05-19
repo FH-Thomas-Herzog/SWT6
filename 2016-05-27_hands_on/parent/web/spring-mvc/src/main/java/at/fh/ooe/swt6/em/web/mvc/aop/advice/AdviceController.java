@@ -19,6 +19,6 @@ public class AdviceController {
     public RedirectView handleException(final HttpServletRequest request,
                                         final Throwable t) {
         log.error("Exception occurred on request", t);
-        return new RedirectView("error.xhtml");
+        return new RedirectView("error");
     }
 }

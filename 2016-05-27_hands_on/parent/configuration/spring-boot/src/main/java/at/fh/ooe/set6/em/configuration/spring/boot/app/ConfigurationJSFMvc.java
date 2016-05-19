@@ -2,16 +2,15 @@ package at.fh.ooe.set6.em.configuration.spring.boot.app;
 
 import at.fh.ooe.swt6.em.web.mvc.controller.GameController;
 import at.fh.ooe.swt6.em.web.mvc.model.MyModel;
-import com.sun.faces.config.ConfigureListener;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContext;
@@ -37,6 +36,12 @@ import javax.servlet.ServletContext;
 @AutoConfigureAfter(ConfigurationDevelopment.class)
 public class ConfigurationJSFMvc implements ServletContextAware {
 
+    /**
+     * Register FacesServlet on xhtml suffix which are only accessible via internal controlles because
+     * they reside in protected WEB-INF directory
+     *
+     * @return the customized servlet registration
+     */
     @Bean
     public ServletRegistrationBean configureServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(
@@ -45,12 +50,28 @@ public class ConfigurationJSFMvc implements ServletContextAware {
         return registration;
     }
 
+    /**
+     * This custom setup resolver redirects to protected WEB-INF directory where our xhtml files reside.
+     * The controllers only need to return proper path within this path relatively without the need to add the suffix.
+     * E.g.: "/index" -> "/WEB-INF/jsf/index.xhtml"
+     * So we are separated from the current used view technology
+     *
+     * @return the customized view resolver
+     */
     @Bean
-    public ServletListenerRegistrationBean<ConfigureListener> jsfConfigureListener() {
-        return new ServletListenerRegistrationBean<>(
-                new ConfigureListener());
+    public InternalResourceViewResolver internalResourceViewResolver() {
+        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/jsf");
+        resolver.setSuffix(".xhtml");
+
+        return resolver;
     }
 
+    /**
+     * Setup ServletContext properly to integrate JSF as view technology
+     *
+     * @param ctx the servlet context to configure
+     */
     @Override
     public void setServletContext(ServletContext ctx) {
         ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString());

@@ -16,16 +16,19 @@ import java.util.List;
 @Controller
 public class GameController implements Serializable {
 
+    public class GameControllerPath {
+        public static final String INDEX = "/index";
+    }
 
     @Inject
     private GameLogic gameLogic;
 
-    @RequestMapping("/listGames")
+    @RequestMapping(GameControllerPath.INDEX)
     public String listGames() {
+        // Prepare data for view here
         final List<Game> games = gameLogic.findAllGames();
         gameLogic.saveTeam(new Team("MyTeam"));
         // return the path to the xhtml which is supposed to be rendered
-        throw new IllegalArgumentException("My exception thrown");
-//        return "index.xhtml";
+        return GameControllerPath.INDEX;
     }
 }
