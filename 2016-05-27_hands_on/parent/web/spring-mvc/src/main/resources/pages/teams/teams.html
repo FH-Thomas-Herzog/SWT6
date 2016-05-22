@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <ul>
+        <li th:each="model : ${models}" th:text="${model.name}"/>
+    </ul>
+</div>
+</body>
+</html>

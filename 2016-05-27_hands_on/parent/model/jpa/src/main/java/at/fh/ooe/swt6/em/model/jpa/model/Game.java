@@ -22,35 +22,34 @@ public class Game extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, insertable = false, updatable = false)
-    public Long id;
+    private Long id;
 
     @Getter
     @Setter
     @Column(length = 2)
-    public Integer goalsTeam1;
+    private Integer goalsTeam1;
 
     @Getter
     @Setter
     @Column(length = 2)
-    public Integer goalsTeam2;
+    private Integer goalsTeam2;
 
     @Getter
     @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, updatable = false)
-    public Team team1;
+    private Team team1;
 
     @Getter
     @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, updatable = false)
-    public Team team2;
-
+    private Team team2;
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
-    public Set<Tip> tips = new HashSet<>(0);
+    private Set<Tip> tips = new HashSet<>(0);
     //</editor-fold>
 }

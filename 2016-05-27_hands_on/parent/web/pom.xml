@@ -20,29 +20,29 @@
     </modules>
 
     <properties>
-        <version.java.sun.jsf>2.1.20-11</version.java.sun.jsf>
+        <version.org.web.jars.bootstrap>3.3.6</version.org.web.jars.bootstrap>
+        <version.org.web.jars.jquery>2.2.4</version.org.web.jars.jquery>
+        <version.org.web.jars.locator>0.30</version.org.web.jars.locator>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.sun.faces</groupId>
-                <artifactId>jsf-api</artifactId>
-                <version>${version.java.sun.jsf}</version>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${version.org.web.jars.bootstrap}</version>
             </dependency>
-
             <dependency>
-                <groupId>com.sun.faces</groupId>
-                <artifactId>jsf-impl</artifactId>
-                <version>${version.java.sun.jsf}</version>
+                <groupId>org.webjars</groupId>
+                <artifactId>webjars-locator</artifactId>
+                <version>${version.org.web.jars.locator}</version>
             </dependency>
-
             <dependency>
-                <groupId>org.primefaces</groupId>
-                <artifactId>primefaces</artifactId>
-                <version>5.0</version>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>${version.org.web.jars.jquery}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
+
 </project>

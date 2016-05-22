@@ -1,6 +1,7 @@
 package at.fh.ooe.swt6.em.logic.api;
 
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
+import at.fh.ooe.swt6.em.model.view.team.TeamView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,4 +14,6 @@ public interface TeamLogic extends Serializable {
     Team save(String name);
 
     List<Team> save(String... names);
+
+    List<TeamView> findAllWithGameStatistics();
 }

@@ -15,6 +15,7 @@
     <description>the parent project for model projects of any kind</description>
     <modules>
         <module>jpa</module>
+        <module>view</module>
     </modules>
 
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="${@resourceHelper.cssBootstrap}" rel="stylesheet" type="text/css"/>
+    <script th:src="${@resourceHelper.jsJquery}" type="text/javascript"/>
+    <script th:src="${@resourceHelper.jsBootstrap}" type="text/javascript"/>
+    <title>ADD_LOC_MSG_HERE</title>
+</head>
+<body>
+<div th:replace="fragments/header :: navigation-header">Navigation Bar</div>
+<div class="container">
+    <div class="page-title">
+        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Employee List</h2>
+    </div>
+
+    <div th:replace="${@sessionHelper.currentViewTemplate} :: content">
+        Content
+    </div>
+</div>
+</body>
+</html>

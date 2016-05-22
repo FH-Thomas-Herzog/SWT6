@@ -20,9 +20,9 @@ import java.util.List;
 public class GameLogicImpl implements GameLogic {
 
     @Inject
-    private UserDao userDao;
-    @Inject
     private GameDao gameDao;
+    @Inject
+    private UserDao userDao;
     @Inject
     private TeamDao teamDao;
 

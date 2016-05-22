@@ -34,5 +34,11 @@
             <artifactId>em-data-repository</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>at.fh.ooe.swt6.em</groupId>
+            <artifactId>em-model-view</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

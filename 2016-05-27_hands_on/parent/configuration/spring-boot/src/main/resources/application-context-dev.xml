@@ -23,6 +23,7 @@
                 <prop key="hibernate.naming.physical-strategy">
                     org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
                 </prop>
+                <prop key="hibernate.default_schema">EM</prop>
                 <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.log">false</prop>
                 <prop key="hibernate.debug">false</prop>

@@ -5,6 +5,7 @@ import at.fh.ooe.swt6.em.data.dao.api.TeamDao;
 import at.fh.ooe.swt6.em.data.dao.api.UserDao;
 import at.fh.ooe.swt6.em.logic.impl.TeamLogicImpl;
 import at.fh.ooe.swt6.em.model.jpa.model.User;
+import at.fh.ooe.swt6.em.web.mvc.app.configuration.MvcConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Profile(SupportedProfile.DEV)
 // Do not name it like application-dev.xml because is considered to be properties defined via xml and not context xml
 @ImportResource({"classpath:application-context-dev.xml"})
+@PropertySource("application-dev.properties")
 // Enables transaction management for this configuration
 @EnableTransactionManagement
 // Scans for entities
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackageClasses = {
         TeamDao.class,
         TeamLogicImpl.class,
-        ConfigurationJSFMvc.class
+        MvcConfiguration.class,
 })
 public class ConfigurationDev {
 
