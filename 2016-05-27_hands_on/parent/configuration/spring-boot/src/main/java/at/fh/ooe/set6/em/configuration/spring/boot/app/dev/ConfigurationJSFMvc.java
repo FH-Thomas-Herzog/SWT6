@@ -1,5 +1,6 @@
-package at.fh.ooe.set6.em.configuration.spring.boot.app;
+package at.fh.ooe.set6.em.configuration.spring.boot.app.dev;
 
+import at.fh.ooe.set6.em.configuration.spring.boot.app.api.SupportedProfile;
 import at.fh.ooe.swt6.em.web.mvc.controller.GameController;
 import at.fh.ooe.swt6.em.web.mvc.model.MyModel;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -33,7 +34,7 @@ import javax.servlet.ServletContext;
         GameController.class,
         MyModel.class
 })
-@AutoConfigureAfter(ConfigurationDevelopment.class)
+@AutoConfigureAfter(ConfigurationDev.class)
 public class ConfigurationJSFMvc implements ServletContextAware {
 
     /**

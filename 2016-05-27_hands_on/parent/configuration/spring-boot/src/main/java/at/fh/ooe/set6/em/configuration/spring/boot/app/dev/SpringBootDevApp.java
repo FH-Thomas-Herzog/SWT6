@@ -1,4 +1,4 @@
-package at.fh.ooe.set6.em.configuration.spring.boot.app;
+package at.fh.ooe.set6.em.configuration.spring.boot.app.dev;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

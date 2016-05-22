@@ -51,6 +51,7 @@
         <version.plugin.processor>2.2.4</version.plugin.processor>
         <version.plugin.surefire>2.19.1</version.plugin.surefire>
         <version.plugin.surefire.junit47>2.19.1</version.plugin.surefire.junit47>
+        <version.plugin.jar>3.0.0</version.plugin.jar>
 
         <!-- Dependency Versions -->
         <version.org.hibernate>5.1.0.Final</version.org.hibernate>
@@ -123,6 +124,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version.plugin.jar}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.bsc.maven</groupId>
                     <artifactId>maven-processor-plugin</artifactId>
