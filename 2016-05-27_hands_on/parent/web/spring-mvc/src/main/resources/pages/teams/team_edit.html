@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="team-editor">
+    <div class="page-title">
+        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Page Title</h2>
+    </div>
+    <div class="page-content">
+        <form id="team_edit_form" th:action="@{${@teamEditPageDefinition.actionSave}}" th:object="${editModel}"
+              method="post">
+            <fieldset class="form-group">
+                <label for="name" th:text="#{name}"/>
+                <input id="name" name="name" type="text" class="form-control" th:value="${editModel.name}"
+                       th:placeholder="#{placeholder.team.name}"/>
+            </fieldset>
+            <input id="id" type="hidden" th:value="${editModel.id}"/>
+            <button type="button" class="btn btn-primary" th:text="#{action.new}"
+                    th:onclick="'$(\'#container-main\').load(\'' + ${@teamEditPageDefinition.actionNew} + '\')'"/>
+            <button type="submit" class="btn btn-primary" th:text="#{action.save}"/>
+            <button type="submit" class="btn btn-primary" th:if="${!editModel.newModel}" th:text="#{action.delete}"/>
+            <button type="button" class="btn btn-primary" th:text="#{action.back}"
+                    th:onclick="'$(\'#container-main\').load(\'' + ${@teamEditPageDefinition.actionBack} + '\')'"/>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            EM.submitForm('team_edit_form', 'container-main');
+        });
+    </script>
+</div>
+</body>
+</html>

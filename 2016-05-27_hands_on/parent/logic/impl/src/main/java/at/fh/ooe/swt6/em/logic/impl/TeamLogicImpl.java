@@ -64,7 +64,7 @@ public class TeamLogicImpl implements TeamLogic {
 
     @Override
     public List<TeamView> findAllWithGameStatistics() {
-        final List<Team> teams = teamDao.findAll();
+        final List<Team> teams = teamDao.findAllByOrderByNameAsc();
         final List<Game> allGames = teams.stream()
                                          .flatMap(item -> Stream.concat(item.getGamesAsTeam1().stream(),
                                                                         item.getGamesAsTeam2().stream()))
@@ -93,7 +93,8 @@ public class TeamLogicImpl implements TeamLogic {
                                                                                           .count()));
 
         return teams.stream()
-                    .map(team -> new TeamView(team.getName(),
+                    .map(team -> new TeamView(team.getId(),
+                                              team.getName(),
                                               (winnerMap.containsKey(team) ? winnerMap.get(team).size() : 0L),
                                               (loserMap.containsKey(team) ? loserMap.get(team).size() : 0L),
                                               equalGameMap.get(team))).collect(Collectors.toList());

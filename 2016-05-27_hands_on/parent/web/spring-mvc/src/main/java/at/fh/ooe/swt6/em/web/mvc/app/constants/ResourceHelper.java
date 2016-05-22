@@ -23,22 +23,32 @@ public class ResourceHelper implements Serializable {
         return locationFor(Resource.CSS_BOOTSTRAP);
     }
 
+    public String getCssMain() {
+        return locationFor(Resource.CSS_MAIN);
+    }
+
+    public String getJsUtil() {
+        return locationFor(Resource.JS_UTIL);
+    }
+
     private String locationFor(final Resource resource) {
         return resource.location;
     }
 
     public enum Resource {
         ROOT_WEB_JAR("/webjars"),
-        ROOT_JS("/META-INF/resources/static/js"),
-        ROOT_CSS("/META-INF/resources/static/css"),
-        ROOT_TEMPLATE("/META-INF/resources/static/fragments"),
+        ROOT_JS("/static/js"),
+        ROOT_CSS("/static/css"),
+        ROOT_TEMPLATE("/static/fragments"),
         ROOT_BOOTSTRAP(ROOT_WEB_JAR.location + "/bootstrap"),
         ROOT_CSS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/css"),
         ROOT_JS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/js"),
         ROOT_JQUERY(ROOT_WEB_JAR.location + "/jquery"),
         JS_JQUERY(ROOT_JQUERY.location + "/jquery.min.js"),
         JS_BOOTSTRAP(ROOT_JS_BOOTSTRAP.location + "/bootstrap.min.js"),
-        CSS_BOOTSTRAP(ROOT_CSS_BOOTSTRAP.location + "/bootstrap.min.css");
+        CSS_BOOTSTRAP(ROOT_CSS_BOOTSTRAP.location + "/bootstrap.min.css"),
+        CSS_MAIN(ROOT_CSS.location + "/main.css"),
+        JS_UTIL(ROOT_JS.location + "/util.js");
 
         public final String location;
 

@@ -11,10 +11,12 @@ import java.io.Serializable;
 public class TeamView implements Serializable {
 
     //<editor-fold desc="Properties">
+    Long id;
     String name;
     Long gamesWin;
     Long gamesLost;
     Long gamesEqual;
     //</editor-fold>
+
 
 }

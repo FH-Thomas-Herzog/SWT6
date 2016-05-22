@@ -9,14 +9,14 @@ import javax.inject.Named;
 /**
  * Created by Thomas on 5/22/2016.
  */
-@Named("teamPageDefinition")
+@Named("teamEditPageDefinition")
 @ApplicationScoped
-public class TeamPageDefinition implements PageDefinition {
+public class TeamEditPageDefinition implements PageDefinition {
 
-    private String template = "teams/teams";
+    private String template = "teams/team_edit";
 
 
-    public TeamPageDefinition() {
+    public TeamEditPageDefinition() {
     }
 
     @Override
@@ -26,7 +26,7 @@ public class TeamPageDefinition implements PageDefinition {
 
     @Override
     public String getTitleKey() {
-        return "teams";
+        return "teams.form";
     }
 
     @Override
@@ -34,19 +34,23 @@ public class TeamPageDefinition implements PageDefinition {
         return TeamController.TeamControllerActions.PREFIX + name;
     }
 
-    public String getActionIndex() {
-        return TeamController.TeamControllerActions.INDEX;
+    public String getActionBack() {
+        return TeamController.TeamControllerActions.BACK;
     }
 
     public String getActionNew() {
         return TeamController.TeamControllerActions.NEW;
     }
 
+    public String getActionSave() {
+        return TeamController.TeamControllerActions.SAVE;
+    }
+
     public String getActionDelete() {
         return TeamController.TeamControllerActions.DELETE;
     }
 
-    public String getTeamContentFragment() {
-        return template + "::content";
+    public String getTeamEditorFragment() {
+        return getTemplate() + "::" + "team-editor";
     }
 }

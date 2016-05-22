@@ -3,9 +3,37 @@
 <body>
 
 <div th:fragment="content">
-    <ul>
-        <li th:each="model : ${models}" th:text="${model.name}"/>
-    </ul>
+    <div class="page-title">
+        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Employee List</h2>
+    </div>
+    <div class="page-content">
+        <div class="row row-buffer">
+            <button type="button" class="btn btn-default" aria-label="Left Align"
+                    th:onclick="'$(\'#container-main\').load(\'' + ${@teamPageDefinition.actionNew} + '\')'">
+                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" th:text="' ' + #{action.new}"/>
+            </button>
+        </div>
+        <div class="row row-buffer">
+            <ul class="list-group">
+                <li th:each="model : ${models}" class="list-group-item">
+            <span class="list-group-item-heading">
+                <a th:href="@{${@teamPageDefinition.getActionDelete()}(id=${model.id})}" style="color: red;">
+                    <span class="glyphicon glyphicon-remove"/>
+                </a>
+                <span th:text="${model.name}"/>
+            </span>
+            <span class="list-group-item-text pull-right">
+            <span th:text="${model.gamesWin} + ' ' + #{won}"
+                  class="label label-default label-pill"/>
+            <span th:text="${model.gamesLost} + ' ' + #{lost}"
+                  class="label label-default label-pill"/>
+            <span th:text="${model.gamesEqual} + ' ' + #{even}"
+                  class="label label-default label-pill"/>
+            </span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,7 +21,8 @@ import java.util.Objects;
 public class SessionHelper implements Serializable {
 
     public enum SessionConstants {
-        CURRENT_PAGE("currentPage");
+        CURRENT_PAGE("currentPage"),
+        FORMER_PAGE("formerPaGe");
         public final String name;
 
         SessionConstants(String name) {
@@ -56,7 +58,12 @@ public class SessionHelper implements Serializable {
     public void setCurrentView(final PageDefinition definition) {
         Objects.requireNonNull(definition, "current page must not be empty");
 
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        attr.getRequest().getSession(false).setAttribute(SessionConstants.CURRENT_PAGE.name, definition);
+        final PageDefinition oldDefinition = getCurrentView();
+        final ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        final HttpSession session = attr.getRequest().getSession(false);
+        session.setAttribute(SessionConstants.CURRENT_PAGE.name, definition);
+        if (oldDefinition != null) {
+            session.setAttribute(SessionConstants.FORMER_PAGE.name, oldDefinition);
+        }
     }
 }

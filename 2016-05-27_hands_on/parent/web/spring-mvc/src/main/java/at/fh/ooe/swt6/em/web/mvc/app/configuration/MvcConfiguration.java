@@ -8,6 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
@@ -22,7 +24,10 @@ import java.util.Locale;
         TeamView.class,
         DevDatabaseInitializer.class
 }, scopeResolver = CdiScopeMetaDataResolver.class)
-public class MvcConfiguration {
+public class MvcConfiguration extends WebMvcConfigurerAdapter {
+
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/static/"};
 
     @Bean
     @Scope("session")
@@ -30,5 +35,13 @@ public class MvcConfiguration {
         final SessionLocaleResolver resolver = new SessionLocaleResolver();
         resolver.setDefaultLocale(Locale.ENGLISH);
         return resolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        super.addResourceHandlers(registry);
+        registry.addResourceHandler("/static/**/*").addResourceLocations(
+                CLASSPATH_RESOURCE_LOCATIONS);
+
     }
 }
