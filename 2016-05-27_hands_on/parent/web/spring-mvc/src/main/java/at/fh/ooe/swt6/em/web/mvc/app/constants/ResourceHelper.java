@@ -23,6 +23,10 @@ public class ResourceHelper implements Serializable {
         return locationFor(Resource.CSS_BOOTSTRAP);
     }
 
+    public String getJsJqueryValdiation() {
+        return locationFor(Resource.JS_JQUERY_VALIDATION);
+    }
+
     public String getCssMain() {
         return locationFor(Resource.CSS_MAIN);
     }
@@ -41,14 +45,13 @@ public class ResourceHelper implements Serializable {
         ROOT_CSS("/static/css"),
         ROOT_TEMPLATE("/static/fragments"),
         ROOT_BOOTSTRAP(ROOT_WEB_JAR.location + "/bootstrap"),
-        ROOT_CSS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/css"),
-        ROOT_JS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/js"),
-        ROOT_JQUERY(ROOT_WEB_JAR.location + "/jquery"),
-        JS_JQUERY(ROOT_JQUERY.location + "/jquery.min.js"),
-        JS_BOOTSTRAP(ROOT_JS_BOOTSTRAP.location + "/bootstrap.min.js"),
-        CSS_BOOTSTRAP(ROOT_CSS_BOOTSTRAP.location + "/bootstrap.min.css"),
+        ROOT_JQUERY_VALIDATION(ROOT_WEB_JAR.location + "/jquery-validation"),
+        JS_JQUERY(ROOT_WEB_JAR.location + "/jquery/jquery.min.js"),
+        JS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/js/bootstrap.min.js"),
+        CSS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/css/bootstrap.min.css"),
         CSS_MAIN(ROOT_CSS.location + "/main.css"),
-        JS_UTIL(ROOT_JS.location + "/util.js");
+        JS_UTIL(ROOT_JS.location + "/util.js"),
+        JS_JQUERY_VALIDATION(ROOT_JQUERY_VALIDATION.location + "/jquery.validate.min.js");
 
         public final String location;
 

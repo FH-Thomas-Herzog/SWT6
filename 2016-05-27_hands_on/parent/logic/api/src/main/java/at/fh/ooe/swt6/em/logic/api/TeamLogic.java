@@ -11,9 +11,13 @@ import java.util.List;
  */
 public interface TeamLogic extends Serializable {
 
+    Team save(Team team);
+
     Team save(String name);
 
     List<Team> save(String... names);
+
+    void delete(long id);
 
     List<TeamView> findAllWithGameStatistics();
 }

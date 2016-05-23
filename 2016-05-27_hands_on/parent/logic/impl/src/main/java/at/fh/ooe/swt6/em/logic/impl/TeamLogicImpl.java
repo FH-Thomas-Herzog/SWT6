@@ -2,6 +2,7 @@ package at.fh.ooe.swt6.em.logic.impl;
 
 import at.fh.ooe.swt6.em.data.dao.api.TeamDao;
 import at.fh.ooe.swt6.em.logic.api.TeamLogic;
+import at.fh.ooe.swt6.em.logic.api.exception.LogicException;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import at.fh.ooe.swt6.em.model.view.team.TeamView;
@@ -38,6 +39,14 @@ public class TeamLogicImpl implements TeamLogic {
     };
 
     @Override
+    public Team save(Team _team) {
+        Objects.requireNonNull(_team, "Cannot save null team");
+        Objects.requireNonNull(_team.getName(), "Cannot save team with null name");
+
+        return teamDao.save(_team);
+    }
+
+    @Override
     public Team save(String name) {
         Objects.requireNonNull(name, "A teams must have a name");
         if (name.trim().isEmpty()) {
@@ -60,6 +69,15 @@ public class TeamLogicImpl implements TeamLogic {
         }
 
         return teams;
+    }
+
+    @Override
+    public void delete(long id) {
+        final Team team = teamDao.findOne(id);
+        if (team == null) {
+            throw new LogicException("Team do delete not found");
+        }
+        teamDao.delete(team);
     }
 
     @Override

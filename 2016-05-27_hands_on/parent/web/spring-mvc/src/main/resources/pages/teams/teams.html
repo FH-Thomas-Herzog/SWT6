@@ -17,11 +17,16 @@
             <ul class="list-group">
                 <li th:each="model : ${models}" class="list-group-item">
             <span class="list-group-item-heading">
-                <a th:href="@{${@teamPageDefinition.getActionDelete()}(id=${model.id})}" style="color: red;">
+                <a th:onclick="'EM.postInvoker(\'' + ${@teamPageDefinition.actionDelete} + '\',\'id=' + ${model.id} + '\',\'container-main\')'"
+                   style="color: red;">
                     <span class="glyphicon glyphicon-remove"/>
                 </a>
-                <span th:text="${model.name}"/>
+                    <a th:onclick="'EM.getInvoker(\'' + ${@teamPageDefinition.actionEdit} + '\',\'id=' + ${model.id} + '\',\'container-main\')'"
+                       style="color: darkorange; margin-left: 3px;">
+                        <span class="glyphicon glyphicon-edit"/>
+                    </a>
             </span>
+                    <span th:text="${model.name}"/>
             <span class="list-group-item-text pull-right">
             <span th:text="${model.gamesWin} + ' ' + #{won}"
                   class="label label-default label-pill"/>

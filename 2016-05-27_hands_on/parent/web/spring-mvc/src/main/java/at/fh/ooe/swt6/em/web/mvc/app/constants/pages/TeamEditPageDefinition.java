@@ -2,9 +2,11 @@ package at.fh.ooe.swt6.em.web.mvc.app.constants.pages;
 
 import at.fh.ooe.swt6.em.web.mvc.api.PageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.controller.TeamController;
+import lombok.Getter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import java.util.Objects;
 
 /**
  * Created by Thomas on 5/22/2016.
@@ -13,20 +15,24 @@ import javax.inject.Named;
 @ApplicationScoped
 public class TeamEditPageDefinition implements PageDefinition {
 
+    @Getter
     private String template = "teams/team_edit";
-
+    @Getter
+    private String actionNew = TeamController.TeamControllerActions.NEW;
+    @Getter
+    private String actionEdit = TeamController.TeamControllerActions.EDIT;
+    @Getter
+    private String actionBack = TeamController.TeamControllerActions.BACK;
+    @Getter
+    private String actionSave = TeamController.TeamControllerActions.SAVE;
+    @Getter
+    private String actionDelete = TeamController.TeamControllerActions.DELETE;
+    @Getter
+    private String teamEditContentFragment = getTemplate() + "::" + "content";
+    @Getter
+    private String titleKey = "teams.form";
 
     public TeamEditPageDefinition() {
-    }
-
-    @Override
-    public String getTemplate() {
-        return template;
-    }
-
-    @Override
-    public String getTitleKey() {
-        return "teams.form";
     }
 
     @Override
@@ -34,23 +40,16 @@ public class TeamEditPageDefinition implements PageDefinition {
         return TeamController.TeamControllerActions.PREFIX + name;
     }
 
-    public String getActionBack() {
-        return TeamController.TeamControllerActions.BACK;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamEditPageDefinition that = (TeamEditPageDefinition) o;
+        return Objects.equals(template, that.template);
     }
 
-    public String getActionNew() {
-        return TeamController.TeamControllerActions.NEW;
-    }
-
-    public String getActionSave() {
-        return TeamController.TeamControllerActions.SAVE;
-    }
-
-    public String getActionDelete() {
-        return TeamController.TeamControllerActions.DELETE;
-    }
-
-    public String getTeamEditorFragment() {
-        return getTemplate() + "::" + "team-editor";
+    @Override
+    public int hashCode() {
+        return Objects.hash(template);
     }
 }

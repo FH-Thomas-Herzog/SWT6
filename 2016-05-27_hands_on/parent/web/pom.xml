@@ -23,6 +23,7 @@
         <version.org.web.jars.bootstrap>3.3.6</version.org.web.jars.bootstrap>
         <version.org.web.jars.jquery>2.2.4</version.org.web.jars.jquery>
         <version.org.web.jars.locator>0.30</version.org.web.jars.locator>
+        <version.org.web.jars.jquery.validation>1.15.0</version.org.web.jars.jquery.validation>
     </properties>
 
     <dependencyManagement>
@@ -32,15 +33,23 @@
                 <artifactId>bootstrap</artifactId>
                 <version>${version.org.web.jars.bootstrap}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>webjars-locator</artifactId>
                 <version>${version.org.web.jars.locator}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>jquery</artifactId>
                 <version>${version.org.web.jars.jquery}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery-validation</artifactId>
+                <version>${version.org.web.jars.jquery.validation}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

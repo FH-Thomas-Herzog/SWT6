@@ -20,6 +20,16 @@ public interface Entity<I extends Serializable> {
     void setId(I id);
 
     /**
+     * @return for optimisitc locking
+     */
+    Long getVersion();
+
+    /**
+     * @param version the new version
+     */
+    void setVersion(Long version);
+
+    /**
      * Force implementation of  equals method
      *
      * @param o the other object
