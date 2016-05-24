@@ -1,11 +1,14 @@
 package at.fh.ooe.swt6.em.model.jpa.model;
 
 import at.fh.ooe.swt6.em.model.jpa.api.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "GAME")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Game extends BaseEntity<Long> {
 
     //<editor-fold desc="Properties">
@@ -36,6 +41,10 @@ public class Game extends BaseEntity<Long> {
 
     @Getter
     @Setter
+    public LocalDateTime gameDate;
+
+    @Getter
+    @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, updatable = false)
@@ -47,9 +56,27 @@ public class Game extends BaseEntity<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, updatable = false)
     private Team team2;
+
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "game")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "game", cascade = {CascadeType.REMOVE})
     private Set<Tip> tips = new HashSet<>(0);
+
     //</editor-fold>
+
+    public Game(Long id) {
+        this.id = id;
+    }
+
+    public Game(Integer goalsTeam1,
+                Integer goalsTeam2,
+                LocalDateTime gameDate,
+                Team team1,
+                Team team2) {
+        this.goalsTeam1 = goalsTeam1;
+        this.goalsTeam2 = goalsTeam2;
+        this.gameDate = gameDate;
+        this.team1 = team1;
+        this.team2 = team2;
+    }
 }

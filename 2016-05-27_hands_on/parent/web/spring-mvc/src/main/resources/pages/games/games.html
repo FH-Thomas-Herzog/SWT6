@@ -8,40 +8,57 @@
     </div>
     <div class="page-content">
         <div class="row row-buffer">
-            <button id="team_new_btn"
-                    type="button"
-                    class="btn btn-default"
-                    aria-label="Left Align"
-                    th:attrappend="data-action=${@teamPageDefinition.actionNew}">
-                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" th:text="' ' + #{action.new}"/>
-            </button>
+            <div class="col-md-12">
+                <button id="team_new_btn"
+                        type="button"
+                        class="btn btn-default"
+                        aria-label="Left Align"
+                        th:attrappend="data-action=${@gamePageDefinition.actionNew}">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" th:text="' ' + #{action.new}"/>
+                </button>
+            </div>
         </div>
         <div class="row row-buffer">
             <ul class="list-group">
                 <li th:each="model : ${models}" class="list-group-item">
             <span class="list-group-item-heading">
                 <a class="delete_link"
-                   th:attrappend="data-action=${@teamPageDefinition.actionDelete}"
+                   th:if="${!model.finished}"
+                   th:attrappend="data-action=${@gamePageDefinition.actionDelete}"
                    th:attrprepend="data-id=${model.id}"
                    style="color: red;">
                     <span class="glyphicon glyphicon-remove"/>
                 </a>
                     <a class="edit_link"
-                       th:attrappend="data-action=${@teamPageDefinition.actionEdit}"
+                       th:if="${!model.finished}"
+                       th:attrappend="data-action=${@gamePageDefinition.actionEdit}"
                        th:attrprepend="data-id=${model.id}"
                        style="color: darkorange; margin-left: 3px;">
                         <span class="glyphicon glyphicon-edit"/>
                     </a>
-            </span>
-                    <span th:text="${model.name}"/>
-            <span class="list-group-item-text pull-right">
-            <span th:text="${model.gamesWin} + ' ' + #{won}"
+                    <span class="list-group-item-text">
+                        <span th:text="${model.team1Name}"
+                              style="font-weight: bold;"/>
+                        <span th:text="' [' + ${model.goalsTeam1} + '] '"
+                              th:if="${model.finished}"
+                              th:style="${model.team1Winner ? 'color: red' : 'color:orange'}"/>
+                        <span th:text="':'"/>
+                        <span th:text="' [' + ${model.goalsTeam2} + '] '"
+                              th:if="${model.finished}"
+                              th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
+                        <span th:text="${model.team2Name}"
+                              style="font-weight: bold;"/>
+                    </span>
+                <span class="list-group-item-text pull-right">
+            <span th:text="${model.tipTeam1Count} + ' ' + #{tips.one}"
                   class="label label-default label-pill"/>
-            <span th:text="${model.gamesLost} + ' ' + #{lost}"
+            <span th:text="${model.tipTeam2Count} + ' ' + #{tips.two}"
                   class="label label-default label-pill"/>
-            <span th:text="${model.gamesEqual} + ' ' + #{even}"
+            <span th:text="${model.tipEventCount} + ' ' + #{tips.even}"
                   class="label label-default label-pill"/>
-            </span>
+                </span>
+                </span>
+
                 </li>
             </ul>
         </div>

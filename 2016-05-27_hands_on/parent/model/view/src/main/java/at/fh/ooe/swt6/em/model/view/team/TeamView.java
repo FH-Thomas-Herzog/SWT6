@@ -17,9 +17,9 @@ public class TeamView implements Serializable {
     //<editor-fold desc="Properties">
     Long id;
     String name;
-    Long gamesWin;
-    Long gamesLost;
-    Long gamesEqual;
+    Integer gamesWin;
+    Integer gamesLost;
+    Integer gamesEqual;
     //</editor-fold>
 
     public TeamView(Long id) {

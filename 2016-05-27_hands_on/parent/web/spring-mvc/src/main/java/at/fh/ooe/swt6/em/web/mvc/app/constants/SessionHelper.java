@@ -22,12 +22,12 @@ public class SessionHelper implements Serializable {
 
     public enum SessionConstants {
         CURRENT_PAGE("currentPage"),
-        FORMER_PAGE("formerPaGe"),
-        TEAMS_SESSION("newTeams");
+        FORMER_PAGE("formerPage"),
+        VIEW_SESSION_DATA("viewSessionData");
         public final String name;
 
         SessionConstants(String name) {
-            this.name = name;
+            this.name = this.getClass().getSimpleName().concat("#").concat(name);
         }
     }
 

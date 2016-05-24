@@ -1,7 +1,9 @@
 package at.fh.ooe.swt6.em.model.jpa.model;
 
 import at.fh.ooe.swt6.em.model.jpa.api.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +16,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "TEAM")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Team extends BaseEntity<Long> {
 
     //<editor-fold desc="Properties">
@@ -33,16 +37,17 @@ public class Team extends BaseEntity<Long> {
     @Getter
     @Setter
     @NotNull
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team1")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team1", cascade = {CascadeType.REMOVE})
     private Set<Game> gamesAsTeam1 = new HashSet<>(0);
 
     @Getter
     @Setter
     @NotNull
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team2")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team2", cascade = {CascadeType.REMOVE})
     private Set<Game> gamesAsTeam2 = new HashSet<>(0);
 
-    public Team() {
+    public Team(Long id) {
+        this.id = id;
     }
 
     public Team(final String name) {

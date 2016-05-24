@@ -55,6 +55,7 @@
 
         <!-- Dependency Versions -->
         <version.org.hibernate>5.1.0.Final</version.org.hibernate>
+        <version.org.hibernate.java8>5.0.9.Final</version.org.hibernate.java8>
         <version.org.hibernate.validator>5.2.4.Final</version.org.hibernate.validator>
         <version.javax.validation>1.1.0.Final</version.javax.validation>
         <version.javax.javaee.api>7.0</version.javax.javaee.api>
@@ -115,6 +116,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.apache.commons.lang3}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-java8</artifactId>
+                <version>${version.org.hibernate.java8}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

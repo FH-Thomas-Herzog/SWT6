@@ -9,10 +9,7 @@ import at.fh.ooe.swt6.em.model.view.team.TeamView;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,14 +24,11 @@ public class TeamLogicImpl implements TeamLogic {
     private TeamDao teamDao;
 
     private static final BiFunction<Game, Boolean, Team> TEAM_FOR_GOALS_MAPPER = (game, winner) -> {
-        if (game.getGoalsTeam2().equals(game.getGoalsTeam1())) {
-            return null;
-        }
-        if (game.getGoalsTeam2()
+        if (game.getGoalsTeam1()
                 .compareTo(game.getGoalsTeam2()) > 0) {
-            return (winner) ? game.getTeam2() : game.getTeam1();
-        } else {
             return (winner) ? game.getTeam1() : game.getTeam2();
+        } else {
+            return new Team(0L);
         }
     };
 
@@ -52,6 +46,8 @@ public class TeamLogicImpl implements TeamLogic {
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("String name is empty");
         }
+
+        // TODO: Check for equal name on database
 
         return teamDao.save(new Team(name));
     }
@@ -83,38 +79,49 @@ public class TeamLogicImpl implements TeamLogic {
     @Override
     public List<TeamView> findAllWithGameStatistics() {
         final List<Team> teams = teamDao.findAllByOrderByNameAsc();
-        final List<Game> allGames = teams.stream()
-                                         .flatMap(item -> Stream.concat(item.getGamesAsTeam1().stream(),
-                                                                        item.getGamesAsTeam2().stream()))
-                                         .collect(Collectors.toList());
+        if (teams.isEmpty()) {
+            Collections.emptyList();
+        }
 
-        final Map<Team, List<Game>> winnerMap = allGames.stream()
-                                                        .filter(item -> item.getGoalsTeam2()
-                                                                            .equals(item.getGoalsTeam2()))
-                                                        .collect(Collectors.groupingBy(item -> TEAM_FOR_GOALS_MAPPER.apply(
-                                                                item,
-                                                                Boolean.TRUE)));
-        final Map<Team, List<Game>> loserMap = allGames.stream()
-                                                       .filter(item -> item.getGoalsTeam2()
-                                                                           .equals(item.getGoalsTeam2()))
-                                                       .collect(Collectors.groupingBy(item -> TEAM_FOR_GOALS_MAPPER.apply(
-                                                               item,
-                                                               Boolean.FALSE)));
-        final Map<Team, Long> equalGameMap = teams.stream()
-                                                  .collect(Collectors.toMap(item -> item,
-                                                                            item -> Stream.concat(item.getGamesAsTeam1()
-                                                                                                      .stream(),
-                                                                                                  item.getGamesAsTeam2()
-                                                                                                      .stream())
-                                                                                          .filter(game -> game.getGoalsTeam1()
-                                                                                                              .equals(game.getGoalsTeam2()))
-                                                                                          .count()));
+        final List<TeamView> views = new ArrayList<>(teams.size());
+        // get all games of all teams
+        final List<Game> games = teams.stream()
+                                      .flatMap(item -> Stream.concat(item.getGamesAsTeam1().stream(),
+                                                                     item.getGamesAsTeam2().stream()))
+                                      .filter(game -> game.getGoalsTeam1() != null && game.getGoalsTeam2() != null)
+                                      .collect(Collectors.toList());
+        // map winner to games
+        final Map<Team, List<Game>> teamWinnerMap = games.stream()
+                                                         .filter(game -> !game.getGoalsTeam1()
+                                                                              .equals(game.getGoalsTeam2()))
+                                                         .collect(Collectors.groupingBy(game -> TEAM_FOR_GOALS_MAPPER.apply(
+                                                                 game,
+                                                                 Boolean.TRUE)));
+        // map loser to games
+        final Map<Team, List<Game>> teamLoserMap = games.stream()
+                                                        .filter(game -> !game.getGoalsTeam1()
+                                                                             .equals(game.getGoalsTeam2()))
+                                                        .collect(Collectors.groupingBy(game -> TEAM_FOR_GOALS_MAPPER.apply(
+                                                                game,
+                                                                Boolean.FALSE)));
+        // get even games
+        final List<Game> evenGames = games.stream()
+                                          .filter(game -> game.getGoalsTeam1().equals(game.getGoalsTeam2()))
+                                          .collect(Collectors.toList());
+        for (Team team : teams) {
+            // get total even count for team
+            final Long eventCount = evenGames.stream()
+                                             .filter(game -> game.getTeam1().equals(team) || game.getTeam2()
+                                                                                                 .equals(team))
+                                             .count();
+            // build view model
+            views.add(new TeamView(team.getId(),
+                                   team.getName(),
+                                   (teamWinnerMap.containsKey(team) ? teamWinnerMap.get(team).size() : 0),
+                                   (teamLoserMap.containsKey(team) ? teamLoserMap.get(team).size() : 0),
+                                   eventCount.intValue()));
+        }
 
-        return teams.stream()
-                    .map(team -> new TeamView(team.getId(),
-                                              team.getName(),
-                                              (winnerMap.containsKey(team) ? winnerMap.get(team).size() : 0L),
-                                              (loserMap.containsKey(team) ? loserMap.get(team).size() : 0L),
-                                              equalGameMap.get(team))).collect(Collectors.toList());
+        return views;
     }
 }

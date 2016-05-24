@@ -1,7 +1,9 @@
 package at.fh.ooe.swt6.em.model.jpa.model;
 
 import at.fh.ooe.swt6.em.model.jpa.api.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +16,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "USER")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseEntity<Long> {
 
     //<editor-fold desc="Properties">
@@ -30,15 +34,14 @@ public class User extends BaseEntity<Long> {
     @Column(length = 100, nullable = false)
     public String email;
 
-    @Getter
-    @Setter
-    @NotNull
-    @Column(length = 100, nullable = false)
-    public String username;
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     public Set<Tip> tips = new HashSet<>(0);
     //</editor-fold>
+
+    public User(Long id) {
+        this.id = id;
+    }
 }

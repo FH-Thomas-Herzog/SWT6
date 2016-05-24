@@ -19,6 +19,9 @@
                 <li th:classappend="${@sessionHelper.isOnPage(@teamPageDefinition.template) ? 'active' : ''}">
                     <a href="#" th:href="@{${@teamPageDefinition.actionIndex}}" th:text="#{teams}"/>
                 </li>
+                <li th:classappend="${@sessionHelper.isOnPage(@gamePageDefinition.template) ? 'active' : ''}">
+                    <a href="#" th:href="@{${@gamePageDefinition.actionIndex}}" th:text="#{games}"/>
+                </li>
             </ul>
         </div>
         <!--/.nav-collapse -->

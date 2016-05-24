@@ -34,5 +34,6 @@
         this.ajaxInvoker(_action, 'get', _data, _update);
     }
 
+    // Bind on window, but nothing else
     _window.EM = this;
 })($, window);

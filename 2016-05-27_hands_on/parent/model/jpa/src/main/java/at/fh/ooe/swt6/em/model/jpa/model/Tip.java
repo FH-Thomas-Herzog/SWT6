@@ -1,7 +1,9 @@
 package at.fh.ooe.swt6.em.model.jpa.model;
 
 import at.fh.ooe.swt6.em.model.jpa.api.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +14,8 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "USER_TIP")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tip extends BaseEntity<Long> {
 
     //<editor-fold desc="Properties">
@@ -37,13 +41,17 @@ public class Tip extends BaseEntity<Long> {
     @Getter
     @Setter
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public User user;
 
     @Getter
     @Setter
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public Game game;
     //</editor-fold>
+
+    public Tip(Long id) {
+        this.id = id;
+    }
 }
