@@ -20,7 +20,7 @@
         </div>
         <div class="row row-buffer">
             <ul class="list-group">
-                <li th:each="model : ${models}" class="list-group-item">
+                <li th:each="model : ${models}" class="list-group-item clearfix">
             <span class="list-group-item-heading">
                 <a class="delete_link"
                    th:if="${!model.finished}"
@@ -36,7 +36,8 @@
                        style="color: darkorange; margin-left: 3px;">
                         <span class="glyphicon glyphicon-edit"/>
                     </a>
-                    <span class="list-group-item-text">
+                </span>
+                      <span class="list-group-item-text">
                         <span th:text="${model.team1Name}"
                               style="font-weight: bold;"/>
                         <span th:text="' [' + ${model.goalsTeam1} + '] '"
@@ -48,16 +49,15 @@
                               th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
                         <span th:text="${model.team2Name}"
                               style="font-weight: bold;"/>
-                    </span>
-                <span class="list-group-item-text pull-right">
+                <span class="pull-right">
             <span th:text="${model.tipTeam1Count} + ' ' + #{tips.one}"
-                  class="label label-default label-pill"/>
+                  class="badge"/>
             <span th:text="${model.tipTeam2Count} + ' ' + #{tips.two}"
-                  class="label label-default label-pill"/>
+                  class="badge"/>
             <span th:text="${model.tipEventCount} + ' ' + #{tips.even}"
-                  class="label label-default label-pill"/>
+                  class="badge"/>
                 </span>
-                </span>
+                    </span>
 
                 </li>
             </ul>
