@@ -119,12 +119,14 @@ public class TeamLogicImpl implements TeamLogic {
                                                                                                  .equals(team))
                                              .count();
             // build view model
-            views.add(new TeamView(team.getId(),
-                                   team.getVersion(),
-                                   team.getName(),
-                                   (teamWinnerMap.containsKey(team) ? teamWinnerMap.get(team).size() : 0),
-                                   (teamLoserMap.containsKey(team) ? teamLoserMap.get(team).size() : 0),
-                                   eventCount.intValue()));
+            final TeamView view = new TeamView(team.getName(),
+                                               (teamWinnerMap.containsKey(team) ? teamWinnerMap.get(team).size() : 0),
+                                               (teamLoserMap.containsKey(team) ? teamLoserMap.get(team).size() : 0),
+                                               eventCount.intValue());
+            view.setId(team.getId());
+            view.setVersion(team.getVersion());
+
+            views.add(view);
         }
 
         return views;

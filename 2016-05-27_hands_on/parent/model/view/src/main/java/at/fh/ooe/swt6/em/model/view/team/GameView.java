@@ -12,11 +12,9 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameView implements EntityView<Long> {
+public class GameView extends EntityView<Long> {
 
     //<editor-fold desc="Properties">
-    Long id;
-    Long version;
     String team1Name;
     String team2Name;
     Integer goalsTeam1;

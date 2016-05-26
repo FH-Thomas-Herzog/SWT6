@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="page-title">
+        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Page Title</h2>
+    </div>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-m-12">
+                <form id="tip_form" method="post"
+                      th:action="${@gameTipPageDefinition.actionSave}"
+                      th:object="${editModel}">
+                    <div class="container">
+                        <div class="row row-buffer">
+                            <div class="col-xs-5 text-right">
+                                <h4 th:text="${editModel.team1Name}"/>
+                            </div>
+                            <div class="col-xs-2 text-center"><h4>:</h4></div>
+                            <div class="col-xs-5">
+                                <h4 th:text="${editModel.team2Name}"/>
+                            </div>
+                        </div>
+                        <div class="row row-buffer">
+                            <div class="col-xs-5 text-right">
+                                <input id="tip_goals_team1"
+                                       name="goalsTeam1"
+                                       type="number"
+                                       class="form-control"
+                                       min="0"
+                                       max="100"
+                                       step="1"
+                                       placeholder="0"
+                                       required="required"
+                                       style="float: right; clear: both; text-align: right;  min-width: 50px; max-width: 200px;"
+                                       th:value="${editModel.goalsTeam1}"/>
+                            </div>
+                            <div class="col-xs-2 text-center"></div>
+                            <div class="col-xs-5 text-left">
+                                <input id="tip_goals_team2"
+                                       name="goalsTeam2"
+                                       class="form-control"
+                                       type="number"
+                                       min="0"
+                                       max="100"
+                                       step="1"
+                                       placeholder="0"
+                                       required="required"
+                                       style="float: left; clear: both; text-align: left; min-width: 50px; max-width: 200px;"
+                                       th:value="${editModel.goalsTeam2}"/>
+                            </div>
+                        </div>
+                        <div class="row row-buffer" style="margin-top: 10px;">
+                            <div class="col-xs-12 text-center">
+                                <strong th:text="${#temporals.format(editModel.gameDate, #messages.msg('app.date.format.dateTime'))}"/>
+                            </div>
+                        </div>
+                        <div class="row row-buffer">
+                            <div class="col-xs-12 form-group">
+                                <label for="tip_email" th:text="#{email}"/>
+                                <input id="tip_email"
+                                       name="email"
+                                       class="form-control"
+                                       type="email"
+                                       required="required"
+                                       th:value="${editModel.email}"/>
+                            </div>
+                        </div>
+                        <div class="row row-buffer">
+                            <div class="col-xs-12">
+                                <input id="tip_game_id"
+                                       name="gameId"
+                                       type="hidden"
+                                       th:value="${editModel.gameId}"/>
+                            </div>
+                        </div>
+                        <div class="row row-buffer">
+                            <div class="col-xs-6 text-right">
+                                <button id="tip_btn_back"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        th:text="#{action.back}"
+                                        th:attrappend="data-action=${@gameTipPageDefinition.actionBack}"/>
+                            </div>
+                            <div class="col-xs-6 text-left">
+                                <button id="tip_btn_save"
+                                        type="submit"
+                                        class="btn btn-primary"
+                                        th:text="#{action.save}"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;" th:if="${!createdModels.isEmpty()}">
+            <div class="col-m-12">
+                <ul class="list-group">
+                    <li th:each="model : ${createdModels}" class="list-group-item">
+                <span class="list-group-item-heading">
+                    <a class="delete_link"
+                       th:attr="data-action=${@gameTipPageDefinition.actionDelete}"
+                       th:attrappend="data-id=${model.id}"
+                       style="color: red;">
+                        <span class="glyphicon glyphicon-remove"/>
+                    </a>
+                </span>
+                        <span th:text="${model.team1Name}"
+                              style="font-weight: bold;"/>
+                        <span th:text="' [' + ${model.goalsTeam1} + '] '"/>
+                        <span th:text="':'"/>
+                        <span th:text="' [' + ${model.goalsTeam2} + '] '"/>
+                        <span th:text="${model.team2Name}"
+                              style="font-weight: bold;"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            var form = $("#tip_form");
+            $("a.delete_link").on("click", function () {
+                var link = $(this);
+                EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id") + "&gameId=" + $("input[name=gameId]").val(), "container-main");
+            });
+            $("#tip_btn_delete").on("click", function () {
+                var button = $(this);
+                EM.postInvoker(button.attr("data-action"), "id=" + $("input[name=id]").val() + "&gameId=" + $("input[name=gameId]").val(), "container-main");
+            });
+            $("#tip_btn_back").on("click", function () {
+                var button = $(this);
+                EM.getInvoker(button.attr("data-action"), null, "container-main");
+            });
+            // Enable client side form validation
+            form.validate({
+                submitHandler: function (_form) {
+                    EM.formSubmitHandler(_form, "container-main");
+
+                    return false;
+                }
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

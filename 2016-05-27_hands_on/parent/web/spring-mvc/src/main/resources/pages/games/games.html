@@ -24,22 +24,19 @@
                     <li th:each="model : ${models}" class="list-group-item clearfix">
             <span class="list-group-item-heading">
                 <a class="delete_link"
-                   th:if="${!model.finished}"
                    th:attrappend="data-action=${@gamePageDefinition.actionDelete}"
                    th:attrprepend="data-id=${model.id}"
                    style="color: red;">
                     <span class="glyphicon glyphicon-remove"/>
                 </a>
                     <a class="edit_link"
-                       th:if="${!model.finished}"
                        th:attrappend="data-action=${@gamePageDefinition.actionEdit}"
                        th:attrprepend="data-id=${model.id}"
                        style="color: darkorange; margin-left: 3px;">
                         <span class="glyphicon glyphicon-edit"/>
                     </a>
-                    <a class="edit_link"
-                       th:if="${!model.finished}"
-                       th:attrappend="data-action=${@gamePageDefinition.actionTip}"
+                    <a class="tip_link"
+                       th:attrappend="data-action=${@gamePageDefinition.actionCreateTip}"
                        th:attrprepend="data-id=${model.id}"
                        style="color: green; margin-left: 3px;">
                         <span class="glyphicon glyphicon-usd"/>
@@ -87,6 +84,10 @@
                 EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });
             $("a.edit_link").on("click", function () {
+                var link = $(this);
+                EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
+            });
+            $("a.tip_link").on("click", function () {
                 var link = $(this);
                 EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });

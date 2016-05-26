@@ -12,7 +12,7 @@
                       method="post">
 
                     <div class="container">
-                        <div class="row">
+                        <div class="row row-buffer">
                             <div class="col-xs-5 text-right">
                                 <h4 th:if="${!editModel.newModel}"
                                     th:text="${editModel.team1Name}"/>
@@ -36,7 +36,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row row-buffer">
                             <div class="col-xs-5 text-right">
                                 <input id="game_goals_team1"
                                        name="goalsTeam1"
@@ -46,6 +46,7 @@
                                        max="100"
                                        step="1"
                                        placeholder="0"
+                                       required="required"
                                        style="float: right; clear: both; text-align: right;  min-width: 50px; max-width: 200px;"
                                        th:value="${editModel.goalsTeam1}"/>
                             </div>
@@ -59,51 +60,63 @@
                                        max="100"
                                        step="1"
                                        placeholder="0"
+                                       required="required"
                                        style="float: left; clear: both; text-align: left; min-width: 50px; max-width: 200px;"
                                        th:value="${editModel.goalsTeam2}"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input id="game_id" name="id" type="hidden" th:value="${editModel.id}"/>
-                            <input id="game_id_team1" name="team1" type="hidden"
-                                   th:if="${!editModel.newModel}"
-                                   th:value="${editModel.team1}"/>
-                            <input id="game_id_team2" name="team2" type="hidden"
-                                   th:if="${!editModel.newModel}"
-                                   th:value="${editModel.team2}"/>
-                            <input id="game_version" name="version" type="hidden" th:value="${editModel.version}"/>
+                        <div class="row row-buffer" style="margin-top: 10px;">
+                            <div class="col-xs-12">
+                                <input id="game_date_input"
+                                       name="gameDate"
+                                       class="form-control"
+                                       type="datetime-local"
+                                       required="required"
+                                       style="float: left; clear: both; text-align: center;"
+                                       th:value="${editModel.gameDate}"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;">
-                        <div class="col-xs-3 text-center">
-                            <button id="game_btn_back"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    th:text="#{action.back}"
-                                    th:attrappend="data-action=${@gamesEditPageDefinition.actionBack}"/>
+                        <div class="row row-buffer">
+                            <div class="col-xs-12">
+                                <input id="game_id" name="id" type="hidden" th:value="${editModel.id}"/>
+                                <input id="game_id_team1" name="team1" type="hidden"
+                                       th:if="${!editModel.newModel}"
+                                       th:value="${editModel.team1}"/>
+                                <input id="game_id_team2" name="team2" type="hidden"
+                                       th:if="${!editModel.newModel}"
+                                       th:value="${editModel.team2}"/>
+                                <input id="game_version" name="version" type="hidden" th:value="${editModel.version}"/>
+                            </div>
                         </div>
-                        <div class="col-xs-3 text-center">
-                            <button id="game_btn_new"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    th:text="#{action.new}"
-                                    th:attrappend="data-action=${@gamesEditPageDefinition.actionNew}"/>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <button id="game_btn_save"
-                                    type="submit"
-                                    class="btn btn-primary"
-                                    th:text="#{action.save}"/>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <button id="game_btn_delete"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    th:text="#{action.delete}"
-                                    th:if="${!editModel.newModel}"
-                                    th:attrappend="data-action=${@gamesEditPageDefinition.actionDelete}"/>
+                        <div class="row row-buffer" style="margin-top: 10px;">
+                            <div class="col-xs-3 text-center">
+                                <button id="game_btn_back"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        th:text="#{action.back}"
+                                        th:attrappend="data-action=${@gamesEditPageDefinition.actionBack}"/>
+                            </div>
+                            <div class="col-xs-3 text-center">
+                                <button id="game_btn_new"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        th:text="#{action.new}"
+                                        th:attrappend="data-action=${@gamesEditPageDefinition.actionNew}"/>
+                            </div>
+                            <div class="col-xs-3 text-center">
+                                <button id="game_btn_save"
+                                        type="submit"
+                                        class="btn btn-primary"
+                                        th:text="#{action.save}"/>
+                            </div>
+                            <div class="col-xs-3 text-center">
+                                <button id="game_btn_delete"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        th:text="#{action.delete}"
+                                        th:if="${!editModel.newModel}"
+                                        th:attrappend="data-action=${@gamesEditPageDefinition.actionDelete}"/>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -115,23 +128,29 @@
                     <li th:each="model : ${createdModels}" class="list-group-item">
                 <span class="list-group-item-heading">
                     <a class="delete_link"
-                       th:if="${!model.finished}"
                        th:attr="data-action=${@gamesEditPageDefinition.actionDelete}"
                        th:attrappend="data-id=${model.id}"
                        style="color: red;">
                         <span class="glyphicon glyphicon-remove"/>
                     </a>
                     <a class="edit_link"
-                       th:if="${!model.finished}"
                        th:attr="data-action=${@gamesEditPageDefinition.actionEdit}"
                        th:attrappend="data-id=${model.id}"
                        style="color: darkorange; margin-left: 3px;">
                         <span class="glyphicon glyphicon-edit"/>
                     </a>
                 </span>
-                        <span th:text="${model.team1Name}"/>
-                        <span style="margin-left: 10px;margin-right: 10px;">:</span>
-                        <span th:text="${model.team2Name}"/>
+                        <span th:text="${model.team1Name}"
+                              style="font-weight: bold;"/>
+                        <span th:text="' [' + ${model.goalsTeam1} + '] '"
+                              th:if="${model.finished}"
+                              th:style="${model.team1Winner ? 'color: red' : 'color:orange'}"/>
+                        <span th:text="':'"/>
+                        <span th:text="' [' + ${model.goalsTeam2} + '] '"
+                              th:if="${model.finished}"
+                              th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
+                        <span th:text="${model.team2Name}"
+                              style="font-weight: bold;"/>
                     </li>
                 </ul>
             </div>

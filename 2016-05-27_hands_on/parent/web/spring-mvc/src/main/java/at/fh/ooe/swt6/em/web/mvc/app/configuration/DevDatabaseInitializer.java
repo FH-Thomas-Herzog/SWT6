@@ -52,11 +52,6 @@ public class DevDatabaseInitializer implements ApplicationRunner {
         games.add(new Game(3, 3, LocalDateTime.now(), teams.get(1), teams.get(4)));
         games.add(new Game(5, 1, LocalDateTime.now(), teams.get(1), teams.get(5)));
 
-        games.add(new Game(null, null, LocalDateTime.now(), teams.get(2), teams.get(3)));
-        games.add(new Game(null, null, LocalDateTime.now(), teams.get(2), teams.get(4)));
-        games.add(new Game(null, null, LocalDateTime.now(), teams.get(2), teams.get(5)));
-        games.add(new Game(null, null, LocalDateTime.now(), teams.get(2), teams.get(1)));
-
         gameLogic.saveGames(games);
     }
 }

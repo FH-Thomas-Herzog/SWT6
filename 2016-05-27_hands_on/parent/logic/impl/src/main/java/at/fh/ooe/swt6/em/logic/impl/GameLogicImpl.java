@@ -61,20 +61,38 @@ public class GameLogicImpl implements GameLogic {
             // get total tip count
             Long total = tipMap.entrySet().stream().map(entry -> entry.getValue().size()).count();
             // build view model
-            views.add(new GameView(game.getId(),
-                                   game.getVersion(),
-                                   game.getTeam1().getName(),
-                                   game.getTeam2().getName(),
-                                   game.getGoalsTeam1(),
-                                   game.getGoalsTeam2(),
-                                   (tipMap.containsKey(game.getTeam1()) ? tipMap.get(game.getTeam1())
-                                                                                .size() : Integer.valueOf(0)),
-                                   (tipMap.containsKey(game.getTeam2()) ? tipMap.get(game.getTeam2())
-                                                                                .size() : Integer.valueOf(0)),
-                                   (tipMap.containsKey(eventTeam) ? tipMap.get(eventTeam).size() : Integer.valueOf(0)),
-                                   total.intValue(),
-                                   game.gameDate));
+            final GameView view = new GameView(game.getTeam1().getName(),
+                                               game.getTeam2().getName(),
+                                               game.getGoalsTeam1(),
+                                               game.getGoalsTeam2(),
+                                               (tipMap.containsKey(game.getTeam1()) ? tipMap.get(game.getTeam1())
+                                                                                            .size() : Integer.valueOf(0)),
+                                               (tipMap.containsKey(game.getTeam2()) ? tipMap.get(game.getTeam2())
+                                                                                            .size() : Integer.valueOf(0)),
+                                               (tipMap.containsKey(eventTeam) ? tipMap.get(eventTeam)
+                                                                                      .size() : Integer.valueOf(0)),
+                                               total.intValue(),
+                                               game.gameDate);
+            view.setId(game.getId());
+            view.setVersion(game.getVersion());
+            views.add(view);
         }
+
+        views.sort((o1, o2) -> {
+            int result = 0;
+            if ((result = o2.getGameDate().compareTo(o1.getGameDate())) == 0) {
+                Integer highGoalsO1 = (o1.getGoalsTeam1() > o1.getGoalsTeam2()) ? o1.getGoalsTeam1() : o1.getGoalsTeam2();
+                Integer highGoalsO2 = (o2.getGoalsTeam1() > o2.getGoalsTeam2()) ? o2.getGoalsTeam1() : o2.getGoalsTeam2();
+                if ((highGoalsO1.compareTo(highGoalsO2)) == 0) {
+                    if ((result = o1.getTeam1Name().compareTo(o2.getTeam1Name())) == 0) {
+                        if ((result = o1.getTeam2Name().compareTo(o2.getTeam2Name())) == 0) {
+                            result = o1.getId().compareTo(o2.getId());
+                        }
+                    }
+                }
+            }
+            return result;
+        });
 
         return views;
     }
@@ -103,8 +121,10 @@ public class GameLogicImpl implements GameLogic {
         }
         // Update game
         else {
-            //TODO: Handle game update here
-            gameDB = _game;
+            gameDB = gameDao.findOne(_game.getId());
+            gameDB.setGoalsTeam1(_game.getGoalsTeam1());
+            gameDB.setGoalsTeam2(_game.getGoalsTeam2());
+            gameDB.setGameDate(_game.getGameDate());
         }
 
         return gameDao.save(gameDB);

@@ -11,28 +11,26 @@ import java.util.Objects;
 /**
  * Created by Thomas on 5/22/2016.
  */
-@Named("gamePageDefinition")
+@Named("gameTipPageDefinition")
 @ApplicationScoped
-public class GamePageDefinition implements PageDefinition {
+public class GameTipEditPageDefinition implements PageDefinition {
 
     @Getter
-    private String template = "games/games";
+    private String template = "games/game_tip";
     @Getter
-    private String actionIndex = GameController.GameControllerActions.INDEX;
+    private String actionNew = GameController.GameControllerActions.NEW_TIP;
     @Getter
-    private String actionNew = GameController.GameControllerActions.NEW;
+    private String actionSave = GameController.GameControllerActions.SAVE_TIP;
     @Getter
-    private String actionEdit = GameController.GameControllerActions.EDIT;
+    private String actionDelete = GameController.GameControllerActions.DELETE_TIP;
     @Getter
-    private String actionDelete = GameController.GameControllerActions.DELETE;
+    private String actionBack = GameController.GameControllerActions.BACK;
     @Getter
-    private String actionCreateTip = GameController.GameControllerActions.NEW_TIP;
+    private String contentFragment = getTemplate() + "::" + "content";
     @Getter
-    private String contentFragment = template + "::content";
-    @Getter
-    private String titleKey = "games";
+    private String titleKey = "games.tip";
 
-    public GamePageDefinition() {
+    public GameTipEditPageDefinition() {
     }
 
     @Override
@@ -44,7 +42,7 @@ public class GamePageDefinition implements PageDefinition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GamePageDefinition that = (GamePageDefinition) o;
+        GameTipEditPageDefinition that = (GameTipEditPageDefinition) o;
         return Objects.equals(template, that.template);
     }
 

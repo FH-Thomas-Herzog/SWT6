@@ -10,11 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamView implements EntityView<Long> {
+public class TeamView extends EntityView<Long> {
 
     //<editor-fold desc="Properties">
-    private Long id;
-    private Long version;
     private String name;
     private Integer gamesWin;
     private Integer gamesLost;

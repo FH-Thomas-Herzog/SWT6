@@ -17,11 +17,11 @@ public abstract class AbstractEditModel<I extends Serializable, E extends Entity
 
     @Getter
     @Setter
-    private I id;
+    private  I id;
 
     @Getter
     @Setter
-    Long version;
+    private Long version;
 
     private E entity;
 

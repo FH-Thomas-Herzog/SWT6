@@ -35,6 +35,14 @@ public class ResourceHelper implements Serializable {
         return locationFor(Resource.JS_UTIL);
     }
 
+    public String getJsDateTimePicker() {
+        return locationFor(Resource.JS_BOOTSTRAP_DATETIME);
+    }
+
+    public String getCssDateTimePicker() {
+        return locationFor(Resource.CSS_BOOTSTRAP_DATETIME);
+    }
+
     private String locationFor(final Resource resource) {
         return resource.location;
     }
@@ -51,7 +59,9 @@ public class ResourceHelper implements Serializable {
         CSS_BOOTSTRAP(ROOT_BOOTSTRAP.location + "/css/bootstrap.min.css"),
         CSS_MAIN(ROOT_CSS.location + "/main.css"),
         JS_UTIL(ROOT_JS.location + "/util.js"),
-        JS_JQUERY_VALIDATION(ROOT_JQUERY_VALIDATION.location + "/jquery.validate.min.js");
+        JS_JQUERY_VALIDATION(ROOT_JQUERY_VALIDATION.location + "/jquery.validate.min.js"),
+        JS_BOOTSTRAP_DATETIME("/static/datetime-picker/js/bootstrap-datetimepicker.min.js"),
+        CSS_BOOTSTRAP_DATETIME("/static/datetime-picker/css/bootstrap-datetimepicker.min.css");
 
         public final String location;
 

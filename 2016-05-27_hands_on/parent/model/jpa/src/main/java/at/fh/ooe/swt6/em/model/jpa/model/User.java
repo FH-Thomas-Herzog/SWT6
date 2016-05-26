@@ -44,4 +44,8 @@ public class User extends BaseEntity<Long> {
     public User(Long id) {
         this.id = id;
     }
+
+    public User(String email) {
+        this.email = email;
+    }
 }

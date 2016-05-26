@@ -30,6 +30,8 @@ public class GameSessionModel extends SessionModel<Long, Game, GameView> {
         view.setTeam1Name(entity.getTeam1().getName());
         view.setTeam2Name(entity.getTeam2().getName());
         view.setGameDate(entity.getGameDate());
+        view.setGoalsTeam1(entity.getGoalsTeam1());
+        view.setGoalsTeam2(entity.getGoalsTeam2());
 
         return view;
     }
