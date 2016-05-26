@@ -28,7 +28,7 @@ public class GameEditPageDefinition implements PageDefinition {
     @Getter
     private String actionDelete = GameController.GameControllerActions.DELETE;
     @Getter
-    private String teamEditContentFragment = getTemplate() + "::" + "content";
+    private String contentFragment = getTemplate() + "::" + "content";
     @Getter
     private String titleKey = "games.form";
 

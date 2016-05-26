@@ -28,7 +28,7 @@ public class TeamEditPageDefinition implements PageDefinition {
     @Getter
     private String actionDelete = TeamController.TeamControllerActions.DELETE;
     @Getter
-    private String teamEditContentFragment = getTemplate() + "::" + "content";
+    private String contentFragment = getTemplate() + "::" + "content";
     @Getter
     private String titleKey = "teams.form";
 

@@ -50,6 +50,12 @@ public class Team extends BaseEntity<Long> {
         this.id = id;
     }
 
+    public Team(Long id,
+                Long version) {
+        this.id = id;
+        this.setVersion(version);
+    }
+
     public Team(final String name) {
         super();
         this.name = name;

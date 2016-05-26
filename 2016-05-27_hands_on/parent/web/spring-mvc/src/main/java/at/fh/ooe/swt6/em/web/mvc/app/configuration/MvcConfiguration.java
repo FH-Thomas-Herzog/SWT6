@@ -11,6 +11,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import java.util.Locale;
 
@@ -28,6 +29,10 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/static/"};
+    @Bean
+    public Java8TimeDialect java8TimeDialect() {
+        return new Java8TimeDialect();
+    }
 
     @Bean
     @Scope("session")

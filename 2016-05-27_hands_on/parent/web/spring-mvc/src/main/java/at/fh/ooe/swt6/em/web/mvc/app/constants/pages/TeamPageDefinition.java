@@ -26,7 +26,7 @@ public class TeamPageDefinition implements PageDefinition {
     @Getter
     private String actionDelete = TeamController.TeamControllerActions.DELETE;
     @Getter
-    private String teamContentFragment = template + "::content";
+    private String contentFragment = template + "::content";
     @Getter
     private String titleKey = "teams";
 

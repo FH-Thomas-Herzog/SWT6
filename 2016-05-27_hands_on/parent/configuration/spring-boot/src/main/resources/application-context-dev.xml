@@ -38,30 +38,4 @@
             </props>
         </property>
     </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-
-    <tx:advice id="txLogicAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="*" isolation="READ_COMMITTED" propagation="REQUIRED"/>
-        </tx:attributes>
-    </tx:advice>
-
-    <tx:advice id="txRepositoryAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="*" isolation="READ_COMMITTED" propagation="SUPPORTS"/>
-        </tx:attributes>
-    </tx:advice>
-
-    <aop:config>
-        <aop:aspect id="txLogicAdvice" ref="txLogicAdvice">
-            <aop:pointcut id="txLogicPointCut" expression="execution(* at.fh.ooe.swt6.em.logic.impl..* (..))"/>
-        </aop:aspect>
-        <aop:aspect id="txRepositoryAdvice" ref="txRepositoryAdvice">
-            <aop:pointcut id="txLogicPointCut" expression="execution(* at.fh.ooe.swt6.em.data.dao.api..* (..))"/>
-        </aop:aspect>
-    </aop:config>
-
 </beans>

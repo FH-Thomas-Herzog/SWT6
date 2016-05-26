@@ -6,6 +6,8 @@ import at.fh.ooe.swt6.em.logic.api.exception.LogicException;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import at.fh.ooe.swt6.em.model.view.team.TeamView;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,6 +20,7 @@ import java.util.stream.Stream;
  * Created by Thomas on 5/19/2016.
  */
 @Named
+@Transactional(propagation = Propagation.REQUIRED)
 public class TeamLogicImpl implements TeamLogic {
 
     @Inject
@@ -77,6 +80,7 @@ public class TeamLogicImpl implements TeamLogic {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<TeamView> findAllWithGameStatistics() {
         final List<Team> teams = teamDao.findAllByOrderByNameAsc();
         if (teams.isEmpty()) {
@@ -116,6 +120,7 @@ public class TeamLogicImpl implements TeamLogic {
                                              .count();
             // build view model
             views.add(new TeamView(team.getId(),
+                                   team.getVersion(),
                                    team.getName(),
                                    (teamWinnerMap.containsKey(team) ? teamWinnerMap.get(team).size() : 0),
                                    (teamLoserMap.containsKey(team) ? teamLoserMap.get(team).size() : 0),

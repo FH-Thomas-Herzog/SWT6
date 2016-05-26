@@ -26,7 +26,9 @@ public class GamePageDefinition implements PageDefinition {
     @Getter
     private String actionDelete = GameController.GameControllerActions.DELETE;
     @Getter
-    private String teamContentFragment = template + "::content";
+    private String actionTip = GameController.GameControllerActions.TIP;
+    @Getter
+    private String contentFragment = template + "::content";
     @Getter
     private String titleKey = "games";
 

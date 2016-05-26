@@ -1,6 +1,7 @@
 package at.fh.ooe.swt6.em.web.mvc.model;
 
 import at.fh.ooe.swt6.em.model.jpa.api.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,8 @@ import java.util.Objects;
 /**
  * Created by Thomas on 5/23/2016.
  */
+@EqualsAndHashCode(of = {"id",
+                         "version"})
 public abstract class AbstractEditModel<I extends Serializable, E extends Entity<I>> {
 
     @Getter

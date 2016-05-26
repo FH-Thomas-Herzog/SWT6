@@ -17,4 +17,6 @@ public interface GameLogic extends Serializable {
     Game saveGame(Game games);
 
     List<Game> saveGames(List<Game> games);
+
+    void delete(long  id);
 }

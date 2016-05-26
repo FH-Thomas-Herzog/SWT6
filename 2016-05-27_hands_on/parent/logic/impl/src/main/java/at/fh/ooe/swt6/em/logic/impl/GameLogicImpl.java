@@ -8,6 +8,8 @@ import at.fh.ooe.swt6.em.model.jpa.model.Game;
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import at.fh.ooe.swt6.em.model.jpa.model.Tip;
 import at.fh.ooe.swt6.em.model.view.team.GameView;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  * Created by Thomas on 5/16/2016.
  */
 @Named
+@Transactional(propagation = Propagation.REQUIRED)
 public class GameLogicImpl implements GameLogic {
 
     @Inject
@@ -31,6 +34,7 @@ public class GameLogicImpl implements GameLogic {
 
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<GameView> findAllGames() {
         final List<Game> games = gameDao.findAll();
         if (games.isEmpty()) {
@@ -58,6 +62,7 @@ public class GameLogicImpl implements GameLogic {
             Long total = tipMap.entrySet().stream().map(entry -> entry.getValue().size()).count();
             // build view model
             views.add(new GameView(game.getId(),
+                                   game.getVersion(),
                                    game.getTeam1().getName(),
                                    game.getTeam2().getName(),
                                    game.getGoalsTeam1(),
@@ -75,13 +80,34 @@ public class GameLogicImpl implements GameLogic {
     }
 
     @Override
-    public Game saveGame(Game game) {
-        Objects.requireNonNull(game, "Cannot save null game");
+    public Game saveGame(final Game _game) {
+        Objects.requireNonNull(_game, "Cannot save null game");
+        Objects.requireNonNull(_game.getTeam1(), "Team1 must be set");
+        Objects.requireNonNull(_game.getTeam2(), "Team2 must be set");
+        Objects.requireNonNull(_game.getTeam1().getId(), "Team1#id must be set");
+        Objects.requireNonNull(_game.getTeam2().getId(), "Team2#id must be set");
 
-        // TODO: Update check if in the past
-        // TODO: Check if teams still exist
+        final Game gameDB;
+        // Persist game
+        if (_game.getId() == null) {
+            final Team team1 = teamDao.findOne(_game.getTeam1().getId());
+            final Team team2 = teamDao.findOne(_game.getTeam2().getId());
+            if ((team1 == null) || (team2 == null)) {
+                throw new RuntimeException("One or both teams are not set");
+            }
+            _game.setTeam1(team1);
+            _game.setTeam2(team2);
+            gameDB = gameDao.save(_game);
+            team1.getGamesAsTeam1().add(gameDB);
+            team2.getGamesAsTeam2().add(gameDB);
+        }
+        // Update game
+        else {
+            //TODO: Handle game update here
+            gameDB = _game;
+        }
 
-        return gameDao.save(game);
+        return gameDao.save(gameDB);
     }
 
     @Override
@@ -92,5 +118,14 @@ public class GameLogicImpl implements GameLogic {
         }
 
         return games.stream().map(game -> saveGame(game)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(long id) {
+        final Game game = gameDao.findOne(id);
+        if (game == null) {
+            throw new RuntimeException("Game not found for id");
+        }
+        gameDao.delete(id);
     }
 }

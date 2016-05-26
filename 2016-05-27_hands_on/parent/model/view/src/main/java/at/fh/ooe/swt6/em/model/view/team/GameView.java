@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -13,10 +12,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameView implements Serializable {
+public class GameView implements EntityView<Long> {
 
     //<editor-fold desc="Properties">
     Long id;
+    Long version;
     String team1Name;
     String team2Name;
     Integer goalsTeam1;
