@@ -7,4 +7,5 @@ public class ControllerConstants {
 
     public static final String PAGE_MAIN = "main";
     public static final String PAGE_ERROR = "error";
+    public static final String AJAX_PATH = "/ajax";
 }

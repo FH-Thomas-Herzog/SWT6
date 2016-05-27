@@ -3,6 +3,7 @@ package at.fh.ooe.swt6.em.web.mvc.model;
 import at.fh.ooe.swt6.em.model.jpa.api.Entity;
 import at.fh.ooe.swt6.em.model.view.team.EntityView;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -17,9 +18,18 @@ public abstract class SessionModel<I extends Serializable, E extends Entity<I>, 
 
     @Getter
     private SortedSet<V> views;
+    @Getter
+    @Setter
+    private String errorAction;
+    @Getter
+    @Setter
+    private String errorMethod;
+    @Getter
+    @Setter
+    private boolean error = Boolean.FALSE;
 
     public SessionModel() {
-        clear();
+        this(null, null);
     }
 
     public abstract V createViewFromEntity(E entity);
@@ -42,5 +52,12 @@ public abstract class SessionModel<I extends Serializable, E extends Entity<I>, 
 
     public void clear() {
         views = new TreeSet<>(createComparator());
+    }
+
+    public SessionModel(String errorAction,
+                        String method) {
+        this.errorAction = errorAction;
+        this.errorMethod = method;
+        clear();
     }
 }

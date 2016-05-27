@@ -37,8 +37,8 @@ public class TeamLogicImpl implements TeamLogic {
 
     @Override
     public Team save(Team _team) {
-        Objects.requireNonNull(_team, "Cannot save null team");
-        Objects.requireNonNull(_team.getName(), "Cannot save team with null name");
+        Objects.requireNonNull(_team, "Cannot create null team");
+        Objects.requireNonNull(_team.getName(), "Cannot create team with null name");
 
         return teamDao.save(_team);
     }
@@ -74,7 +74,7 @@ public class TeamLogicImpl implements TeamLogic {
     public void delete(long id) {
         final Team team = teamDao.findOne(id);
         if (team == null) {
-            throw new LogicException("Team do delete not found");
+            throw new LogicException("Team do delete not found", LogicException.ServiceCode.ENTITY_NOT_FOUND);
         }
         teamDao.delete(team);
     }

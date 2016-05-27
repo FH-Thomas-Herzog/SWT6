@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <div class="page-title">
+        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Error</h2>
+    </div>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-md-12">
+                <span th:if="${model.key != null}"
+                      th:text="${#messages.msg(model.key)}">Error occurred</span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-12 text-center">
+                <button id="error_back_former"
+                        type="button"
+                        class="btn btn-primary ajax-button"
+                        th:if="${model.action != null}"
+                        th:text="#{action.back.former}"
+                        th:attrappend="data-action=${model.action}"/>
+                <button id="error_back_home"
+                        type="button"
+                        class="btn btn-primary ajax-button"
+                        th:text="#{action.back.home}"
+                        th:attrappend="data-action=${@teamPageDefinition.actionIndex}"/>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="text">
+        var isPost = [[${model.postRequest}]];
+        $(document).ready(function () {
+            $("#error_back_former").on("click", function () {
+                var button = $(this),
+                        action = button.attr("data-action");
+                if (isPost) {
+                    EM.ajaxInvoker(action, '[[${model.method}]]', null, "container-main");
+                } else {
+                    window.top.location = action;
+                }
+            });
+            $("#error_back_home").on("click", function () {
+                window.top.location = $(this).attr("data-action");
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

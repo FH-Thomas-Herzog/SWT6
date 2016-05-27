@@ -36,7 +36,7 @@
                         <span class="glyphicon glyphicon-edit"/>
                     </a>
                     <a class="tip_link"
-                       th:attrappend="data-action=${@gamePageDefinition.actionCreateTip}"
+                       th:attrappend="data-action=${@tipPageDefinition.actionNew}"
                        th:attrprepend="data-id=${model.id}"
                        style="color: green; margin-left: 3px;">
                         <span class="glyphicon glyphicon-usd"/>
@@ -89,7 +89,7 @@
             });
             $("a.tip_link").on("click", function () {
                 var link = $(this);
-                EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
+                EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });
         });
     </script>

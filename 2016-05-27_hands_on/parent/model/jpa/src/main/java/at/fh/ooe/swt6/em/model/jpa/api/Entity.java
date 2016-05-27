@@ -30,7 +30,7 @@ public interface Entity<I extends Serializable> {
     void setVersion(Long version);
 
     /**
-     * Force implementation of  equals method
+     * Force implementation of  equals errorMethod
      *
      * @param o the other object
      * @return true if euql, false otherwise
@@ -38,7 +38,7 @@ public interface Entity<I extends Serializable> {
     boolean equals(Object o);
 
     /**
-     * Force implementation of hash method.
+     * Force implementation of hash errorMethod.
      *
      * @return the has value of this entity
      */

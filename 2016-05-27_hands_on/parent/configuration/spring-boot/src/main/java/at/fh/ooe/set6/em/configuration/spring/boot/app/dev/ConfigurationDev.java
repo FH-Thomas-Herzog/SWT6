@@ -5,7 +5,7 @@ import at.fh.ooe.swt6.em.data.dao.api.TeamDao;
 import at.fh.ooe.swt6.em.data.dao.api.UserDao;
 import at.fh.ooe.swt6.em.logic.impl.TeamLogicImpl;
 import at.fh.ooe.swt6.em.model.jpa.model.User;
-import at.fh.ooe.swt6.em.web.mvc.app.configuration.MvcConfiguration;
+import at.fh.ooe.swt6.em.web.mvc.app.configuration.MvcSpringBootApp;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.*;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackageClasses = {
         TeamDao.class,
         TeamLogicImpl.class,
-        MvcConfiguration.class,
+        MvcSpringBootApp.class,
 })
 public class ConfigurationDev {
 

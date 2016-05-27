@@ -3,20 +3,15 @@ package at.fh.ooe.swt6.em.web.mvc.controller;
 import at.fh.ooe.swt6.em.data.dao.api.GameDao;
 import at.fh.ooe.swt6.em.data.dao.api.TeamDao;
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
-import at.fh.ooe.swt6.em.logic.api.TipLogic;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
-import at.fh.ooe.swt6.em.model.jpa.model.Tip;
 import at.fh.ooe.swt6.em.model.view.team.TeamView;
 import at.fh.ooe.swt6.em.web.mvc.api.PageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.ControllerConstants;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.SessionHelper;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.GameEditPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.GamePageDefinition;
-import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.GameTipEditPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.model.GameEditModel;
 import at.fh.ooe.swt6.em.web.mvc.model.GameSessionModel;
-import at.fh.ooe.swt6.em.web.mvc.model.TipEditModel;
-import at.fh.ooe.swt6.em.web.mvc.model.TipSessionModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,10 +38,10 @@ public class GameController implements Serializable {
         public static final String EDIT = PREFIX + "/edit";
         public static final String BACK = PREFIX + "/back";
         public static final String INDEX = PREFIX + "/index";
-        public static final String SAVE = PREFIX + "/save";
+        public static final String SAVE = PREFIX + "/create";
         public static final String DELETE = PREFIX + "/delete";
         public static final String NEW_TIP = PREFIX + "/tip/new";
-        public static final String SAVE_TIP = PREFIX + "/tip/save";
+        public static final String SAVE_TIP = PREFIX + "/tip/create";
         public static final String DELETE_TIP = PREFIX + "/tip/delete";
     }
     //</editor-fold>
@@ -54,8 +49,6 @@ public class GameController implements Serializable {
     //<editor-fold desc="Injections Logic">
     @Inject
     private GameLogic gameLogic;
-    @Inject
-    private TipLogic tipLogic;
     @Inject
     private GameDao gameDao;
     @Inject
@@ -67,8 +60,6 @@ public class GameController implements Serializable {
     private GamePageDefinition gameDefinition;
     @Inject
     private GameEditPageDefinition gameEditDefinition;
-    @Inject
-    private GameTipEditPageDefinition gameTipEditPageDefinition;
     @Inject
     private SessionHelper sessionHelper;
     //</editor-fold>
@@ -219,87 +210,6 @@ public class GameController implements Serializable {
         } else {
             throw new IllegalStateException("Current view: " + currentPage.getTemplate() + " not managed here");
         }
-    }
-
-    /**
-     * Prepares the form for creating a new tip
-     *
-     * @return the ModelAndView instance
-     */
-    @RequestMapping(value = GameControllerActions.NEW_TIP, method = RequestMethod.GET)
-    public ModelAndView newTip(@RequestParam("id") Long id) {
-        sessionHelper.setCurrentView(gameTipEditPageDefinition);
-        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                   new TipSessionModel());
-        final TipSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                                                        TipSessionModel.class);
-
-        final Game game = gameDao.findOne(id);
-        final Tip tip = new Tip();
-        tip.setGame(game);
-
-        final TipEditModel model = new TipEditModel();
-        model.fromEntity(tip);
-
-        final ModelAndView modelAndview = new ModelAndView(gameTipEditPageDefinition.getContentFragment(),
-                                                           "editModel",
-                                                           model);
-
-        modelAndview.addObject("createdModels", sessionModel.getViews());
-
-        return modelAndview;
-    }
-
-    /**
-     * Saves the users tip
-     *
-     * @return the ModelAndView instance
-     */
-    @RequestMapping(value = GameControllerActions.SAVE_TIP, method = RequestMethod.POST)
-    public ModelAndView saveTip(@Valid TipEditModel model) {
-        final TipSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                                                        TipSessionModel.class);
-
-        final Tip tip = tipLogic.save(model.toEntity());
-        model.fromEntity(tip);
-        sessionModel.addNew(tip);
-
-        final ModelAndView modelAndview = new ModelAndView(gameTipEditPageDefinition.getContentFragment(),
-                                                           "editModel",
-                                                           model);
-
-        modelAndview.addObject("createdModels", sessionModel.getViews());
-
-        return modelAndview;
-    }
-
-    /**
-     * Deletes the users tip
-     *
-     * @return the ModelAndView instance
-     */
-    @RequestMapping(value = GameControllerActions.DELETE_TIP, method = RequestMethod.POST)
-    public ModelAndView deleteTip(@RequestParam("id") Long id,
-                                  @RequestParam("gameId") Long gameId) {
-        final TipSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                                                        TipSessionModel.class);
-
-        tipLogic.delete(id);
-        sessionModel.removeNew(id);
-
-        final Game game = gameDao.findOne(gameId);
-        final Tip tip = new Tip();
-        tip.setGame(game);
-        final TipEditModel model = new TipEditModel();
-        model.fromEntity(tip);
-
-        final ModelAndView modelAndview = new ModelAndView(gameTipEditPageDefinition.getContentFragment(),
-                                                           "editModel",
-                                                           model);
-
-        modelAndview.addObject("createdModels", sessionModel.getViews());
-
-        return modelAndview;
     }
     //</editor-fold>
 

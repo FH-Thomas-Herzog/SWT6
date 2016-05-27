@@ -54,4 +54,5 @@ public class Tip extends BaseEntity<Long> {
     public Tip(Long id) {
         this.id = id;
     }
+
 }

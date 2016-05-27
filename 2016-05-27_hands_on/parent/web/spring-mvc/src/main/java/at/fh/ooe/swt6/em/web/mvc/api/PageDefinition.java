@@ -8,5 +8,6 @@ import java.io.Serializable;
 public interface PageDefinition extends Serializable {
     String getTemplate();
     String getTitleKey();
+    String getContentFragment();
     String toActionUrl(String name);
 }

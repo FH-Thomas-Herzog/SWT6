@@ -50,4 +50,9 @@ public class TipSessionModel extends SessionModel<Long, Tip, TipView> {
     public Comparator<TipView> createComparator() {
         return TIP_COMPARATOR;
     }
+
+    public TipSessionModel(String errorAction,
+                           String method) {
+        super(errorAction, method);
+    }
 }

@@ -28,7 +28,7 @@ public class AspectDurationLogger {
      * Applies to all invoked methods within package *.mvc.controller on any bean which name ends with Controller.
      *
      * @param jp the intercepted join point
-     * @return the result of hte invoked method
+     * @return the result of hte invoked errorMethod
      */
     @Around("execution(* *..em.web.mvc..*Controller..*(..))")
     public Object logControllerDuration(ProceedingJoinPoint jp) throws Throwable {

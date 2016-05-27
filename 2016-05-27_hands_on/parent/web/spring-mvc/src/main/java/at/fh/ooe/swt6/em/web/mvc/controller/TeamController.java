@@ -33,7 +33,7 @@ public class TeamController implements Serializable {
         public static final String EDIT = PREFIX + "/edit";
         public static final String BACK = PREFIX + "/back";
         public static final String INDEX = PREFIX + "/index";
-        public static final String SAVE = PREFIX + "/save";
+        public static final String SAVE = PREFIX + "/create";
         public static final String DELETE = PREFIX + "/delete";
     }
     //</editor-fold>

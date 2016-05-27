@@ -51,6 +51,10 @@ public class SessionHelper implements Serializable {
         return (definition != null) ? definition.getTitleKey() : null;
     }
 
+    public PageDefinition getFormerView() {
+        return (PageDefinition) getSession(false).getAttribute(SessionConstants.FORMER_PAGE.name);
+    }
+
     public PageDefinition getCurrentView() {
         return (PageDefinition) getSession(false).getAttribute(SessionConstants.CURRENT_PAGE.name);
     }
@@ -61,7 +65,7 @@ public class SessionHelper implements Serializable {
         final PageDefinition oldDefinition = getCurrentView();
         final HttpSession session = getSession(false);
         session.setAttribute(SessionConstants.CURRENT_PAGE.name, definition);
-        if (oldDefinition != null) {
+        if ((oldDefinition != null) && (!oldDefinition.equals(definition))) {
             session.setAttribute(SessionConstants.FORMER_PAGE.name, oldDefinition);
         }
     }

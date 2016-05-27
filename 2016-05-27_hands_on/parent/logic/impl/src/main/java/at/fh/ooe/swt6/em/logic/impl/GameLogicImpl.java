@@ -99,7 +99,7 @@ public class GameLogicImpl implements GameLogic {
 
     @Override
     public Game saveGame(final Game _game) {
-        Objects.requireNonNull(_game, "Cannot save null game");
+        Objects.requireNonNull(_game, "Cannot create null game");
         Objects.requireNonNull(_game.getTeam1(), "Team1 must be set");
         Objects.requireNonNull(_game.getTeam2(), "Team2 must be set");
         Objects.requireNonNull(_game.getTeam1().getId(), "Team1#id must be set");
@@ -132,7 +132,7 @@ public class GameLogicImpl implements GameLogic {
 
     @Override
     public List<Game> saveGames(List<Game> games) {
-        Objects.requireNonNull(games, "Cannot save null games");
+        Objects.requireNonNull(games, "Cannot create null games");
         if (games.isEmpty()) {
             return Collections.emptyList();
         }

@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-m-12">
                 <form id="tip_form" method="post"
-                      th:action="${@gameTipPageDefinition.actionSave}"
+                      th:action="${@tipEditPageDefinition.actionSave}"
                       th:object="${editModel}">
                     <div class="container">
                         <div class="row row-buffer">
@@ -80,7 +80,7 @@
                                         type="button"
                                         class="btn btn-primary"
                                         th:text="#{action.back}"
-                                        th:attrappend="data-action=${@gameTipPageDefinition.actionBack}"/>
+                                        th:attrappend="data-action=${@tipEditPageDefinition.actionBack}"/>
                             </div>
                             <div class="col-xs-6 text-left">
                                 <button id="tip_btn_save"
@@ -99,7 +99,7 @@
                     <li th:each="model : ${createdModels}" class="list-group-item">
                 <span class="list-group-item-heading">
                     <a class="delete_link"
-                       th:attr="data-action=${@gameTipPageDefinition.actionDelete}"
+                       th:attr="data-action=${@tipEditPageDefinition.actionDelete}"
                        th:attrappend="data-id=${model.id}"
                        style="color: red;">
                         <span class="glyphicon glyphicon-remove"/>
@@ -131,7 +131,7 @@
             });
             $("#tip_btn_back").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), null, "container-main");
+                EM.postInvoker(button.attr("data-action"), null, "container-main");
             });
             // Enable client side form validation
             form.validate({
