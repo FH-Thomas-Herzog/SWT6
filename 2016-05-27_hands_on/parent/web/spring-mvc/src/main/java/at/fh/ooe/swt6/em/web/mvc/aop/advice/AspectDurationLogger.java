@@ -1,4 +1,4 @@
-package at.fh.ooe.set6.em.configuration.spring.boot.app.dev.aop;
+package at.fh.ooe.swt6.em.web.mvc.aop.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;

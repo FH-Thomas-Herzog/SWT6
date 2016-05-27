@@ -90,9 +90,10 @@ public class TipController implements Serializable {
                                    new TipSessionModel(tipPageDefinition.getActionIndex(),
                                                        RequestMethod.GET.name()));
 
-        return new ModelAndView(tipPageDefinition.getContentFragment(),
-                                "models",
-                                userLogic.findAllUserScores());
+        throw new IllegalArgumentException();
+//        return new ModelAndView(tipPageDefinition.getContentFragment(),
+//                                "models",
+//                                userLogic.findAllUserScores());
     }
 
     /**

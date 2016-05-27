@@ -20,7 +20,7 @@
 
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:h2:mem:emDatabase;INIT=CREATE SCHEMA IF NOT EXISTS em"/>
+                      value="jdbc:h2:mem:em;INIT=CREATE SCHEMA IF NOT EXISTS em"/>
             <property name="javax.persistence.jdbc.user" value="emUser"/>
             <property name="javax.persistence.jdbc.password" value="emUser"/>
             <property name="javax.persistence.dialect" value="org.hibernate.dialect.H2Dialect"/>

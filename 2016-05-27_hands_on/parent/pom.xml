@@ -29,7 +29,6 @@
     <modules>
         <module>model</module>
         <module>web</module>
-        <module>configuration</module>
         <module>data</module>
         <module>logic</module>
     </modules>
@@ -93,6 +92,16 @@
                 <version>${version.thymeleaf.extras.java8}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+            </dependency>
+
             <!-- Other Dependencies -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -125,10 +134,17 @@
                 <version>${version.apache.commons.lang3}</version>
             </dependency>
 
+            <!-- Persistence Dependencies -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-java8</artifactId>
                 <version>${version.org.hibernate.java8}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${version.com.h2database}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

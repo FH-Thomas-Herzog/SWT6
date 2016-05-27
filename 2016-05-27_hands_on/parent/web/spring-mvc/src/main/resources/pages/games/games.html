@@ -1,74 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-
-<div th:fragment="content">
-    <div class="page-title">
-        <h2 th:text="#{${@sessionHelper.currentViewTitleKey}}">Employee List</h2>
-    </div>
-    <div class="page-content">
-        <div class="row">
-            <div class="col-md-12">
-                <button id="team_new_btn"
-                        type="button"
-                        class="btn btn-default"
-                        aria-label="Left Align"
-                        th:attrappend="data-action=${@gamePageDefinition.actionNew}">
-                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" th:text="' ' + #{action.new}"/>
-                </button>
-            </div>
+<div th:fragment="content" th:remove="tag">
+    <div class="row row-buffer">
+        <div class="col-xs-12">
+            <button id="team_new_btn"
+                    type="button"
+                    class="btn btn-default"
+                    aria-label="Left Align"
+                    th:attrappend="data-action=${@gamePageDefinition.actionNew}">
+                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" th:text="' ' + #{action.new}"/>
+            </button>
         </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-12">
-                <ul class="list-group">
-                    <li th:each="model : ${models}" class="list-group-item clearfix">
-            <span class="list-group-item-heading">
-                <a class="delete_link"
-                   th:attrappend="data-action=${@gamePageDefinition.actionDelete}"
-                   th:attrprepend="data-id=${model.id}"
-                   style="color: red;">
-                    <span class="glyphicon glyphicon-remove"/>
-                </a>
-                    <a class="edit_link"
-                       th:attrappend="data-action=${@gamePageDefinition.actionEdit}"
-                       th:attrprepend="data-id=${model.id}"
-                       style="color: darkorange; margin-left: 3px;">
-                        <span class="glyphicon glyphicon-edit"/>
-                    </a>
-                    <a class="tip_link"
-                       th:attrappend="data-action=${@tipPageDefinition.actionNew}"
-                       th:attrprepend="data-id=${model.id}"
-                       style="color: green; margin-left: 3px;">
-                        <span class="glyphicon glyphicon-usd"/>
-                    </a>
-                </span>
-                      <span class="list-group-item-text">
-                        <span th:text="${model.team1Name}"
-                              style="font-weight: bold;"/>
-                        <span th:text="' [' + ${model.goalsTeam1} + '] '"
-                              th:if="${model.finished}"
-                              th:style="${model.team1Winner ? 'color: red' : 'color:orange'}"/>
+    </div>
+    <div class="row row-buffer page-content" style="margin-top: 10px;">
+        <div class="col-xs-12">
+            <div class="list-group">
+                <div th:each="model : ${models}" class="list-group-item clearfix">
+                    <span class="list-group-item-heading">
+                        <a class="delete_link"
+                           th:attrappend="data-action=${@gamePageDefinition.actionDelete}"
+                           th:attrprepend="data-id=${model.id}"
+                           style="color: red;">
+                            <span class="glyphicon glyphicon-remove"/>
+                        </a>
+                        <a class="edit_link"
+                           th:attrappend="data-action=${@gamePageDefinition.actionEdit}"
+                           th:attrprepend="data-id=${model.id}"
+                           style="color: darkorange; margin-left: 3px;">
+                            <span class="glyphicon glyphicon-edit"/>
+                        </a>
+                        <a class="tip_link"
+                           th:attrappend="data-action=${@tipPageDefinition.actionNew}"
+                           th:attrprepend="data-id=${model.id}"
+                           style="color: green; margin-left: 3px;">
+                            <span class="glyphicon glyphicon-usd"/>
+                        </a>
+                                <span th:text="${model.team1Name}"
+                                      style="font-weight: bold;"/>
+                                <span th:text="' [' + ${model.goalsTeam1} + '] '"
+                                      th:if="${model.finished}"
+                                      th:style="${model.team1Winner ? 'color: red' : 'color:orange'}"/>
                         <span th:text="':'"/>
-                        <span th:text="' [' + ${model.goalsTeam2} + '] '"
-                              th:if="${model.finished}"
-                              th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
-                        <span th:text="${model.team2Name}"
-                              style="font-weight: bold;"/>
-                <span class="pull-right">
-                          <span th:if="${model.gameDate != null}"
-                                th:text="'(' + ${#temporals.format(model.gameDate, #messages.msg('app.date.format.dateTime'))} + ')'"
-                                style=""/>
-            <span th:text="${model.tipTeam1Count} + ' ' + #{tips.one}"
-                  class="badge"/>
-            <span th:text="${model.tipTeam2Count} + ' ' + #{tips.two}"
-                  class="badge"/>
-            <span th:text="${model.tipEventCount} + ' ' + #{tips.even}"
-                  class="badge"/>
-                </span>
+                                <span th:text="' [' + ${model.goalsTeam2} + '] '"
+                                      th:if="${model.finished}"
+                                      th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
+                                <span th:text="${model.team2Name}"
+                                      style="font-weight: bold;"/>
                     </span>
-
-                    </li>
-                </ul>
+                    <span class="list-group-item-text pull-right">
+                                    <span th:if="${model.gameDate != null}"
+                                          th:text="'(' + ${#temporals.format(model.gameDate, #messages.msg('app.date.format.dateTime'))} + ')'"
+                                          style=""/>
+                                    <span th:text="${model.tipTeam1Count} + ' ' + #{tips.one}"
+                                          class="badge"/>
+                                    <span th:text="${model.tipTeam2Count} + ' ' + #{tips.two}"
+                                          class="badge"/>
+                                    <span th:text="${model.tipEventCount} + ' ' + #{tips.even}"
+                                          class="badge"/>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
