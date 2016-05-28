@@ -18,13 +18,13 @@ public class TipEditPageDefinition implements PageDefinition {
     @Getter
     private String template = "tips/tip";
     @Getter
+    private String actionIndex = TipController.TipControllerActions.INDEX;
+    @Getter
     private String actionNew = TipController.TipControllerActions.NEW;
     @Getter
     private String actionSave = TipController.TipControllerActions.SAVE;
     @Getter
     private String actionDelete = TipController.TipControllerActions.DELETE;
-    @Getter
-    private String actionBack = TipController.TipControllerActions.BACK;
     @Getter
     private String contentFragment = getTemplate() + "::" + "content";
     @Getter

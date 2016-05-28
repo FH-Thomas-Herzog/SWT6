@@ -69,7 +69,7 @@ public abstract class SessionModel<I extends Serializable, E extends Entity<I>, 
         Objects.requireNonNull(entity, "Cannot null add null item");
 
         final V view = createViewFromEntity(entity);
-        views.remove(view);
+        removeNew(view.getId());
         views.add(view);
     }
 

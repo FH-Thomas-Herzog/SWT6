@@ -14,7 +14,7 @@ public class TipSessionModel extends SessionModel<Long, Tip, TipView> {
 
     private static final Comparator<TipView> TIP_COMPARATOR = (o1, o2) -> {
         int result = 0;
-        if (o1.getGoalsTeam1() == null) {
+        if (o1.getGoalsTeam1() != null) {
             Integer highGoalsO1 = (o1.getGoalsTeam1() > o1.getGoalsTeam2()) ? o1.getGoalsTeam1() : o1.getGoalsTeam2();
             Integer highGoalsO2 = (o1.getGoalsTeam1() > o2.getGoalsTeam2()) ? o2.getGoalsTeam1() : o2.getGoalsTeam2();
             if ((result = highGoalsO1.compareTo(highGoalsO2)) == 0) {

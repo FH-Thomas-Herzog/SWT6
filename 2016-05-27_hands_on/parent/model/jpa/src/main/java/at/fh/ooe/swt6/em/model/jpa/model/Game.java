@@ -41,7 +41,7 @@ public class Game extends BaseEntity<Long> {
 
     @Getter
     @Setter
-    public LocalDateTime gameDate;
+    private LocalDateTime gameDate;
 
     @Getter
     @Setter

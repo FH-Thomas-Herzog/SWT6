@@ -64,8 +64,8 @@ public class TipLogicImpl implements TipLogic {
         // Check for already given tip
         Tip tipDB = tipDao.findByUserAndGameAndTipGoalsTeam1AndTipGoalsTeam2(user,
                                                                              game,
-                                                                             tip.tipGoalsTeam1,
-                                                                             tip.tipGoalsTeam2);
+                                                                             tip.getTipGoalsTeam1(),
+                                                                             tip.getTipGoalsTeam2());
         if (tipDB != null) {
             throw new LogicException("A tip exists already for this game with the goals set",
                                      LogicException.ServiceCode.ENTITY_EXISTS);

@@ -17,28 +17,28 @@ public class GameView extends AbstractEntityView<Long> {
     //<editor-fold desc="Properties">@Getter
     @Getter
     @Setter
-    String team1Name;
+    private String team1Name;
     @Getter
     @Setter
-    String team2Name;
+    private String team2Name;
     @Getter
     @Setter
-    Integer goalsTeam1;
+    private Integer goalsTeam1;
     @Getter
     @Setter
-    Integer goalsTeam2;
+    private Integer goalsTeam2;
     @Getter
     @Setter
-    Integer tipTeam1Count;
+    private Integer tipTeam1Count;
     @Getter
     @Setter
-    Integer tipTeam2Count;
+    private Integer tipTeam2Count;
     @Getter
     @Setter
-    Integer tipEventCount;
+    private Integer tipEventCount;
     @Getter
     @Setter
-    Integer totalTipCount;
+    private Integer totalTipCount;
     @Getter
     @Setter
     LocalDateTime gameDate;

@@ -24,31 +24,31 @@ public class Tip extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, insertable = false, updatable = false)
-    public Long id;
+    private Long id;
 
     @Getter
     @Setter
     @NotNull
     @Column(nullable = false, updatable = false)
-    public Integer tipGoalsTeam1;
+    private Integer tipGoalsTeam1;
 
     @Getter
     @Setter
     @NotNull
     @Column(nullable = false, updatable = false)
-    public Integer tipGoalsTeam2;
+    private Integer tipGoalsTeam2;
 
     @Getter
     @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    public User user;
+    private User user;
 
     @Getter
     @Setter
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    public Game game;
+    private Game game;
     //</editor-fold>
 
     public Tip(Long id) {

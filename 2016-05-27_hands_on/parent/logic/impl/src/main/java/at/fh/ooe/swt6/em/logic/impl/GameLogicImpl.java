@@ -77,7 +77,7 @@ public class GameLogicImpl implements GameLogic {
                                                (tipMap.containsKey(eventTeam) ? tipMap.get(eventTeam)
                                                                                       .size() : Integer.valueOf(0)),
                                                total.intValue(),
-                                               game.gameDate);
+                                               game.getGameDate());
             view.setId(game.getId());
             view.setVersion(game.getVersion());
             views.add(view);

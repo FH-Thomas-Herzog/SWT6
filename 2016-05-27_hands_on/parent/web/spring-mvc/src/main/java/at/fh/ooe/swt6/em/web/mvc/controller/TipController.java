@@ -35,7 +35,6 @@ public class TipController implements Serializable {
         public static final String INDEX = PREFIX + "/index";
         public static final String AJAX_PREFIX = PREFIX + ControllerConstants.AJAX_PATH;
         public static final String NEW = AJAX_PREFIX + "/new";
-        public static final String BACK = AJAX_PREFIX + "/back";
         public static final String SAVE = AJAX_PREFIX + "/create";
         public static final String DELETE = AJAX_PREFIX + "/delete";
     }
@@ -76,23 +75,6 @@ public class TipController implements Serializable {
 
 
         return new ModelAndView(ControllerConstants.PAGE_MAIN, "models", userLogic.findAllUserScores());
-    }
-
-    /**
-     * Switches back to index content
-     *
-     * @return the ModelAndView instance
-     */
-    @RequestMapping(value = TipControllerActions.BACK, method = RequestMethod.POST)
-    public ModelAndView back() {
-        sessionHelper.setCurrentView(tipPageDefinition);
-        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                   new TipSessionModel(tipPageDefinition.getActionIndex(),
-                                                       RequestMethod.GET.name()));
-
-        return new ModelAndView(tipPageDefinition.getContentFragment(),
-                                "models",
-                                userLogic.findAllUserScores());
     }
 
     /**

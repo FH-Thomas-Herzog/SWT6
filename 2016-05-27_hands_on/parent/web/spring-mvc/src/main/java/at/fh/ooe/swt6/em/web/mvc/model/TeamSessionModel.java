@@ -15,7 +15,7 @@ public class TeamSessionModel extends SessionModel<Long, Team, TeamView> {
     private static final Comparator<TeamView> TEAM_COMPARATOR = (o1, o2) ->
     {
         int result = 0;
-        if (o1.getName() == null) {
+        if (o1.getName() != null) {
             if ((result = o1.getName().compareTo(o2.getName())) == 0) {
                 result = o1.getId().compareTo(o2.getId());
             }

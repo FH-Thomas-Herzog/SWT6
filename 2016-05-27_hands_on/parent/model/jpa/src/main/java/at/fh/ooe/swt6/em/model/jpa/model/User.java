@@ -26,19 +26,19 @@ public class User extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, insertable = false, updatable = false)
-    public Long id;
+    private Long id;
 
     @Getter
     @Setter
     @NotNull
     @Column(length = 100, nullable = false)
-    public String email;
+    private String email;
 
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    public Set<Tip> tips = new HashSet<>(0);
+    private Set<Tip> tips = new HashSet<>(0);
     //</editor-fold>
 
     public User(Long id) {
