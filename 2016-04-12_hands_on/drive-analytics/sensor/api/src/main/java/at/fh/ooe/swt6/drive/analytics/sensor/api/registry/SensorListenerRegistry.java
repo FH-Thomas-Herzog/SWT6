@@ -3,18 +3,12 @@
  */
 package at.fh.ooe.swt6.drive.analytics.sensor.api.registry;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
-
+import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
+import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.fh.ooe.swt6.drive.analytics.sensor.api.Sensor;
-import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
+import java.util.*;
 
 /**
  * This registry handles the registered sensor listeners and notifies them in
@@ -26,7 +20,7 @@ import at.fh.ooe.swt6.drive.analytics.sensor.api.SensorListener;
  */
 public class SensorListenerRegistry implements Observer {
 
-	public final Set<SensorListener> sensorListeners = Collections.synchronizedSet(new HashSet<SensorListener>());
+	public final Set<SensorListener> sensorListeners = Collections.synchronizedSet(new HashSet<>());
 
 	private static SensorListenerRegistry instance;
 	private static final Logger log = LoggerFactory.getLogger(SensorListenerRegistry.class);

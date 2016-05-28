@@ -1,0 +1,22 @@
+=== Spring Framework
+
+===== Übungsaufgabe 3 (Spring Boot / Spring Web), Deadline: 27.05.2016, 23:50 Uhr
+
+Passend zur Fußball EM sollen Sie eine Tipp-Seite entwickeln. Auf der Tipp-Seite soll es für User möglich sein, auf zukünftige Spiele zu Wetten. Es soll auch für die Veranstalter möglich sein, neue Spiele bzw. die Ergebnisse zu den Spielen einzutragen.
+
+Als Basis soll Spring Boot mit JPA oder Spring Data und Spring MVC verwendet werden. Das Datenmodell umfasst mindestens die folgenden vier Tabellen: Team, Spiel, Tipp, User (die genauen Beziehungen dieser Tabellen entnehmen Sie dem angehängten ER-Modell)
+
+Falls Sie für die Umsetzung weiter Daten benötigen, kann das Datenbankmodell angepasst werden.
+
+Die Webanwendung muss aus mindestens folgenden Seiten bestehen:    
+
+* Eingabe eines neuen Spiels    
+* Eingabe eines Spielergebnisses. Es kann dieselbe Maske wie beim Anlegen eines Spiels verwendet werden.    
+* Ein Spieler muss einen Tipp anlegen können.    
+* Übersichtsseite über alle Spiele. Es werden alle Spiele mit den Ergebnissen nach dem Datum sortiert angezeigt. Die Liste soll mit den aktuellsten Spielen anfangen. (Muss man noch genauer spezifizieren. Was ist mit Spielen, für die noch keine Ergebnisse vorliegen).    
+* Score-Liste: Es gibt eine Siegerliste für alle Spieler. Jeder richtige Tipp zählt einen Punkt.
+
+Für die Eingabe von Teams und Usern muss keine Eingabemöglichkeit geschaffen werden. Es muss jedoch dafür gesorgt werden, dass Daten automatisch geladen werden, um die Anwendung sinnvoll testen zu können. Zum Laden der Daten kann  man z.B. einen CommandLineRunner verwenden.
+
+Achten sie darauf, dass die Anwendung sauber in drei Schichten (Datenbank, Logik, Präsentation) aufgeteilt ist. Stellen Sie auch sicher, dass die Datenbanktransaktionen sauber gestartet und beendet werden.
+    
