@@ -69,5 +69,4 @@ $RECYCLE.BIN/
 .ide
 .iml
 target
-data
 */**/*.iml
