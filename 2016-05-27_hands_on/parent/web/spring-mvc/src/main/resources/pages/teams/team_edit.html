@@ -90,11 +90,11 @@
             });
             $("a.edit_link").on("click", function () {
                 var link = $(this);
-                EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
+                EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });
             $("#team_btn_new").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), "id=" + $("input[name=id]").val(), "container-main");
+                EM.postInvoker(button.attr("data-action"), "id=" + $("input[name=id]").val(), "container-main");
             });
             $("#team_btn_delete").on("click", function () {
                 var button = $(this);
@@ -102,7 +102,7 @@
             });
             $("#team_btn_back").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), null, "container-main");
+                EM.postInvoker(button.attr("data-action"), null, "container-main");
             });
             // Enable client side form validation
             form.validate({

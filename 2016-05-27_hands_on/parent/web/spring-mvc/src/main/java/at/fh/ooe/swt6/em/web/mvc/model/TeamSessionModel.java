@@ -2,40 +2,46 @@ package at.fh.ooe.swt6.em.web.mvc.model;
 
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import at.fh.ooe.swt6.em.model.view.team.TeamView;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Comparator;
 
 /**
  * Created by Thomas on 5/23/2016.
  */
-public class TeamSessionModel implements Serializable {
+@NoArgsConstructor
+public class TeamSessionModel extends SessionModel<Long, Team, TeamView> {
 
-    @Getter
-    private SortedSet<TeamView> createdTeams;
+    private static final Comparator<TeamView> TEAM_COMPARATOR = (o1, o2) ->
+    {
+        int result = 0;
+        if ((o1.getName() == null) || ((result = o1.getName().compareTo(o2.getName())) == 0)) {
+            result = o1.getId().compareTo(o2.getId());
+        }
+        return result;
+    };
 
-    public TeamSessionModel() {
-        clear();
-    }
-
-    public void addTeam(Team team) {
-        Objects.requireNonNull(team, "Cannot null team team");
+    @Override
+    public TeamView createViewFromEntity(Team entity) {
         final TeamView view = new TeamView();
-        view.setId(team.getId());
-        view.setName(team.getName());
+        view.setId(entity.getId());
+        view.setName(entity.getName());
 
-        createdTeams.remove(view);
-        createdTeams.add(view);
+        return view;
     }
 
-    public void removeTeam(final long id) {
-        createdTeams.remove(new TeamView(id));
+    @Override
+    public TeamView createViewFromId(Long id) {
+        return new TeamView(id);
     }
 
-    public void clear() {
-        createdTeams = new TreeSet<>((o1, o2) -> o1.getId().compareTo(o2.getId()));
+    @Override
+    public Comparator<TeamView> createComparator() {
+        return TEAM_COMPARATOR;
+    }
+
+    public TeamSessionModel(String errorAction,
+                            String method) {
+        super(errorAction, method);
     }
 }

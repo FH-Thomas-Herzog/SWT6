@@ -45,4 +45,9 @@ public class GameSessionModel extends SessionModel<Long, Game, GameView> {
     public Comparator<GameView> createComparator() {
         return GAME_COMPARATOR;
     }
+
+    public GameSessionModel(String errorAction,
+                            String method) {
+        super(errorAction, method);
+    }
 }

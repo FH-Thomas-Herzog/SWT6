@@ -2,12 +2,14 @@ package at.fh.ooe.swt6.em.web.mvc.model;
 
 import at.fh.ooe.swt6.em.model.jpa.model.Tip;
 import at.fh.ooe.swt6.em.model.view.team.TipView;
+import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
 
 /**
  * Created by Thomas on 5/23/2016.
  */
+@NoArgsConstructor
 public class TipSessionModel extends SessionModel<Long, Tip, TipView> {
 
     private static final Comparator<TipView> TIP_COMPARATOR = (o1, o2) -> {

@@ -4,6 +4,7 @@ import at.fh.ooe.swt6.em.data.dao.api.GameDao;
 import at.fh.ooe.swt6.em.data.dao.api.TeamDao;
 import at.fh.ooe.swt6.em.data.dao.api.UserDao;
 import at.fh.ooe.swt6.em.logic.api.GameLogic;
+import at.fh.ooe.swt6.em.logic.api.exception.LogicException;
 import at.fh.ooe.swt6.em.model.jpa.model.Game;
 import at.fh.ooe.swt6.em.model.jpa.model.Team;
 import at.fh.ooe.swt6.em.model.jpa.model.Tip;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -35,10 +37,13 @@ public class GameLogicImpl implements GameLogic {
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public List<GameView> findAllGames() {
-        final List<Game> games = gameDao.findAll();
+    public List<GameView> findAllGames(Predicate<Game> filter) {
+        List<Game> games = gameDao.findAll();
         if (games.isEmpty()) {
             return Collections.emptyList();
+        }
+        if (filter != null) {
+            games = games.stream().filter(filter).collect(Collectors.toList());
         }
 
         final Team eventTeam = new Team(0L);
@@ -80,7 +85,7 @@ public class GameLogicImpl implements GameLogic {
 
         views.sort((o1, o2) -> {
             int result = 0;
-            if ((result = o2.getGameDate().compareTo(o1.getGameDate())) == 0) {
+            if ((result = o1.getGameDate().compareTo(o2.getGameDate())) == 0) {
                 Integer highGoalsO1 = (o1.getGoalsTeam1() > o1.getGoalsTeam2()) ? o1.getGoalsTeam1() : o1.getGoalsTeam2();
                 Integer highGoalsO2 = (o2.getGoalsTeam1() > o2.getGoalsTeam2()) ? o2.getGoalsTeam1() : o2.getGoalsTeam2();
                 if ((highGoalsO1.compareTo(highGoalsO2)) == 0) {
@@ -111,8 +116,15 @@ public class GameLogicImpl implements GameLogic {
             final Team team1 = teamDao.findOne(_game.getTeam1().getId());
             final Team team2 = teamDao.findOne(_game.getTeam2().getId());
             if ((team1 == null) || (team2 == null)) {
-                throw new RuntimeException("One or both teams are not set");
+                throw new LogicException("One or both teams are not set", LogicException.ServiceCode.ENTITY_NOT_FOUND);
             }
+
+            final List<Game> gamesOnSameDate = gameDao.findAllByGameDate(_game.getGameDate());
+            if (!gamesOnSameDate.isEmpty()) {
+                throw new LogicException("Games are already playing on this date",
+                                         LogicException.ServiceCode.ENTITY_EXISTS);
+            }
+
             _game.setTeam1(team1);
             _game.setTeam2(team2);
             gameDB = gameDao.save(_game);
@@ -122,6 +134,10 @@ public class GameLogicImpl implements GameLogic {
         // Update game
         else {
             gameDB = gameDao.findOne(_game.getId());
+            if (gameDB == null) {
+                throw new LogicException("Game not found for id '" + _game.getId() + "'",
+                                         LogicException.ServiceCode.ENTITY_NOT_FOUND);
+            }
             gameDB.setGoalsTeam1(_game.getGoalsTeam1());
             gameDB.setGoalsTeam2(_game.getGoalsTeam2());
             gameDB.setGameDate(_game.getGameDate());
@@ -144,7 +160,7 @@ public class GameLogicImpl implements GameLogic {
     public void delete(long id) {
         final Game game = gameDao.findOne(id);
         if (game == null) {
-            throw new RuntimeException("Game not found for id");
+            throw new LogicException("Game not found for id '" + id + "*", LogicException.ServiceCode.ENTITY_NOT_FOUND);
         }
         gameDao.delete(id);
     }

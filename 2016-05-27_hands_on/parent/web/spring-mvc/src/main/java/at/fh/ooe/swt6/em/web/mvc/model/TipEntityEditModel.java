@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-public class TipEditModel extends AbstractEditModel<Long, Tip> {
+public class TipEntityEditModel extends AbstractEntityEditModel<Long, Tip> {
 
     @NotNull
     @Min(0)

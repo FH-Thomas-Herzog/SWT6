@@ -10,8 +10,10 @@ import at.fh.ooe.swt6.em.web.mvc.app.constants.ControllerConstants;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.SessionHelper;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.GameEditPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.GamePageDefinition;
-import at.fh.ooe.swt6.em.web.mvc.model.GameEditModel;
+import at.fh.ooe.swt6.em.web.mvc.model.GameEntityEditModel;
 import at.fh.ooe.swt6.em.web.mvc.model.GameSessionModel;
+import at.fh.ooe.swt6.em.web.mvc.model.GamesFilterModel;
+import at.fh.ooe.swt6.em.web.mvc.model.SessionModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,7 @@ public class GameController implements Serializable {
     //<editor-fold desc="Inner Types">
     public static final class GameControllerActions {
         public static final String PREFIX = "/games";
+        public static final String FILTER = PREFIX + "/filter";
         public static final String NEW = PREFIX + "/new";
         public static final String EDIT = PREFIX + "/edit";
         public static final String BACK = PREFIX + "/back";
@@ -41,8 +44,6 @@ public class GameController implements Serializable {
         public static final String SAVE = PREFIX + "/create";
         public static final String DELETE = PREFIX + "/delete";
         public static final String NEW_TIP = PREFIX + "/tip/new";
-        public static final String SAVE_TIP = PREFIX + "/tip/create";
-        public static final String DELETE_TIP = PREFIX + "/tip/delete";
     }
     //</editor-fold>
 
@@ -64,6 +65,7 @@ public class GameController implements Serializable {
     private SessionHelper sessionHelper;
     //</editor-fold>
 
+
 //    <editor-fold desc="Controller Methods">
 
     /**
@@ -74,9 +76,27 @@ public class GameController implements Serializable {
     @RequestMapping(value = GameControllerActions.INDEX, method = RequestMethod.GET)
     public ModelAndView index() {
         sessionHelper.setCurrentView(gameDefinition);
-        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name, new GameSessionModel());
+        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
+                                   new GameSessionModel(GameControllerActions.INDEX, RequestMethod.GET.name()));
+        final GamesFilterModel filterModel = new GamesFilterModel(GamesFilterModel.ALL_VAL);
+        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_FILTER.name, filterModel);
 
-        return new ModelAndView(ControllerConstants.PAGE_MAIN, "models", gameLogic.findAllGames());
+        final ModelAndView modelAndView = new ModelAndView(ControllerConstants.PAGE_MAIN,
+                                                           "models",
+                                                           gameLogic.findAllGames(filterModel.getFilterPredicate()));
+        modelAndView.addObject("filterModel", filterModel);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = GameControllerActions.FILTER, method = RequestMethod.POST)
+    public ModelAndView filter(@Valid GamesFilterModel model) {
+        final ModelAndView modelAndView = new ModelAndView(gameDefinition.getContentFragment(),
+                                                           "models",
+                                                           gameLogic.findAllGames(model.getFilterPredicate()));
+        modelAndView.addObject("filterModel", model);
+
+        return modelAndView;
     }
 
     /**
@@ -84,16 +104,21 @@ public class GameController implements Serializable {
      *
      * @return the ModelAndView instance
      */
-    @RequestMapping(value = GameControllerActions.BACK, method = RequestMethod.GET)
+    @RequestMapping(value = GameControllerActions.BACK, method = RequestMethod.POST)
     public ModelAndView backToIndex() {
         sessionHelper.setCurrentView(gameDefinition);
 
-        // Clear TeamSessionModel
-        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name, new GameSessionModel());
+        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
+                                   new GameSessionModel(GameControllerActions.INDEX, RequestMethod.GET.name()));
+        final GamesFilterModel filterModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_FILTER.name,
+                                                                        GamesFilterModel.class);
 
-        return new ModelAndView(gameDefinition.getContentFragment(),
-                                "models",
-                                gameLogic.findAllGames());
+        final ModelAndView modelAndView = new ModelAndView(gameDefinition.getContentFragment(),
+                                                           "models",
+                                                           gameLogic.findAllGames(filterModel.getFilterPredicate()));
+        modelAndView.addObject("filterModel", filterModel);
+
+        return modelAndView;
     }
 
 
@@ -103,11 +128,13 @@ public class GameController implements Serializable {
      * @return the ModelAndView instance
      */
 
-    @RequestMapping(value = GameControllerActions.NEW, method = RequestMethod.GET)
+    @RequestMapping(value = GameControllerActions.NEW, method = RequestMethod.POST)
     public ModelAndView newGame() {
-        final GameSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                                                         GameSessionModel.class);
-        final GameEditModel model = new GameEditModel();
+        SessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
+                                                               SessionModel.class);
+        setDefaultErrorHandling(sessionModel);
+
+        final GameEntityEditModel model = new GameEntityEditModel();
         model.fromEntity(new Game());
 
         final ModelAndView modelAndview = new ModelAndView(gameEditDefinition.getContentFragment(),
@@ -129,13 +156,14 @@ public class GameController implements Serializable {
      *
      * @return the ModelAndView instance
      */
-    @RequestMapping(value = GameControllerActions.EDIT, method = RequestMethod.GET)
+    @RequestMapping(value = GameControllerActions.EDIT, method = RequestMethod.POST)
     public ModelAndView editTeam(@RequestParam("id") final Long id) {
         final GameSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          GameSessionModel.class);
+        setDefaultErrorHandling(sessionModel);
 
         final Game game = gameDao.findOne(id);
-        final GameEditModel model = new GameEditModel();
+        final GameEntityEditModel model = new GameEntityEditModel();
         model.fromEntity(game);
 
         final ModelAndView modelAndView = new ModelAndView(gameEditDefinition.getContentFragment(),
@@ -159,9 +187,11 @@ public class GameController implements Serializable {
      */
 
     @RequestMapping(value = GameControllerActions.SAVE, method = RequestMethod.POST)
-    public ModelAndView saveGame(@Valid GameEditModel model) {
+    public ModelAndView saveGame(@Valid GameEntityEditModel model) {
         final GameSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          GameSessionModel.class);
+
+        setDefaultErrorHandling(sessionModel);
 
         final Game game = gameLogic.saveGame(model.toEntity());
         model.fromEntity(game);
@@ -186,13 +216,14 @@ public class GameController implements Serializable {
     public ModelAndView deleteGame(@RequestParam("id") Long id) {
         final GameSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          GameSessionModel.class);
+        setDefaultErrorHandling(sessionModel);
 
         gameLogic.delete(id);
 
         final PageDefinition currentPage = sessionHelper.getCurrentView();
         // We are on form
         if (currentPage.equals(gameEditDefinition)) {
-            final GameEditModel model = new GameEditModel();
+            final GameEntityEditModel model = new GameEntityEditModel();
             model.fromEntity(new Game());
             final ModelAndView modelAndView = new ModelAndView(gameEditDefinition.getContentFragment(),
                                                                "editModel",
@@ -203,9 +234,14 @@ public class GameController implements Serializable {
         }
         // We are on index
         else if (currentPage.equals(gameDefinition)) {
-            return new ModelAndView(gameDefinition.getContentFragment(),
-                                    "models",
-                                    gameLogic.findAllGames());
+            final GamesFilterModel filterModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_FILTER.name,
+                                                                            GamesFilterModel.class);
+            final ModelAndView modelAndView = new ModelAndView(gameDefinition.getContentFragment(),
+                                                               "models",
+                                                               gameLogic.findAllGames(filterModel.getFilterPredicate()));
+            modelAndView.addObject("filterModel", filterModel);
+
+            return modelAndView;
 
         } else {
             throw new IllegalStateException("Current view: " + currentPage.getTemplate() + " not managed here");
@@ -223,5 +259,12 @@ public class GameController implements Serializable {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Private Helper">
+    private void setDefaultErrorHandling(final SessionModel sessionModel) {
+        sessionModel.setErrorAction(GameControllerActions.NEW);
+        sessionModel.setErrorMethod(RequestMethod.POST.name());
+        sessionModel.setError(Boolean.FALSE);
+    }
+    //</editor-fold>
 
 }

@@ -23,7 +23,8 @@ public class SessionHelper implements Serializable {
     public enum SessionConstants {
         CURRENT_PAGE("currentPage"),
         FORMER_PAGE("formerPage"),
-        VIEW_SESSION_DATA("viewSessionData");
+        VIEW_SESSION_DATA("viewSessionData"),
+        VIEW_FILTER("filterModel");
         public final String name;
 
         SessionConstants(String name) {

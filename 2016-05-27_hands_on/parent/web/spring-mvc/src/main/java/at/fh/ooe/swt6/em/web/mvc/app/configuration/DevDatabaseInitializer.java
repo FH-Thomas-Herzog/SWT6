@@ -17,6 +17,7 @@ import org.springframework.boot.ApplicationRunner;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -59,16 +60,23 @@ public class DevDatabaseInitializer implements ApplicationRunner {
         final List<Team> teams = teamDao.findAll();
 
         final List<Game> games = new ArrayList<>();
-        games.add(new Game(2, 4, LocalDateTime.now(), teams.get(0), teams.get(1)));
-        games.add(new Game(5, 3, LocalDateTime.now(), teams.get(0), teams.get(2)));
-        games.add(new Game(1, 6, LocalDateTime.now(), teams.get(0), teams.get(3)));
-        games.add(new Game(0, 2, LocalDateTime.now(), teams.get(0), teams.get(4)));
-        games.add(new Game(6, 0, LocalDateTime.now(), teams.get(0), teams.get(5)));
-        games.add(new Game(4, 4, LocalDateTime.now(), teams.get(1), teams.get(2)));
-        games.add(new Game(5, 2, LocalDateTime.now(), teams.get(1), teams.get(3)));
-        games.add(new Game(3, 3, LocalDateTime.now(), teams.get(1), teams.get(4)));
-        games.add(new Game(5, 1, LocalDateTime.now(), teams.get(1), teams.get(5)));
-        games.add(new Game(5, 1, LocalDateTime.now(), teams.get(1), teams.get(0)));
+        final LocalDateTime gameDate = LocalDateTime.now();
+        int day = 0;
+        games.add(new Game(2, 4, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(0), teams.get(1)));
+        games.add(new Game(5, 3, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(0), teams.get(2)));
+        games.add(new Game(1, 6, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(0), teams.get(3)));
+        games.add(new Game(0, 2, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(0), teams.get(4)));
+        games.add(new Game(6, 0, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(0), teams.get(5)));
+        games.add(new Game(4, 4, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(2)));
+        games.add(new Game(5, 2, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(3)));
+        games.add(new Game(3, 3, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(4)));
+        games.add(new Game(5, 1, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(5)));
+        games.add(new Game(5, 1, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(0)));
+        games.add(new Game(null, null, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(2)));
+        games.add(new Game(null, null, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(3)));
+        games.add(new Game(null, null, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(4)));
+        games.add(new Game(null, null, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(5)));
+        games.add(new Game(null, null, LocalDateTime.of(2016, Month.JUNE, ++day, 12, 30), teams.get(1), teams.get(0)));
 
         gameLogic.saveGames(games);
 

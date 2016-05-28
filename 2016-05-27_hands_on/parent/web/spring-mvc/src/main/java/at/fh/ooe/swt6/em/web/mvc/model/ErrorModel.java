@@ -23,4 +23,6 @@ public class ErrorModel implements Serializable {
     public boolean isPostRequest() {
         return RequestMethod.POST.name().equalsIgnoreCase(method);
     }
+
+    public boolean isActionProvided() { return method != null;}
 }

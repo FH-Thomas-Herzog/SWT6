@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import java.util.Set;
 
 /**
+ * Integrates the JSR-330 annotations into spring with proper spring equivalent.
+ * <p>
  * Created by Thomas on 5/22/2016.
  */
 public class CdiScopeMetaDataResolver

@@ -40,19 +40,24 @@ public class TeamLogicImpl implements TeamLogic {
         Objects.requireNonNull(_team, "Cannot create null team");
         Objects.requireNonNull(_team.getName(), "Cannot create team with null name");
 
+        if (_team.getName().trim().isEmpty()) {
+            throw new LogicException("Team name must nopt be empty", LogicException.ServiceCode.INVALID_DATA);
+        }
+
+        final List<Team> teamsWithSameName = teamDao.findAllByNameIgnoreCase(_team.getName());
+        if ((!teamsWithSameName.isEmpty()) && (teamsWithSameName.stream()
+                                                                .filter(item -> !item.getId().equals(_team.getId()))
+                                                                .count() > 0)) {
+            throw new LogicException("A team with this name already exists '" + _team.getName().toLowerCase() + "'",
+                                     LogicException.ServiceCode.ENTITY_EXISTS);
+        }
+
         return teamDao.save(_team);
     }
 
     @Override
     public Team save(String name) {
-        Objects.requireNonNull(name, "A teams must have a name");
-        if (name.trim().isEmpty()) {
-            throw new IllegalArgumentException("String name is empty");
-        }
-
-        // TODO: Check for equal name on database
-
-        return teamDao.save(new Team(name));
+        return save(new Team(name));
     }
 
     @Override
@@ -76,13 +81,14 @@ public class TeamLogicImpl implements TeamLogic {
         if (team == null) {
             throw new LogicException("Team do delete not found", LogicException.ServiceCode.ENTITY_NOT_FOUND);
         }
+
         teamDao.delete(team);
     }
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<TeamView> findAllWithGameStatistics() {
-        final List<Team> teams = teamDao.findAllByOrderByNameAsc();
+        final List<Team> teams = teamDao.findAllWithAllGamesByOrderByNameAsc();
         if (teams.isEmpty()) {
             Collections.emptyList();
         }

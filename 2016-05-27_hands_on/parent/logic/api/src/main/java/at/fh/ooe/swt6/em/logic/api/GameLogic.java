@@ -5,6 +5,7 @@ import at.fh.ooe.swt6.em.model.view.team.GameView;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
 
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface GameLogic extends Serializable {
 
-    List<GameView> findAllGames();
+    List<GameView> findAllGames(Predicate<Game> filter);
 
     Game saveGame(Game games);
 

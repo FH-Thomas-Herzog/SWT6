@@ -35,7 +35,7 @@ public class UserLogicImpl implements UserLogic {
      * Predicate for getting open tips which games result is not set yet
      */
     private static final Predicate<Tip> IS_TIP_OPEN = (tip) ->
-            tip.getGame().getGoalsTeam1() == null || tip.getGame().getGoalsTeam2() == null;
+            tip.getGame().getGoalsTeam1() == null && tip.getGame().getGoalsTeam2() == null;
 
     /**
      * Predicate for getting the won tips
@@ -101,11 +101,13 @@ public class UserLogicImpl implements UserLogic {
                                                           .collect(Collectors.groupingBy(Tip::getUser));
         final Map<User, List<Tip>> userWonTipsMap = games.stream()
                                                          .flatMap(game -> game.getTips().stream())
+                                                         .filter(item -> !IS_TIP_OPEN.test(item))
                                                          .filter(IS_TIP_WIN)
                                                          .collect(Collectors.groupingBy(Tip::getUser));
         final Map<User, List<Tip>> userLostTipsMap = games.stream()
                                                           .flatMap(game -> game.getTips().stream())
-                                                          .filter(IS_TIP_WIN)
+                                                          .filter(item -> !IS_TIP_OPEN.test(item))
+                                                          .filter(IS_TIP_LOS)
                                                           .collect(Collectors.groupingBy(Tip::getUser));
 
         final List<UserScoreView> views = new ArrayList<>(users.size());
@@ -120,6 +122,19 @@ public class UserLogicImpl implements UserLogic {
 
             views.add(view);
         }
+
+        views.sort((o1, o2) -> {
+            int result = 0;
+            if ((result = o2.getTipsWon().compareTo(o1.getTipsWon())) == 0) {
+                if ((result = o1.getTipsLost().compareTo(o2.getTipsLost())) == 0) {
+                    if ((result = o2.getTipsTotal().compareTo(o1.getTipsTotal())) == 0) {
+                        result = o1.getId().compareTo(o2.getId());
+                    }
+                }
+            }
+
+            return result;
+        });
 
         return views;
     }

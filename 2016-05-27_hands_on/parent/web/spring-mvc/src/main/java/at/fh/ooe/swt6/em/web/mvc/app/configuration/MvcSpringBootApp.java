@@ -74,7 +74,6 @@ public class MvcSpringBootApp extends WebMvcConfigurerAdapter {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/static/**/*").addResourceLocations(
                 CLASSPATH_RESOURCE_LOCATIONS);
-
     }
 
     /**

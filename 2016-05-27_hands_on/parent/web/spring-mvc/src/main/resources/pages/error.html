@@ -17,15 +17,15 @@
             <button id="error_back_former"
                     type="button"
                     class="btn btn-primary ajax-button"
-                    th:if="${model.action != null}"
+                    th:if="${model.actionProvided}"
                     th:text="#{action.back.former}"
+                    style="margin: 5px"
                     th:attrappend="data-action=${model.action}"/>
-        </div>
-        <div class="col-xs-6 text-center">
             <button id="error_back_home"
                     type="button"
                     class="btn btn-primary ajax-button"
                     th:text="#{action.back.home}"
+                    style="margin: 5px"
                     th:attrappend="data-action=${@teamPageDefinition.actionIndex}"/>
         </div>
     </div>

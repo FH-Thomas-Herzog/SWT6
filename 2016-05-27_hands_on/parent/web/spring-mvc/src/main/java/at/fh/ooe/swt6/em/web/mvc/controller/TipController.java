@@ -11,7 +11,7 @@ import at.fh.ooe.swt6.em.web.mvc.app.constants.SessionHelper;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.TipEditPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.TipPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.model.SessionModel;
-import at.fh.ooe.swt6.em.web.mvc.model.TipEditModel;
+import at.fh.ooe.swt6.em.web.mvc.model.TipEntityEditModel;
 import at.fh.ooe.swt6.em.web.mvc.model.TipSessionModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,10 +90,9 @@ public class TipController implements Serializable {
                                    new TipSessionModel(tipPageDefinition.getActionIndex(),
                                                        RequestMethod.GET.name()));
 
-        throw new IllegalArgumentException();
-//        return new ModelAndView(tipPageDefinition.getContentFragment(),
-//                                "models",
-//                                userLogic.findAllUserScores());
+        return new ModelAndView(tipPageDefinition.getContentFragment(),
+                                "models",
+                                userLogic.findAllUserScores());
     }
 
     /**
@@ -109,10 +108,10 @@ public class TipController implements Serializable {
         // only if no error occurred before
         if ((sessionModel == null) || (!(sessionModel instanceof TipSessionModel)) || (!sessionModel.isError())) {
             sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                       new TipSessionModel((tipPageDefinition.getActionNew() + "?id=" + id),
-                                                           RequestMethod.POST.name()));
+                                       new TipSessionModel());
             sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
-                                                                   SessionModel.class);
+                                                      SessionModel.class);
+            setDefaultErrorHandling(sessionModel, id);
         }
 
         sessionModel.setError(Boolean.FALSE);
@@ -121,7 +120,7 @@ public class TipController implements Serializable {
         final Tip tip = new Tip();
         tip.setGame(game);
 
-        final TipEditModel model = new TipEditModel();
+        final TipEntityEditModel model = new TipEntityEditModel();
         model.fromEntity(tip);
 
         final ModelAndView modelAndview = new ModelAndView(tipEditPageDefinition.getContentFragment(),
@@ -139,10 +138,11 @@ public class TipController implements Serializable {
      * @return the ModelAndView instance
      */
     @RequestMapping(value = TipControllerActions.SAVE, method = RequestMethod.POST)
-    public ModelAndView save(@Valid TipEditModel model) {
+    public ModelAndView save(@Valid TipEntityEditModel model) {
         final TipSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                         TipSessionModel.class);
-        sessionModel.setErrorAction((tipPageDefinition.getActionNew() + "?id=" + model.getGameId()));
+
+        setDefaultErrorHandling(sessionModel, model.getGameId());
 
         final Tip tip = tipLogic.save(model.toEntity());
         model.fromEntity(tip);
@@ -168,7 +168,7 @@ public class TipController implements Serializable {
         final TipSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                         TipSessionModel.class);
 
-        sessionModel.setErrorAction((tipPageDefinition.getActionNew() + "?id=" + gameId));
+        setDefaultErrorHandling(sessionModel, gameId);
 
         tipLogic.delete(id);
         sessionModel.removeNew(id);
@@ -176,7 +176,7 @@ public class TipController implements Serializable {
         final Game game = gameDao.findOne(gameId);
         final Tip tip = new Tip();
         tip.setGame(game);
-        final TipEditModel model = new TipEditModel();
+        final TipEntityEditModel model = new TipEntityEditModel();
         model.fromEntity(tip);
 
         final ModelAndView modelAndview = new ModelAndView(tipEditPageDefinition.getContentFragment(),
@@ -189,7 +189,13 @@ public class TipController implements Serializable {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Model Attributes">
+    //<editor-fold desc="Private Helper">
+    private void setDefaultErrorHandling(final SessionModel sessionModel,
+                                         Long gameId) {
+        sessionModel.setErrorAction(TipControllerActions.NEW + "?id=" + gameId);
+        sessionModel.setErrorMethod(RequestMethod.POST.name());
+        sessionModel.setError(Boolean.FALSE);
+    }
     //</editor-fold>
 
 

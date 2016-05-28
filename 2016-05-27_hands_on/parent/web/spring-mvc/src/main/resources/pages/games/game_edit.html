@@ -49,7 +49,7 @@
                                    max="100"
                                    step="1"
                                    placeholder="0"
-                                   required="required"
+                                   th:required="${!editModel.newModel}"
                                    style="text-align: right;"
                                    th:value="${editModel.goalsTeam1}"/>
                         </div>
@@ -65,7 +65,7 @@
                                    max="100"
                                    step="1"
                                    placeholder="0"
-                                   required="required"
+                                   th:required="${!editModel.newModel}"
                                    style="text-align: left;"
                                    th:value="${editModel.goalsTeam2}"/>
                         </div>
@@ -79,6 +79,7 @@
                                    class="form-control"
                                    type="datetime-local"
                                    required="required"
+                                   pattern="${editModel.dateTimePattern}"
                                    style="clear: both; text-align: center;"
                                    th:value="${editModel.gameDate}"/>
                         </div>
@@ -121,7 +122,7 @@
                                     type="button"
                                     class="btn btn-default"
                                     th:text="#{action.delete}"
-                                    th:if="${!editModel.newModel}"
+                                    th:if="${!editModel.newModel and !editModel.finished}"
                                     th:attrappend="data-action=${@gamesEditPageDefinition.actionDelete}"/>
                         </div>
                     </div>
@@ -135,6 +136,7 @@
                 <div th:each="model : ${createdModels}" class="list-group-item">
                     <span class="list-group-item-heading">
                         <a class="delete_link"
+                           th:if="${!model.finished}"
                            th:attr="data-action=${@gamesEditPageDefinition.actionDelete}"
                            th:attrappend="data-id=${model.id}"
                            style="color: red;">
@@ -151,12 +153,15 @@
                             <span th:text="' [' + ${model.goalsTeam1} + '] '"
                                   th:if="${model.finished}"
                                   th:style="${model.team1Winner ? 'color: red' : 'color:orange'}"/>
-                        <span th:text="':'"/>
+                            <span th:text="':'"/>
                             <span th:text="' [' + ${model.goalsTeam2} + '] '"
                                   th:if="${model.finished}"
                                   th:style="${model.team2Winner ? 'color: red' : 'color:orange'}"/>
                             <span th:text="${model.team2Name}"
                                   style="font-weight: bold;"/>
+                            <span th:if="${model.gameDate != null}"
+                                  th:text="'(' + ${#temporals.format(model.gameDate, #messages.msg('app.date.format.dateTime'))} + ')'"
+                                  class="pull-right"/>
                     </span>
                 </div>
             </div>
@@ -172,11 +177,11 @@
             });
             $("a.edit_link").on("click", function () {
                 var link = $(this);
-                EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
+                EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });
             $("#game_btn_new").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), "id=" + $("input[name=id]").val(), "container-main");
+                EM.postInvoker(button.attr("data-action"), "id=" + $("input[name=id]").val(), "container-main");
             });
             $("#game_btn_delete").on("click", function () {
                 var button = $(this);
@@ -184,7 +189,7 @@
             });
             $("#game_btn_back").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), null, "container-main");
+                EM.postInvoker(button.attr("data-action"), null, "container-main");
             });
             // Enable client side form validation
             form.validate({

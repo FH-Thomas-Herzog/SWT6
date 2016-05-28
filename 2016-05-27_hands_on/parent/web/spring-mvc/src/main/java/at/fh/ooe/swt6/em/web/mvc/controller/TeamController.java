@@ -8,7 +8,8 @@ import at.fh.ooe.swt6.em.web.mvc.app.constants.ControllerConstants;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.SessionHelper;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.TeamEditPageDefinition;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.pages.TeamPageDefinition;
-import at.fh.ooe.swt6.em.web.mvc.model.TeamEditModel;
+import at.fh.ooe.swt6.em.web.mvc.model.SessionModel;
+import at.fh.ooe.swt6.em.web.mvc.model.TeamEntityEditModel;
 import at.fh.ooe.swt6.em.web.mvc.model.TeamSessionModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,9 +48,9 @@ public class TeamController implements Serializable {
 
     //<editor-fold desc="Injections Web">
     @Inject
-    private TeamPageDefinition teamDefinition;
+    private TeamPageDefinition teamPageDefinition;
     @Inject
-    private TeamEditPageDefinition teamEditDefinition;
+    private TeamEditPageDefinition teamPageEditDefinition;
     @Inject
     private SessionHelper sessionHelper;
     //</editor-fold>
@@ -63,8 +64,9 @@ public class TeamController implements Serializable {
      */
     @RequestMapping(value = TeamControllerActions.INDEX, method = RequestMethod.GET)
     public ModelAndView index() {
-        sessionHelper.setCurrentView(teamDefinition);
-        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name, new TeamSessionModel());
+        sessionHelper.setCurrentView(teamPageDefinition);
+        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
+                                   new TeamSessionModel(TeamControllerActions.INDEX, RequestMethod.GET.name()));
 
         return new ModelAndView(ControllerConstants.PAGE_MAIN, "models", teamLogic.findAllWithGameStatistics());
     }
@@ -74,14 +76,13 @@ public class TeamController implements Serializable {
      *
      * @return the ModelAndView instance
      */
-    @RequestMapping(value = TeamControllerActions.BACK, method = RequestMethod.GET)
+    @RequestMapping(value = TeamControllerActions.BACK, method = RequestMethod.POST)
     public ModelAndView backFromForm() {
-        sessionHelper.setCurrentView(teamDefinition);
+        sessionHelper.setCurrentView(teamPageDefinition);
+        sessionHelper.setAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
+                                   new TeamSessionModel(TeamControllerActions.INDEX, RequestMethod.GET.name()));
 
-        // Clear TeamSessionModel
-        sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name, TeamSessionModel.class).clear();
-
-        return new ModelAndView(teamDefinition.getContentFragment(),
+        return new ModelAndView(teamPageDefinition.getContentFragment(),
                                 "models",
                                 teamLogic.findAllWithGameStatistics());
     }
@@ -91,23 +92,25 @@ public class TeamController implements Serializable {
      *
      * @return the ModelAndView instance
      */
-    @RequestMapping(value = TeamControllerActions.NEW, method = RequestMethod.GET)
+    @RequestMapping(value = TeamControllerActions.NEW, method = RequestMethod.POST)
     public ModelAndView newTeam() {
         final TeamSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          TeamSessionModel.class);
-        final TeamEditModel model = new TeamEditModel();
+        setDefaultErrorHandling(sessionModel);
+
+        final TeamEntityEditModel model = new TeamEntityEditModel();
         model.fromEntity(new Team());
 
-        final ModelAndView modelAndview = new ModelAndView(teamEditDefinition.getContentFragment(),
+        final ModelAndView modelAndview = new ModelAndView(teamPageEditDefinition.getContentFragment(),
                                                            "editModel",
                                                            model);
 
         // Only if we switch to form
-        if (sessionHelper.getCurrentView().equals(teamDefinition)) {
-            sessionHelper.setCurrentView(teamEditDefinition);
+        if (sessionHelper.getCurrentView().equals(teamPageDefinition)) {
+            sessionHelper.setCurrentView(teamPageEditDefinition);
         }
 
-        modelAndview.addObject("createdModels", sessionModel.getCreatedTeams());
+        modelAndview.addObject("createdModels", sessionModel.getViews());
 
         return modelAndview;
     }
@@ -117,24 +120,25 @@ public class TeamController implements Serializable {
      *
      * @return the ModelAndView instance
      */
-    @RequestMapping(value = TeamControllerActions.EDIT, method = RequestMethod.GET)
+    @RequestMapping(value = TeamControllerActions.EDIT, method = RequestMethod.POST)
     public ModelAndView editTeam(@RequestParam("id") final Long id) {
         final TeamSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          TeamSessionModel.class);
+        setDefaultErrorHandling(sessionModel);
 
         final Team team = teamDao.findOne(id);
-        final TeamEditModel model = new TeamEditModel();
+        final TeamEntityEditModel model = new TeamEntityEditModel();
         model.fromEntity(team);
 
-        final ModelAndView modelAndView = new ModelAndView(teamEditDefinition.getContentFragment(),
+        final ModelAndView modelAndView = new ModelAndView(teamPageEditDefinition.getContentFragment(),
                                                            "editModel",
                                                            model);
-        modelAndView.addObject("createdModels", sessionModel.getCreatedTeams());
+        modelAndView.addObject("createdModels", sessionModel.getViews());
 
         // switch to form if invoked from index
-        if (sessionHelper.getCurrentView().equals(teamDefinition)) {
-            sessionHelper.setCurrentView(teamEditDefinition);
-            sessionModel.addTeam(team);
+        if (sessionHelper.getCurrentView().equals(teamPageDefinition)) {
+            sessionHelper.setCurrentView(teamPageEditDefinition);
+            sessionModel.addNew(team);
         }
 
         return modelAndView;
@@ -146,18 +150,19 @@ public class TeamController implements Serializable {
      * @return the ModelAndView instance
      */
     @RequestMapping(value = TeamControllerActions.SAVE, method = RequestMethod.POST)
-    public ModelAndView saveTeam(@Valid TeamEditModel model) {
+    public ModelAndView saveTeam(@Valid TeamEntityEditModel model) {
         final TeamSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          TeamSessionModel.class);
+        setDefaultErrorHandling(sessionModel);
 
         final Team team = teamLogic.save(model.toEntity());
         model.fromEntity(team);
-        sessionModel.addTeam(team);
+        sessionModel.addNew(team);
 
-        final ModelAndView modelAndview = new ModelAndView(teamEditDefinition.getContentFragment(),
+        final ModelAndView modelAndview = new ModelAndView(teamPageEditDefinition.getContentFragment(),
                                                            "editModel",
                                                            model);
-        modelAndview.addObject("createdModels", sessionModel.getCreatedTeams());
+        modelAndview.addObject("createdModels", sessionModel.getViews());
 
         return modelAndview;
     }
@@ -171,24 +176,25 @@ public class TeamController implements Serializable {
     public ModelAndView deleteTeam(@RequestParam("id") Long id) {
         final TeamSessionModel sessionModel = sessionHelper.getAttribute(SessionHelper.SessionConstants.VIEW_SESSION_DATA.name,
                                                                          TeamSessionModel.class);
+        setDefaultErrorHandling(sessionModel);
 
         teamLogic.delete(id);
 
         final PageDefinition currentPage = sessionHelper.getCurrentView();
         // We are on form
-        if (currentPage.equals(teamEditDefinition)) {
-            final TeamEditModel model = new TeamEditModel();
+        if (currentPage.equals(teamPageEditDefinition)) {
+            final TeamEntityEditModel model = new TeamEntityEditModel();
             model.fromEntity(new Team());
-            final ModelAndView modelAndView = new ModelAndView(teamEditDefinition.getContentFragment(),
+            final ModelAndView modelAndView = new ModelAndView(teamPageEditDefinition.getContentFragment(),
                                                                "editModel",
                                                                model);
-            sessionModel.removeTeam(id);
-            modelAndView.addObject("createdModels", sessionModel.getCreatedTeams());
+            sessionModel.removeNew(id);
+            modelAndView.addObject("createdModels", sessionModel.getViews());
             return modelAndView;
         }
         // We are on index
-        else if (currentPage.equals(teamDefinition)) {
-            return new ModelAndView(teamDefinition.getContentFragment(),
+        else if (currentPage.equals(teamPageDefinition)) {
+            return new ModelAndView(teamPageDefinition.getContentFragment(),
                                     "models",
                                     teamLogic.findAllWithGameStatistics());
         } else {
@@ -197,7 +203,12 @@ public class TeamController implements Serializable {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Model Attributes">
+    //<editor-fold desc="Private Helper">
+    private void setDefaultErrorHandling(final SessionModel sessionModel) {
+        sessionModel.setErrorAction(TeamControllerActions.NEW);
+        sessionModel.setErrorMethod(RequestMethod.POST.name());
+        sessionModel.setError(Boolean.FALSE);
+    }
     //</editor-fold>
 
 

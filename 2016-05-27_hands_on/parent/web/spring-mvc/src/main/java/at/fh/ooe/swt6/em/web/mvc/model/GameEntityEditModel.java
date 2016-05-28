@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  */
 @Data
 @NoArgsConstructor
-public class GameEditModel extends AbstractEditModel<Long, Game> {
+public class GameEntityEditModel extends AbstractEntityEditModel<Long, Game> {
 
     @Min(0)
     @Max(100)
@@ -68,5 +68,13 @@ public class GameEditModel extends AbstractEditModel<Long, Game> {
         game.setTeam2(new Team(team2));
 
         return game;
+    }
+
+    public String getDateTimePattern() {
+        return DATE_TIME_PATTERN;
+    }
+
+    public boolean isFinished() {
+        return (getId() != null) && (getGoalsTeam1() != null) && (getGoalsTeam2() != null);
     }
 }

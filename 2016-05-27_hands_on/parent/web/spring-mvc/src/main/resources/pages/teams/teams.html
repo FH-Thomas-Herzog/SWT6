@@ -50,7 +50,7 @@
             var form = $("#team_edit_form");
             $("#team_new_btn").on("click", function () {
                 var button = $(this);
-                EM.getInvoker(button.attr("data-action"), null, "container-main");
+                EM.postInvoker(button.attr("data-action"), null, "container-main");
             });
             $("a.delete_link").on("click", function () {
                 var link = $(this);
@@ -58,7 +58,7 @@
             });
             $("a.edit_link").on("click", function () {
                 var link = $(this);
-                EM.getInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
+                EM.postInvoker(link.attr("data-action"), "id=" + link.attr("data-id"), "container-main");
             });
         });
     </script>

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * Created by Thomas on 5/22/2016.
  */
 @Data
-public class TeamEditModel extends AbstractEditModel<Long, Team> {
+public class TeamEntityEditModel extends AbstractEntityEditModel<Long, Team> {
 
     @NotNull
     @Length(min = 3, max = 50)

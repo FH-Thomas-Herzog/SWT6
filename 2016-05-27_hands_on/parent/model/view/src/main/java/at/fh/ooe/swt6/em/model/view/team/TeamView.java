@@ -1,21 +1,29 @@
 package at.fh.ooe.swt6.em.model.view.team;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Thomas on 5/16/2016.
  */
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamView extends EntityView<Long> {
+public class TeamView extends AbstractEntityView<Long> {
 
     //<editor-fold desc="Properties">
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private Integer gamesWin;
+    @Getter
+    @Setter
     private Integer gamesLost;
+    @Getter
+    @Setter
     private Integer gamesEqual;
     //</editor-fold>
 

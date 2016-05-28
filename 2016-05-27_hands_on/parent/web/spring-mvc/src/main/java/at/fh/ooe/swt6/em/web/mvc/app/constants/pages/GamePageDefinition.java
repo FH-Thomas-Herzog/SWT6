@@ -20,6 +20,8 @@ public class GamePageDefinition implements PageDefinition {
     @Getter
     private String actionIndex = GameController.GameControllerActions.INDEX;
     @Getter
+    private String actionFilter = GameController.GameControllerActions.FILTER;
+    @Getter
     private String actionNew = GameController.GameControllerActions.NEW;
     @Getter
     private String actionEdit = GameController.GameControllerActions.EDIT;
