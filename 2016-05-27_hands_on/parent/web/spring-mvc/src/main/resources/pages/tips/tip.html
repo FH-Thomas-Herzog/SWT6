@@ -7,94 +7,92 @@
             <form id="tip_form" method="post"
                   th:action="${@tipEditPageDefinition.actionSave}"
                   th:object="${editModel}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-5 form-group text-right">
-                            <label for="tip_team1"
-                                   th:text="#{games.team1}"/>
-                            <h4 id="tip_team1" th:text="${editModel.team1Name}"/>
-                        </div>
-                        <div class="col-xs-2 text-center"><h4>:</h4></div>
-                        <div class="col-xs-5 form-group text-left">
-                            <label for="tip_team2"
-                                   th:text="#{games.team1}"/>
-                            <h4 id="tip_team2" th:text="${editModel.team2Name}"/>
-                        </div>
+                <div class="row">
+                    <div class="col-xs-5 form-group text-right">
+                        <label for="tip_team1"
+                               th:text="#{games.team1}"/>
+                        <h4 id="tip_team1" th:text="${editModel.team1Name}"/>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5 form-group text-right">
-                            <label for="tip_goals_team1"
-                                   th:text="#{games.goalsTeam1}"/>
-                            <input id="tip_goals_team1"
-                                   name="goalsTeam1"
-                                   type="number"
-                                   class="form-control"
-                                   min="0"
-                                   max="100"
-                                   step="1"
-                                   placeholder="0"
-                                   required="required"
-                                   style="text-align: right;"
-                                   th:value="${editModel.goalsTeam1}"/>
-                        </div>
-                        <div class="col-xs-2 text-center"></div>
-                        <div class="col-xs-5  form-group text-left">
-                            <label for="tip_goals_team2"
-                                   th:text="#{games.goalsTeam2}"/>
-                            <input id="tip_goals_team2"
-                                   name="goalsTeam2"
-                                   class="form-control"
-                                   type="number"
-                                   min="0"
-                                   max="100"
-                                   step="1"
-                                   placeholder="0"
-                                   required="required"
-                                   style="text-align: left;"
-                                   th:value="${editModel.goalsTeam2}"/>
-                        </div>
+                    <div class="col-xs-2 text-center"><h4>:</h4></div>
+                    <div class="col-xs-5 form-group text-left">
+                        <label for="tip_team2"
+                               th:text="#{games.team1}"/>
+                        <h4 id="tip_team2" th:text="${editModel.team2Name}"/>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group text-center">
-                            <label for="tip_game_date"
-                                   th:text="#{games.date} + ':'"/>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 form-group text-right">
+                        <label for="tip_goals_team1"
+                               th:text="#{games.goalsTeam1}"/>
+                        <input id="tip_goals_team1"
+                               name="goalsTeam1"
+                               type="number"
+                               class="form-control"
+                               min="0"
+                               max="100"
+                               step="1"
+                               placeholder="0"
+                               required="required"
+                               style="text-align: right;"
+                               th:value="${editModel.goalsTeam1}"/>
+                    </div>
+                    <div class="col-xs-2 text-center"></div>
+                    <div class="col-xs-5  form-group text-left">
+                        <label for="tip_goals_team2"
+                               th:text="#{games.goalsTeam2}"/>
+                        <input id="tip_goals_team2"
+                               name="goalsTeam2"
+                               class="form-control"
+                               type="number"
+                               min="0"
+                               max="100"
+                               step="1"
+                               placeholder="0"
+                               required="required"
+                               style="text-align: left;"
+                               th:value="${editModel.goalsTeam2}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group text-center">
+                        <label for="tip_game_date"
+                               th:text="#{games.date} + ':'"/>
                             <span id="tip_game_date"
                                   th:text="${#temporals.format(editModel.gameDate, #messages.msg('app.date.format.dateTime'))}"/>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label for="tip_email" th:text="#{email}"/>
-                            <input id="tip_email"
-                                   name="email"
-                                   class="form-control"
-                                   type="email"
-                                   required="required"
-                                   th:value="${editModel.email}"/>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label for="tip_email" th:text="#{email}"/>
+                        <input id="tip_email"
+                               name="email"
+                               class="form-control"
+                               type="email"
+                               required="required"
+                               th:value="${editModel.email}"/>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input id="tip_game_id"
-                                   name="gameId"
-                                   type="hidden"
-                                   th:value="${editModel.gameId}"/>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input id="tip_game_id"
+                               name="gameId"
+                               type="hidden"
+                               th:value="${editModel.gameId}"/>
                     </div>
-                    <div class="row row-buffer">
-                        <div class="col-xs-6 text-right">
-                            <button id="tip_btn_back"
-                                    type="button"
-                                    class="btn btn-default"
-                                    th:text="#{action.back}"
-                                    th:attrappend="data-action=${@tipEditPageDefinition.actionBack}"/>
-                        </div>
-                        <div class="col-xs-6 text-left">
-                            <button id="tip_btn_save"
-                                    type="submit"
-                                    class="btn btn-default"
-                                    th:text="#{action.save}"/>
-                        </div>
+                </div>
+                <div class="row row-buffer">
+                    <div class="col-xs-6 text-right">
+                        <button id="tip_btn_back"
+                                type="button"
+                                class="btn btn-default"
+                                th:text="#{action.back}"
+                                th:attrappend="data-action=${@tipEditPageDefinition.actionBack}"/>
+                    </div>
+                    <div class="col-xs-6 text-left">
+                        <button id="tip_btn_save"
+                                type="submit"
+                                class="btn btn-default"
+                                th:text="#{action.save}"/>
                     </div>
                 </div>
             </form>

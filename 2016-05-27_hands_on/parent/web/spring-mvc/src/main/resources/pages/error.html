@@ -4,11 +4,10 @@
 
 <div th:fragment="content" th:remove="tag">
     <div class="row row-buffer">
-        <div class="col-xs-12">
+        <div class="col-xs-12 text-center">
             <div class="alert alert-danger">
-                <span th:if="${model.key != null}"
-                      th:text="${#messages.msg(model.key)}"
-                      th:remove="tag">Error occurred</span>
+                <strong th:if="${model.key != null}"
+                        th:text="${#messages.msg(model.key)}">Error occurred</strong>
             </div>
         </div>
     </div>

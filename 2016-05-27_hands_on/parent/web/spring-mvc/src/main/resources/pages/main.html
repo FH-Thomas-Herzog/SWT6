@@ -20,11 +20,9 @@
         </div>
     </div>
     <div class="row row-buffer">
-        <div class="col-xs-12">
-            <div id="container-main" class="container">
-                <div th:replace="${@sessionHelper.currentViewTemplate} :: content">
-                    Content
-                </div>
+        <div id="container-main" class="col-xs-12">
+            <div th:replace="${@sessionHelper.currentViewTemplate} :: content">
+                Content
             </div>
         </div>
     </div>

@@ -6,23 +6,21 @@
         <div class="col-xs-12">
             <form id="team_edit_form" th:action="@{${@teamEditPageDefinition.actionSave}}" th:object="${editModel}"
                   method="post">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label for="team_name" th:text="#{name}"/>
-                            <input id="team_name" name="name" type="text" class="form-control"
-                                   minlength="3"
-                                   maxlength="50"
-                                   required="required"
-                                   th:value="${editModel.name}"
-                                   th:placeholder="#{placeholder.team.name}"/>
-                        </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label for="team_name" th:text="#{name}"/>
+                        <input id="team_name" name="name" type="text" class="form-control"
+                               minlength="3"
+                               maxlength="50"
+                               required="required"
+                               th:value="${editModel.name}"
+                               th:placeholder="#{placeholder.team.name}"/>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input id="team_id" name="id" type="hidden" th:value="${editModel.id}"/>
-                            <input id="team_version" name="version" type="hidden" th:value="${editModel.version}"/>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input id="team_id" name="id" type="hidden" th:value="${editModel.id}"/>
+                        <input id="team_version" name="version" type="hidden" th:value="${editModel.version}"/>
                     </div>
                 </div>
                 <div class="row">
@@ -59,10 +57,11 @@
                 </div>
             </form>
         </div>
-        <div class="row row-buffer" th:if="${!createdModels.isEmpty()}">
-            <div class="col-xs-12">
-                <div class="list-group">
-                    <div th:each="model : ${createdModels}" class="list-group-item">
+    </div>
+    <div class="row row-buffer" th:if="${!createdModels.isEmpty()}">
+        <div class="col-xs-12">
+            <div class="list-group">
+                <div th:each="model : ${createdModels}" class="list-group-item">
                         <span class="list-group-item-heading">
                             <a class="delete_link" th:attr="data-action=${@teamEditPageDefinition.actionDelete}"
                                th:attrappend="data-id=${model.id}"
@@ -76,7 +75,6 @@
                             </a>
                             <span th:text="${model.name}"/>
                         </span>
-                    </div>
                 </div>
             </div>
         </div>
