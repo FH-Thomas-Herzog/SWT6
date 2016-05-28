@@ -7,13 +7,18 @@ import at.fh.ooe.swt6.em.model.jpa.model.User;
 import at.fh.ooe.swt6.em.model.view.team.TeamView;
 import at.fh.ooe.swt6.em.web.mvc.aop.advice.AdviceController;
 import at.fh.ooe.swt6.em.web.mvc.app.constants.ResourceHelper;
+import at.fh.ooe.swt6.em.web.mvc.controller.GameController;
 import at.fh.ooe.swt6.em.web.mvc.controller.TeamController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -51,10 +56,21 @@ import java.util.Locale;
         DevDatabaseInitializer.class,
         AdviceController.class
 }, scopeResolver = CdiScopeMetaDataResolver.class)
-public class MvcSpringBootApp extends WebMvcConfigurerAdapter {
+public class MvcSpringBootApp extends WebMvcConfigurerAdapter implements EmbeddedServletContainerCustomizer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/static/"};
+    private static final String home = GameController.GameControllerActions.INDEX;
+
+    /**
+     * Redirect to default home page.
+     *
+     * @param container teh container to modify error handling on
+     */
+    @Override
+    public void customize(ConfigurableEmbeddedServletContainer container) {
+        container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, home));
+    }
 
     @Bean
     public Java8TimeDialect java8TimeDialect() {

@@ -16,6 +16,10 @@ body {
     padding: 5px;
 }
 
+button.btn {
+    margin: 5px;
+}
+
 /* CSS indicator */
 .windows8 {
     position: relative;

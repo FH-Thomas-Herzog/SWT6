@@ -19,6 +19,8 @@ public class GameSessionModel extends SessionModel<Long, Game, GameView> {
                     result = o1.getId().compareTo(o2.getId());
                 }
             }
+        } else {
+            result = o1.getId().compareTo(o2.getId());
         }
         return result;
     };

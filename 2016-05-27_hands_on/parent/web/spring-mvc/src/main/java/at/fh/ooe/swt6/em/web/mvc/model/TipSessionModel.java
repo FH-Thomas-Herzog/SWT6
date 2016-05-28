@@ -15,17 +15,18 @@ public class TipSessionModel extends SessionModel<Long, Tip, TipView> {
     private static final Comparator<TipView> TIP_COMPARATOR = (o1, o2) -> {
         int result = 0;
         if (o1.getGoalsTeam1() == null) {
-            return o1.getId().compareTo(o2.getId());
-        }
-        Integer highGoalsO1 = (o1.getGoalsTeam1() > o1.getGoalsTeam2()) ? o1.getGoalsTeam1() : o1.getGoalsTeam2();
-        Integer highGoalsO2 = (o1.getGoalsTeam1() > o2.getGoalsTeam2()) ? o2.getGoalsTeam1() : o2.getGoalsTeam2();
-        if ((result = highGoalsO1.compareTo(highGoalsO2)) == 0) {
-            // If one name set both are, if not bot are not
-            if ((result = o1.getTeam1Name().compareTo(o2.getTeam1Name())) == 0) {
-                if ((result = o1.getTeam2Name().compareTo(o2.getTeam2Name())) == 0) {
-                    result = o1.getId().compareTo(o2.getId());
+            Integer highGoalsO1 = (o1.getGoalsTeam1() > o1.getGoalsTeam2()) ? o1.getGoalsTeam1() : o1.getGoalsTeam2();
+            Integer highGoalsO2 = (o1.getGoalsTeam1() > o2.getGoalsTeam2()) ? o2.getGoalsTeam1() : o2.getGoalsTeam2();
+            if ((result = highGoalsO1.compareTo(highGoalsO2)) == 0) {
+                // If one name set both are, if not bot are not
+                if ((result = o1.getTeam1Name().compareTo(o2.getTeam1Name())) == 0) {
+                    if ((result = o1.getTeam2Name().compareTo(o2.getTeam2Name())) == 0) {
+                        result = o1.getId().compareTo(o2.getId());
+                    }
                 }
             }
+        } else {
+            result = o1.getId().compareTo(o2.getId());
         }
 
         return result;
