@@ -9,7 +9,7 @@
     <script th:src="${@resourceHelper.jsBootstrap}" type="text/javascript"/>
     <script th:src="${@resourceHelper.jsJqueryValdiation}" type="text/javascript"/>
     <script th:src="${@resourceHelper.jsUtil}" type="text/javascript"/>
-    <title>ADD_LOC_MSG_HERE</title>
+    <title th:text="#{app.name}"/>
 </head>
 <body>
 <div th:replace="fragments/header :: navigation-header">Navigation Bar</div>
